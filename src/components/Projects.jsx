@@ -5,25 +5,25 @@ import { ExternalLink } from 'lucide-react';
 const Projects = () => {
   const projects = [
     {
-      title: 'Action Figures Checklist',
-      description: 'A web platform using ReactJS for frontend and Node.js with MongoDB for backend',
+      title: 'Weather App',
+      description: 'A web application that displays weather',
       image: '/api/placeholder/400/300',
       technologies: ['React', 'Node.js', 'MongoDB'],
-      link: '#',
+      link: 'https://github.com/khoitran590/WeatherApp-2.0', 
     },
     {
       title: 'Academic Event Management',
-      description: 'A web applicatioon that enables users to add, modify, and manage academic events with optimized SQL queries',
+      description: 'A web application that enables users to add, modify, and manage academic events with optimized SQL queries',
       image: '/assets/academic.jpg',
       technologies: ['TailwindCSS', 'MySQL'],
-      link: '#',
+      link: 'https://github.com/bwhelan212/academic-event-management-company', 
     },
     {
       title: 'Flappy Bird Replication',
       description: 'A replica of the famous Flappy Bird game using Unity and C#',
       image: '/assets/flappy.jpg',
       technologies: ['C#', 'Unity'],
-      link: '#',
+      link: 'https://github.com/sebavillani916/flappybird',
     },
   ];
 
@@ -59,6 +59,8 @@ const Projects = () => {
                 </div>
                 <a
                   href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center text-blue-600 hover:text-blue-700"
                 >
                   View Project

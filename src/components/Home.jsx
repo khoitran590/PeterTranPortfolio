@@ -7,19 +7,19 @@ const Home = () => (
       <div className="text-center">
         <div className="mb-8">
           <img
-            src="/api/placeholder/150/150"
+            src="/assets/52660347.jpg"
             alt="Profile"
-            className="w-32 h-32 rounded-full mx-auto shadow-lg"
+            className="w-33 h-33 rounded-xl mx-auto shadow-lg object-cover"
           />
         </div>
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          John Doe
+          Peter Tran
         </h1>
         <p className="text-xl text-gray-600 mb-8">
-          Full Stack Developer & UI/UX Designer
+          Software Engineering Student at Cal State Fullerton
         </p>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12">
-          Passionate about creating beautiful, functional, and user-friendly web applications.
+          Passionate about creating projects that is not only visually pleasing but also well function
           Specializing in React, Node.js, and modern web technologies.
         </p>
         <div className="flex justify-center space-x-4">
