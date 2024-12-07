@@ -15,14 +15,14 @@ const Projects = () => {
       title: 'Academic Event Management',
       description: 'A web application that enables users to add, modify, and manage academic events with optimized SQL queries',
       image: '/assets/academic.jpg',
-      technologies: ['TailwindCSS', 'MySQL'],
+      technologies: ['TailwindCSS', 'MySQL', 'PHP'],
       link: 'https://github.com/bwhelan212/academic-event-management-company', 
     },
     {
       title: 'Flappy Bird Replication',
       description: 'A replica of the famous Flappy Bird game using Unity and C#',
       image: '/assets/flappy.jpg',
-      technologies: ['C#', 'Unity'],
+      technologies: ['Python'],
       link: 'https://github.com/sebavillani916/flappybird',
     },
   ];
