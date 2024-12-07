@@ -7,7 +7,7 @@ const Projects = () => {
     {
       title: 'Weather App',
       description: 'A web application that displays weather',
-      image: '/api/placeholder/400/300',
+      image: '/assets/weatherapp.png',
       technologies: ['React', 'Node.js', 'MongoDB'],
       link: 'https://github.com/khoitran590/WeatherApp-2.0', 
     },
