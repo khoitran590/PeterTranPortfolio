@@ -16,11 +16,10 @@ const Home = () => (
           Peter Tran
         </h1>
         <p className="text-xl text-gray-600 mb-8">
-          Software Engineering Student at Cal State Fullerton
+          Senior Software Engineering Student at Cal State Fullerton
         </p>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12">
-          Passionate about creating projects that is not only visually pleasing but also well function
-          Specializing in React, Node.js, and modern web technologies.
+          A very normal person who enjoys designing stuff
         </p>
         <div className="flex justify-center space-x-4">
           <a

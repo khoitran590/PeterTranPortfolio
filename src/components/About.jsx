@@ -23,11 +23,13 @@ const About = () => (
           </a>
         </div>
         <div>
-          <h3 className="text-xl font-semibold mb-4">Education & Experience</h3>
+          <h3 className="text-xl font-semibold mb-4">Education</h3>
           <div className="space-y-4">
             <div>
               <h4 className="font-medium">Cal State Fullerton</h4>
               <p className="text-gray-600">BS in Computer Science, 2025</p>
+              <h4 className="font-medium">Cypress College</h4>
+              <p className="text-gray-600">Associate Degree, 2021</p>
             </div>
           </div>
         </div>
