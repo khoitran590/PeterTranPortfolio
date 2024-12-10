@@ -84,6 +84,7 @@ const Contact = () => {
                 href="https://github.com/khoitran590"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors transform hover:scale-105"
               >
                 <Github size={24} className="mr-4" />
                 GitHub
@@ -92,14 +93,14 @@ const Contact = () => {
                 href="https://www.linkedin.com/in/peterkhoitran/?profileId=ACoAACGBcowB9vVKOLWHOZfsW5ygkiZQdDbbSEs"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors transform hover:scale-105"
               >
                 <Linkedin size={24} className="mr-4" />
                 LinkedIn
               </a>
               <a
                 href="mailto:khoitran590@gmail.com"
-                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors transform hover:scale-105"
               >
                 <Mail size={24} className="mr-4" />
                 khoitran590@gmail.com

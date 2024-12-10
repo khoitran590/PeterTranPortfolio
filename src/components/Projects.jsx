@@ -37,7 +37,7 @@ const Projects = () => {
           {projects.map((project, index) => (
             <div
               key={index}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 transform hover:scale-105"
             >
               <img
                 src={project.image}
@@ -61,7 +61,7 @@ const Projects = () => {
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-blue-600 hover:text-blue-700"
+                  className="inline-flex items-center text-blue-600 hover:text-blue-700 transition-colors"
                 >
                   View Project
                   <ExternalLink size={16} className="ml-1" />

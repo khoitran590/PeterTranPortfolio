@@ -25,13 +25,13 @@ const Home = () => (
         <div className="flex justify-center space-x-4">
           <a
             href="#contact"
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors transform hover:scale-105"
           >
             Get in Touch
           </a>
           <a
             href="#projects"
-            className="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors"
+            className="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors transform hover:scale-105"
           >
             View Projects
           </a>
