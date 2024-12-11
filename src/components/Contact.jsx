@@ -20,10 +20,10 @@ const Contact = () => {
     e.preventDefault();
 
     emailjs.send(
-      'service_zb7xiaj',      // Replace with your Service ID
-      'template_rbyr0ze',     // Replace with your Template ID
+      process.env.REACT_APP_EMAILJS_SERVICE_ID,
+      process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
       formData,
-      'cyimcGHkDfPa-N0Qm'          // Replace with your User ID
+      process.env.REACT_APP_EMAILJS_USER_ID
     )
     .then((result) => {
         console.log(result.text);
