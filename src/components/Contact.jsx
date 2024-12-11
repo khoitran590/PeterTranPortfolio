@@ -1,6 +1,7 @@
 // src/components/Contact.jsx
 import React, { useState } from 'react';
 import { Github, Linkedin, Mail } from 'lucide-react';
+import emailjs from 'emailjs-com';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -9,14 +10,33 @@ const Contact = () => {
     message: '',
   });
 
+  const [status, setStatus] = useState('');
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
+
+    emailjs.send(
+      'service_zb7xiaj',      // Replace with your Service ID
+      'template_rbyr0ze',     // Replace with your Template ID
+      formData,
+      'cyimcGHkDfPa-N0Qm'          // Replace with your User ID
+    )
+    .then((result) => {
+        console.log(result.text);
+        setStatus('Message sent successfully!');
+        setFormData({ name: '', email: '', message: '' });
+    }, (error) => {
+        console.log(error.text);
+        setStatus('Failed to send message, please try again.');
+    });
   };
 
   return (
-    <section id="contact" className="py-20 bg-gray-50">
+    <section id="contact" className="py-20 bg-blue-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
           Get in Touch
@@ -31,10 +51,9 @@ const Contact = () => {
                 <input
                   type="text"
                   id="name"
+                  name="name"
                   value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
+                  onChange={handleChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
@@ -46,10 +65,9 @@ const Contact = () => {
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
+                  onChange={handleChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
@@ -60,10 +78,9 @@ const Contact = () => {
                 </label>
                 <textarea
                   id="message"
+                  name="message"
                   value={formData.message}
-                  onChange={(e) =>
-                    setFormData({ ...formData, message: e.target.value })
-                  }
+                  onChange={handleChange}
                   rows="4"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
@@ -76,6 +93,7 @@ const Contact = () => {
                 Send Message
               </button>
             </form>
+            {status && <p className="mt-4 text-center text-green-500">{status}</p>}
           </div>
           <div>
             <h3 className="text-xl font-semibold mb-6">Connect With Me</h3>
