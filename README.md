@@ -1,7 +1,18 @@
-# Welcome to my portfolio!
+# Welcome To My Personal Portfolio!
 
-- To run this project, simply use the command npm start
+A responsive and modern website built using React and Tailwind CSS for styling
 
-** Note that if npm start does not work, use the command "npm install" to install the neccessary dependencies in order for the project to work and run properly **
+## Before Running The Project
+
+- Make sure the following are installed in your machine:
+    * NodeJs (V14.0.0 or higher)
+    * npm (comes with NodeJs)
+- Install the required dependencies to run the project:
+    * npm install
+
+## Getting Started
+- Start the development server
+    * npm start
+
 
 Please enjoy my little creation!!!
