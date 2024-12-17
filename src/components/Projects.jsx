@@ -20,7 +20,7 @@ const Projects = () => {
     },
     {
       title: 'Flappy Bird Replication',
-      description: 'A replica of the famous Flappy Bird game using Unity and C#',
+      description: 'A replica of the famous Flappy Bird game using Python',
       image: '/assets/flappy.jpg',
       technologies: ['Python'],
       link: 'https://github.com/sebavillani916/flappybird',
