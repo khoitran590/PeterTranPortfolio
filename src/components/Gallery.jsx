@@ -5,8 +5,8 @@ const Gallery = () => {
     { src: '/assets/DSCF2424-2.jpg', alt: 'Photo 1' },
     { src: '/assets/PIC00687-2.jpg', alt: 'Photo 2' },
     { src: '/assets/PIC00210.jpg', alt: 'Photo 3' },
-    { src: '/assets/PIC00211.jpg', alt: 'Photo 4' },
-    { src: '/assets/PIC00523.jpg', alt: 'Photo 5' },
+    { src: '/assets/PIC00211.JPG', alt: 'Photo 4' },
+    { src: '/assets/PIC00523.JPG', alt: 'Photo 5' },
     { src: '/assets/000223860028.jpg', alt: 'Photo 6' },
   ];
 
