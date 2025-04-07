@@ -25,6 +25,13 @@ const Projects = () => {
       technologies: ['Python'],
       link: 'https://github.com/sebavillani916/flappybird',
     },
+    {
+      title: 'Tripsplit',
+      description: 'An expense management mobile app designed to address the challenges of managing shared expenses during group tripss',
+      image: '/assets/split.jpg',
+      technologies: ['Java', 'React Native', 'Firebase', 'Node.js', 'Gemini AI', 'AWS', ], 
+      link: 'https://github.com/khoitran590/tripsplit_capstone',
+    },
   ];
 
   return (
