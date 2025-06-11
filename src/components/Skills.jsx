@@ -49,6 +49,26 @@ const TailwindIcon = () => (
   </svg>
 );
 
+// Custom React Native Icon Component
+const ReactNativeIcon = () => (
+  <svg className="w-4 h-4" viewBox="0 0 32 32">
+    <circle cx="16" cy="16" r="2" fill="#61DAFB"/>
+    <circle cx="16" cy="16" r="6" stroke="#61DAFB" strokeWidth="1.5" fill="none"/>
+    <ellipse cx="16" cy="16" rx="12" ry="4" stroke="#61DAFB" strokeWidth="1.5" fill="none" transform="rotate(60 16 16)"/>
+    <ellipse cx="16" cy="16" rx="12" ry="4" stroke="#61DAFB" strokeWidth="1.5" fill="none" transform="rotate(-60 16 16)"/>
+    <ellipse cx="16" cy="16" rx="12" ry="4" stroke="#61DAFB" strokeWidth="1.5" fill="none"/>
+  </svg>
+);
+
+// Custom Firebase Icon Component
+const FirebaseIcon = () => (
+  <img 
+    src="/assets/logomark_Full Color.png" 
+    alt="Firebase" 
+    className="w-4 h-4 object-contain"
+  />
+);
+
 const Skills = () => {
   const skillCategories = [
     {
@@ -58,6 +78,7 @@ const Skills = () => {
         { name: 'CSS3', icon: faCss3Alt },
         { name: 'JavaScript', icon: faJs },
         { name: 'React', icon: faReact },
+        { name: 'React Native', icon: 'custom', CustomIcon: ReactNativeIcon },
         { name: 'Tailwind CSS', icon: 'custom', CustomIcon: TailwindIcon },
         { name: 'TypeScript', icon: faCode },
         { name: 'C++', icon: 'custom', CustomIcon: CppIcon },
@@ -72,7 +93,8 @@ const Skills = () => {
         { name: 'Python', icon: faPython },
         { name: 'PHP', icon: faPhp },
         { name: 'MongoDB', icon: 'custom', CustomIcon: MongoDBIcon },
-        { name: 'PostgreSQL', icon: 'custom', CustomIcon: PostgreSQLIcon }
+        { name: 'PostgreSQL', icon: 'custom', CustomIcon: PostgreSQLIcon },
+        { name: 'Firebase', icon: 'custom', CustomIcon: FirebaseIcon }
       ],
     },
     {
@@ -87,25 +109,25 @@ const Skills = () => {
   ];
 
   return (
-    <section id="skills" className="py-20 bg-white">
+    <section id="skills" className="py-20 bg-white dark:bg-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+        <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
           Skills
         </h2>
         <div className="grid md:grid-cols-2 gap-8">
           {skillCategories.map((category, index) => (
-            <div key={index} className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-4">{category.name}</h3>
+            <div key={index} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{category.name}</h3>
               <div className="flex flex-wrap gap-2">
                 {category.skills.map((skill, skillIndex) => (
                   <span
                     key={skillIndex}
-                    className="bg-white text-gray-800 px-4 py-2 rounded-lg shadow-sm flex items-center gap-2"
+                    className="bg-white dark:bg-gray-600 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg shadow-sm flex items-center gap-2"
                   >
                     {skill.icon === 'custom' ? (
                       <skill.CustomIcon />
                     ) : (
-                      <FontAwesomeIcon icon={skill.icon} className="text-gray-600" />
+                      <FontAwesomeIcon icon={skill.icon} className="text-gray-600 dark:text-gray-300" />
                     )}
                     {skill.name}
                   </span>

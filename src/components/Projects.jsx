@@ -25,19 +25,26 @@ const Projects = () => {
       technologies: ['Python'],
       link: 'https://github.com/sebavillani916/flappybird',
     },
+    {
+      title: 'TripSplit',
+      description: 'A travel-expenses for efficient group expense management',
+      image: '/assets/tripsplit2.jpeg',
+      technologies: ['ReactNative', 'Node.js', 'Firebase', 'ExpressJS', 'Expo'],
+      link: 'https://github.com/hungbenjamin402/tripsplit_capstone',
+    },
   ];
 
   return (
-    <section id="projects" className="py-20 bg-gray-50">
+    <section id="projects" className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+        <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
           Projects
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
             <div
               key={index}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 transform hover:scale-105"
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-700 overflow-hidden hover:shadow-lg dark:hover:shadow-gray-600 transition-shadow duration-300 transform hover:scale-105"
             >
               <img
                 src={project.image}
@@ -45,13 +52,13 @@ const Projects = () => {
                 className="w-full h-48 object-cover"
               />
               <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                <p className="text-gray-600 mb-4">{project.description}</p>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{project.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">{project.description}</p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.technologies.map((tech, techIndex) => (
                     <span
                       key={techIndex}
-                      className="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full"
+                      className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm px-3 py-1 rounded-full"
                     >
                       {tech}
                     </span>
@@ -61,7 +68,7 @@ const Projects = () => {
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-blue-600 hover:text-blue-700 transition-colors"
+                  className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
                 >
                   View Project
                   <ExternalLink size={16} className="ml-1" />
