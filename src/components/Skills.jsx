@@ -63,7 +63,7 @@ const ReactNativeIcon = () => (
 // Custom Firebase Icon Component
 const FirebaseIcon = () => (
   <img 
-    src="/assets/logomark_Full Color.png" 
+    src="/assets/logomark_FullColor.png" 
     alt="Firebase" 
     className="w-4 h-4 object-contain"
   />
