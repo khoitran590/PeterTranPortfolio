@@ -49,7 +49,7 @@ const Gallery = () => {
   const canShowLess = visibleCount > 3;
 
   return (
-    <section id="gallery" className="py-20 bg-white dark:bg-gray-800">
+    <section className="py-20 bg-white dark:bg-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
           Photography Gallery
@@ -62,7 +62,7 @@ const Gallery = () => {
               onClick={() => openModal(photo)}
             >
               {imageLoading[index] && (
-                <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse flex items-center justify-center">
+                <div className="absolute inset-0 bg-gray-200 dark:bg-gray-600 animate-pulse flex items-center justify-center">
                   <div className="text-gray-500 dark:text-gray-400">Loading...</div>
                 </div>
               )}

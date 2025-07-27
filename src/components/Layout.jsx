@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import DarkModeToggle from './DarkModeToggle';
 
-const Layout = ({ children }) => {
+const Layout = ({ children, activeTab, setActiveTab }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(() => {
     // Check if user has a dark mode preference
@@ -30,16 +30,16 @@ const Layout = ({ children }) => {
   };
 
   const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', id: 'home' },
+    { name: 'Projects', id: 'projects' },
+    { name: 'Skills', id: 'skills' },
+    { name: 'Gallery', id: 'gallery' },
+    { name: 'Contact', id: 'contact' },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <nav className="fixed top-0 w-full bg-white dark:bg-gray-800 shadow-sm z-50 transition-colors duration-300">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+      <nav className="fixed top-0 w-full bg-white dark:bg-gray-700 shadow-sm z-50 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
@@ -49,13 +49,17 @@ const Layout = ({ children }) => {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
               {navItems.map((item) => (
-                <a
+                <button
                   key={item.name}
-                  href={item.href}
-                  className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  onClick={() => setActiveTab(item.id)}
+                  className={`text-sm font-medium transition-all duration-200 ease-in-out px-3 py-2 rounded-md transform hover:scale-105 ${
+                    activeTab === item.id
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 shadow-sm'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-600'
+                  }`}
                 >
                   {item.name}
-                </a>
+                </button>
               ))}
               <DarkModeToggle isDark={isDark} toggleDarkMode={toggleDarkMode} />
             </div>
@@ -75,24 +79,30 @@ const Layout = ({ children }) => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-800">
+          <div className="md:hidden animate-fadeIn">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-700">
               {navItems.map((item) => (
-                <a
+                <button
                   key={item.name}
-                  href={item.href}
-                  className="block px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setIsMenuOpen(false);
+                  }}
+                  className={`block w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ease-in-out transform hover:scale-[1.02] ${
+                    activeTab === item.id
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 shadow-sm'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-600'
+                  }`}
                 >
                   {item.name}
-                </a>
+                </button>
               ))}
             </div>
           </div>
         )}
       </nav>
 
-      <main className="pt-16">{children}</main>
+      <main className="pt-16 min-h-screen">{children}</main>
     </div>
   );
 };

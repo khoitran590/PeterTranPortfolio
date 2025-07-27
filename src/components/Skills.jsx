@@ -109,20 +109,20 @@ const Skills = () => {
   ];
 
   return (
-    <section id="skills" className="py-20 bg-white dark:bg-gray-800">
+    <section className="py-20 bg-white dark:bg-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
           Skills
         </h2>
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="space-y-8">
           {skillCategories.map((category, index) => (
-            <div key={index} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+            <div key={index} className="bg-gray-50 dark:bg-gray-600 rounded-lg p-6 transition-all duration-300 hover:shadow-lg hover:transform hover:scale-[1.02]">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{category.name}</h3>
               <div className="flex flex-wrap gap-2">
                 {category.skills.map((skill, skillIndex) => (
                   <span
                     key={skillIndex}
-                    className="bg-white dark:bg-gray-600 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg shadow-sm flex items-center gap-2"
+                    className="bg-white dark:bg-gray-600 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg shadow-sm flex items-center gap-2 transition-all duration-200 hover:shadow-md hover:transform hover:scale-105"
                   >
                     {skill.icon === 'custom' ? (
                       <skill.CustomIcon />
