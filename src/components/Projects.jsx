@@ -29,7 +29,7 @@ const Projects = () => {
       title: 'TripSplit',
       description: 'A travel-expenses for efficient group expense management',
       image: '/assets/tripsplit2.jpeg',
-      technologies: ['ReactNative', 'Node.js', 'Firebase', 'ExpressJS', 'Expo'],
+      technologies: ['ReactNative', 'Node.js', 'Firebase', 'ExpressJS', 'Expo', 'TypeScipt'],
       link: 'https://github.com/hungbenjamin402/tripsplit_capstone',
     },
   ];
