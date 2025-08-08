@@ -26,7 +26,16 @@ const Layout = ({ children, activeTab, setActiveTab }) => {
   }, [isDark]);
 
   const toggleDarkMode = () => {
+    const root = document.documentElement;
+    // Temporarily disable transitions to avoid staggered color changes
+    root.classList.add('no-theme-transition');
     setIsDark(!isDark);
+    // Keep the flag for one or two frames to allow styles to apply, then re-enable transitions
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        root.classList.remove('no-theme-transition');
+      });
+    });
   };
 
   const navItems = [
