@@ -34,45 +34,65 @@ const Projects = () => {
     },
   ];
 
+  const TechPill = ({ label }) => (
+    <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm bg-white/80 dark:bg-gray-700/60 border border-black/5 dark:border-white/10 text-gray-800 dark:text-gray-200 shadow-sm">
+      {label}
+    </span>
+  );
+
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
-          Projects
-        </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <section className="relative py-20 overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-slate-900 dark:to-gray-800">
+      {/* Background orbs */}
+      <div className="pointer-events-none absolute -top-32 -left-24 h-72 w-72 rounded-full bg-gradient-to-br from-sky-300/30 to-indigo-300/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-gradient-to-br from-fuchsia-300/20 to-rose-300/20 blur-3xl" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="mt-4 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+            Projects
+          </h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
             <div
               key={index}
-              className="bg-white dark:bg-gray-700 rounded-lg shadow-md dark:shadow-gray-600 overflow-hidden hover:shadow-lg dark:hover:shadow-gray-500 transition-shadow duration-300 transform hover:scale-105"
+              className="relative group rounded-3xl p-4 sm:p-5 border border-black/5 dark:border-white/10 backdrop-blur-xl bg-white/70 dark:bg-gray-800/50 shadow-sm hover:shadow-md transition-shadow"
             >
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{project.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">{project.description}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
+              {/* halo */}
+              <div className="pointer-events-none absolute -inset-px rounded-3xl bg-gradient-to-br from-sky-400/25 to-transparent opacity-0 group-hover:opacity-100 blur-2xl transition-opacity" />
+
+              {/* image tile */}
+              <div className="relative overflow-hidden rounded-2xl aspect-[16/9] bg-gray-100 dark:bg-gray-700">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  loading="lazy"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+
+              {/* content */}
+              <div className="mt-4">
+                <div className="flex items-start justify-between gap-3">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{project.title}</h3>
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs text-white bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 shadow hover:brightness-110"
+                  >
+                    View
+                    <ExternalLink size={14} />
+                  </a>
+                </div>
+                <p className="mt-1.5 text-sm text-gray-600 dark:text-gray-300">{project.description}</p>
+                <div className="mt-3 flex flex-wrap gap-2">
                   {project.technologies.map((tech, techIndex) => (
-                    <span
-                      key={techIndex}
-                      className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm px-3 py-1 rounded-full"
-                    >
-                      {tech}
-                    </span>
+                    <TechPill key={techIndex} label={tech} />
                   ))}
                 </div>
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
-                >
-                  View Project
-                  <ExternalLink size={16} className="ml-1" />
-                </a>
               </div>
             </div>
           ))}

@@ -1,4 +1,4 @@
-// src/components/Skills.jsx
+                                                                                                                                                                                                                                                                                                                                                                        // src/components/Skills.jsx
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -38,7 +38,7 @@ const CppIcon = () => (
     <path d="M22 14h-2v-2h-2v2h-2v2h2v2h2v-2h2v-2zm4-2h-2v2h2v2h-2v2h2v-2h2v2h2v-2h-2v-2h2v-2h-2v2h-2v-2z" fill="#00599C"/>
   </svg>
 );
-
+                                                              
 //Custom Tailwind CSS Icon Component since Fontawesome does not have
 const TailwindIcon = () => (
   <svg className="w-4 h-4" viewBox="0 0 32 32">
@@ -60,11 +60,11 @@ const ReactNativeIcon = () => (
   </svg>
 );
 
-// Custom Firebase Icon Component
+// Custom Firebase Icon Component (fix filename casing)
 const FirebaseIcon = () => (
-  <img 
-    src="/assets/logomark_FullColor.png" 
-    alt="Firebase" 
+  <img
+    src="/assets/Logomark_FullColor.png"
+    alt="Firebase"
     className="w-4 h-4 object-contain"
   />
 );
@@ -73,68 +73,122 @@ const Skills = () => {
   const skillCategories = [
     {
       name: 'Frontend Development',
+      size: 'lg',
+      theme: 'sky',
       skills: [
         { name: 'HTML5', icon: faHtml5 },
         { name: 'CSS3', icon: faCss3Alt },
         { name: 'JavaScript', icon: faJs },
+        { name: 'TypeScript', icon: faCode },
         { name: 'React', icon: faReact },
         { name: 'React Native', icon: 'custom', CustomIcon: ReactNativeIcon },
         { name: 'Tailwind CSS', icon: 'custom', CustomIcon: TailwindIcon },
-        { name: 'TypeScript', icon: faCode },
         { name: 'C++', icon: 'custom', CustomIcon: CppIcon },
         { name: 'Python', icon: faPython },
-        { name: 'SQL', icon: faDatabase }
+        { name: 'SQL', icon: faDatabase },
       ],
     },
     {
       name: 'Backend Development',
+      size: 'md',
+      theme: 'emerald',
       skills: [
         { name: 'Node.js', icon: faNode },
         { name: 'Python', icon: faPython },
         { name: 'PHP', icon: faPhp },
         { name: 'MongoDB', icon: 'custom', CustomIcon: MongoDBIcon },
         { name: 'PostgreSQL', icon: 'custom', CustomIcon: PostgreSQLIcon },
-        { name: 'Firebase', icon: 'custom', CustomIcon: FirebaseIcon }
+        { name: 'Firebase', icon: 'custom', CustomIcon: FirebaseIcon },
       ],
     },
     {
       name: 'Soft Skills',
+      size: 'sm',
+      theme: 'fuchsia',
       skills: [
         { name: 'Problem Solving', icon: faBrain },
         { name: 'Team Leadership', icon: faUsers },
         { name: 'Communication', icon: faUsers },
-        { name: 'Time Management', icon: faClock }
+        { name: 'Time Management', icon: faClock },
       ],
     },
   ];
 
+  const themeMap = {
+    sky: {
+      cardBg: 'bg-white/70 dark:bg-gray-800/50',
+      halo: 'from-sky-400/30 to-transparent',
+      accent: 'from-sky-400 via-blue-500 to-indigo-500',
+      chip: 'bg-white/80 dark:bg-gray-700/60',
+    },
+    emerald: {
+      cardBg: 'bg-white/70 dark:bg-gray-800/50',
+      halo: 'from-emerald-400/30 to-transparent',
+      accent: 'from-emerald-400 via-teal-500 to-green-500',
+      chip: 'bg-white/80 dark:bg-gray-700/60',
+    },
+    fuchsia: {
+      cardBg: 'bg-white/70 dark:bg-gray-800/50',
+      halo: 'from-fuchsia-400/30 to-transparent',
+      accent: 'from-fuchsia-400 via-pink-500 to-rose-500',
+      chip: 'bg-white/80 dark:bg-gray-700/60',
+    },
+  };
+
+  const spanMap = { lg: 'lg:col-span-2', md: 'lg:col-span-1', sm: 'lg:col-span-1' };
+
+  const SkillPill = ({ skill }) => (
+    <span
+      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm border border-black/5 dark:border-white/10 shadow-sm hover:shadow transition-colors ${themeMap.sky.chip}`}
+    >
+      {skill.icon === 'custom' ? (
+        <skill.CustomIcon />
+      ) : (
+        <FontAwesomeIcon icon={skill.icon} className="text-gray-700 dark:text-gray-200" />
+      )}
+      <span className="text-gray-800 dark:text-gray-200">{skill.name}</span>
+    </span>
+  );
+
   return (
-    <section className="py-20 bg-white dark:bg-gray-700">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
-          Skills
-        </h2>
-        <div className="space-y-8">
-          {skillCategories.map((category, index) => (
-            <div key={index} className="bg-gray-50 dark:bg-gray-600 rounded-lg p-6 transition-all duration-300 hover:shadow-lg hover:transform hover:scale-[1.02]">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{category.name}</h3>
-              <div className="flex flex-wrap gap-2">
-                {category.skills.map((skill, skillIndex) => (
-                  <span
-                    key={skillIndex}
-                    className="bg-white dark:bg-gray-600 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg shadow-sm flex items-center gap-2 transition-all duration-200 hover:shadow-md hover:transform hover:scale-105"
-                  >
-                    {skill.icon === 'custom' ? (
-                      <skill.CustomIcon />
-                    ) : (
-                      <FontAwesomeIcon icon={skill.icon} className="text-gray-600 dark:text-gray-300" />
-                    )}
-                    {skill.name}
-                  </span>
-                ))}
+    <section className="relative py-20 overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-slate-900 dark:to-gray-800">
+      {/* Background orbs */}
+      <div className="pointer-events-none absolute -top-32 -left-24 h-72 w-72 rounded-full bg-gradient-to-br from-sky-300/30 to-indigo-300/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-gradient-to-br from-fuchsia-300/20 to-rose-300/20 blur-3xl" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="mt-4 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+            Skills
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {skillCategories.map((category, idx) => {
+            const theme = themeMap[category.theme];
+            return (
+              <div
+                key={idx}
+                className={`relative group rounded-3xl p-6 border border-black/5 dark:border-white/10 backdrop-blur-xl ${theme.cardBg} ${spanMap[category.size]} shadow-sm hover:shadow-md transition-shadow`}
+              >
+                {/* halo */}
+                <div className={`pointer-events-none absolute -inset-px rounded-3xl bg-gradient-to-br ${theme.halo} opacity-0 group-hover:opacity-100 blur-2xl transition-opacity`} />
+
+                {/* header */}
+                <div className="relative flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{category.name}</h3>
+                  <span className={`px-2.5 py-1 rounded-full text-xs text-white bg-gradient-to-r ${theme.accent} shadow`}>Featured</span>
+                </div>
+
+                {/* chips */}
+                <div className="relative flex flex-wrap gap-2">
+                  {category.skills.map((skill, sidx) => (
+                    <SkillPill key={sidx} skill={skill} />
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
