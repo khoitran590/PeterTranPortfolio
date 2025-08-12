@@ -152,9 +152,9 @@ const Skills = () => {
 
   return (
     <section className="relative py-20 overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-slate-900 dark:to-gray-800">
-      {/* Background orbs */}
-      <div className="pointer-events-none absolute -top-32 -left-24 h-72 w-72 rounded-full bg-gradient-to-br from-sky-300/30 to-indigo-300/20 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-gradient-to-br from-fuchsia-300/20 to-rose-300/20 blur-3xl" />
+      {/* Background orbs (hidden on small screens to reduce paint cost) */}
+      <div className="hidden md:block pointer-events-none absolute -top-32 -left-24 h-72 w-72 rounded-full bg-gradient-to-br from-sky-300/30 to-indigo-300/20 blur-2xl" />
+      <div className="hidden md:block pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-gradient-to-br from-fuchsia-300/20 to-rose-300/20 blur-2xl" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
@@ -163,16 +163,16 @@ const Skills = () => {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {skillCategories.map((category, idx) => {
             const theme = themeMap[category.theme];
             return (
               <div
                 key={idx}
-                className={`relative group rounded-3xl p-6 border border-black/5 dark:border-white/10 backdrop-blur-xl ${theme.cardBg} ${spanMap[category.size]} shadow-sm hover:shadow-md transition-shadow`}
+    className={`relative group rounded-3xl p-6 border border-black/5 dark:border-white/10 supports-[backdrop-filter]:backdrop-blur-md ${theme.cardBg} ${spanMap[category.size]} shadow-sm hover:shadow-md transform-gpu [will-change:transform] motion-safe:transition-[box-shadow,transform,opacity] motion-safe:duration-200 motion-reduce:transition-none`}
               >
                 {/* halo */}
-                <div className={`pointer-events-none absolute -inset-px rounded-3xl bg-gradient-to-br ${theme.halo} opacity-0 group-hover:opacity-100 blur-2xl transition-opacity`} />
+    <div className={`pointer-events-none absolute -inset-px rounded-3xl bg-gradient-to-br ${theme.halo} opacity-0 group-hover:opacity-100 blur-xl md:blur-2xl motion-safe:transition-opacity`} />
 
                 {/* header */}
                 <div className="relative flex items-center justify-between mb-4">
