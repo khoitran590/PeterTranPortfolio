@@ -25,6 +25,29 @@ const Layout = ({ children, activeTab, setActiveTab }) => {
     }
   }, [isDark]);
 
+  // Follow system preference if user hasn't explicitly chosen a theme
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e) => {
+      const saved = localStorage.getItem('theme');
+      if (!saved) setIsDark(e.matches);
+    };
+    try {
+      mq.addEventListener('change', handleChange);
+    } catch (_) {
+      // Safari < 14
+      mq.addListener(handleChange);
+    }
+    return () => {
+      try {
+        mq.removeEventListener('change', handleChange);
+      } catch (_) {
+        mq.removeListener(handleChange);
+      }
+    };
+  }, []);
+
   const toggleDarkMode = () => {
     const root = document.documentElement;
     // Temporarily disable transitions to avoid staggered color changes

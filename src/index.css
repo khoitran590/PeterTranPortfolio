@@ -57,3 +57,32 @@ html {
 .no-theme-transition *::after {
   transition: none !important;
 }
+
+/* Accent color variables (light mode) with P3 support */
+:root {
+  /* Default: blue-ish gradient */
+  --accent-1: #38bdf8; /* from */
+  --accent-2: #2563eb; /* via */
+  --accent-3: #4f46e5; /* to */
+  --accent-strong: #2563eb; /* text */
+  --accent-soft: rgba(37, 99, 235, 0.12); /* active bg */
+  /* Light background tints (used for gradients and light surfaces) */
+  --bg-1: #f0f9ff; /* sky-50 */
+  --bg-2: #eff6ff; /* blue-50 */
+  --bg-3: #eef2ff; /* indigo-50 */
+}
+
+@supports (color: color(display-p3 1 0 0)) {
+  :root {
+    /* display-p3 equivalents for extra vibrancy */
+    --accent-1: color(display-p3 0.29 0.72 0.98);
+    --accent-2: color(display-p3 0.15 0.39 0.93);
+    --accent-3: color(display-p3 0.31 0.27 0.88);
+    --accent-strong: color(display-p3 0.15 0.39 0.93);
+    --accent-soft: color(display-p3 0.15 0.39 0.93 / 0.12);
+    /* P3-approx pastel backgrounds */
+    --bg-1: color(display-p3 0.93 0.97 1.00);
+    --bg-2: color(display-p3 0.93 0.96 1.00);
+    --bg-3: color(display-p3 0.93 0.94 1.00);
+  }
+}

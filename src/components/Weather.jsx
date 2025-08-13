@@ -112,8 +112,12 @@ const Weather = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-700 min-h-screen">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section className="relative min-h-screen py-20 overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-slate-900 dark:to-gray-800">
+      {/* Background orbs (hidden on small screens) */}
+      <div className="hidden md:block pointer-events-none absolute -top-32 -left-24 h-72 w-72 rounded-full bg-gradient-to-br from-sky-300/30 to-indigo-300/20 blur-2xl" />
+      <div className="hidden md:block pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-gradient-to-br from-fuchsia-300/20 to-rose-300/20 blur-2xl" />
+
+      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
           Weather Dashboard
         </h2>
@@ -125,11 +129,11 @@ const Weather = () => {
               type="text"
               name="city"
               placeholder="Enter city name..."
-              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-500 rounded-lg bg-white dark:bg-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-1 px-4 py-2 rounded-full border border-black/5 dark:border-white/10 bg-white/80 dark:bg-gray-800/60 supports-[backdrop-filter]:backdrop-blur-md text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/50 shadow-sm"
             />
             <button
               type="submit"
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+              className="px-5 py-2.5 rounded-full text-sm text-white bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 shadow hover:brightness-110 motion-safe:transition-colors"
             >
               Search
             </button>
@@ -137,10 +141,10 @@ const Weather = () => {
         </form>
 
         {/* Temperature Unit Toggle */}
-        <div className="text-center mb-8">
+    <div className="text-center mb-8">
           <button
             onClick={toggleTemperatureUnit}
-            className="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors duration-200"
+      className="inline-flex items-center px-4 py-2 rounded-full border border-black/5 dark:border-white/10 bg-white/80 dark:bg-gray-800/60 hover:bg-white/90 dark:hover:bg-gray-700/70 text-gray-700 dark:text-gray-300 shadow-sm motion-safe:transition-colors"
           >
             <span className="mr-2">Temperature Unit:</span>
             <span className="font-semibold text-blue-600 dark:text-blue-400">
@@ -174,7 +178,8 @@ const Weather = () => {
         )}
 
         {weatherData && !loading && (
-          <div className="bg-white dark:bg-gray-600 rounded-xl shadow-lg p-8">
+          <div className="relative group rounded-3xl p-6 md:p-8 border border-black/5 dark:border-white/10 supports-[backdrop-filter]:backdrop-blur-md bg-white/70 dark:bg-gray-800/50 shadow-sm hover:shadow-md transform-gpu [will-change:transform] motion-safe:transition-[box-shadow,transform,opacity]">
+            <div className="pointer-events-none absolute -inset-px rounded-3xl bg-gradient-to-br from-sky-400/25 to-transparent opacity-0 group-hover:opacity-100 blur-xl md:blur-2xl motion-safe:transition-opacity" />
             {/* Main Weather Info */}
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -193,7 +198,7 @@ const Weather = () => {
 
             {/* Weather Details Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
+              <div className="rounded-xl p-4 text-center border border-black/5 dark:border-white/10 bg-white/80 dark:bg-gray-700/60 shadow-sm">
                 <Thermometer className="w-6 h-6 text-orange-500 mx-auto mb-2" />
                 <p className="text-sm text-gray-600 dark:text-gray-300">Feels like</p>
                 <p className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -201,7 +206,7 @@ const Weather = () => {
                 </p>
               </div>
 
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
+              <div className="rounded-xl p-4 text-center border border-black/5 dark:border-white/10 bg-white/80 dark:bg-gray-700/60 shadow-sm">
                 <Droplets className="w-6 h-6 text-blue-500 mx-auto mb-2" />
                 <p className="text-sm text-gray-600 dark:text-gray-300">Humidity</p>
                 <p className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -209,7 +214,7 @@ const Weather = () => {
                 </p>
               </div>
 
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
+              <div className="rounded-xl p-4 text-center border border-black/5 dark:border-white/10 bg-white/80 dark:bg-gray-700/60 shadow-sm">
                 <Wind className="w-6 h-6 text-green-500 mx-auto mb-2" />
                 <p className="text-sm text-gray-600 dark:text-gray-300">Wind Speed</p>
                 <p className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -217,7 +222,7 @@ const Weather = () => {
                 </p>
               </div>
 
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
+              <div className="rounded-xl p-4 text-center border border-black/5 dark:border-white/10 bg-white/80 dark:bg-gray-700/60 shadow-sm">
                 <Eye className="w-6 h-6 text-purple-500 mx-auto mb-2" />
                 <p className="text-sm text-gray-600 dark:text-gray-300">Visibility</p>
                 <p className="text-lg font-semibold text-gray-900 dark:text-white">

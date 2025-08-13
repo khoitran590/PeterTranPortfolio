@@ -7,6 +7,7 @@ import Projects from './components/Projects';
 import Skills from './components/Skills';
 import Weather from './components/Weather';
 import Contact from './components/Contact';
+import Settings from './components/Settings';
 import Gallery from './components/Gallery';
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
     if (newTab === activeTab) return;
     
     // Determine slide direction based on tab order
-    const tabOrder = ['home', 'projects', 'skills', 'weather', 'gallery', 'contact'];
+  const tabOrder = ['home', 'projects', 'skills', 'weather', 'gallery', 'contact', 'settings'];
     const currentIndex = tabOrder.indexOf(activeTab);
     const newIndex = tabOrder.indexOf(newTab);
     setSlideDirection(newIndex > currentIndex ? 'right' : 'left');
@@ -46,6 +47,8 @@ function App() {
         return <Gallery />;
       case 'contact':
         return <Contact />;
+      case 'settings':
+        return <Settings />;
       default:
         return <Home setActiveTab={handleTabChange} />;
     }
