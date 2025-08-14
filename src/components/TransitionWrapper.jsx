@@ -10,17 +10,8 @@ const TransitionWrapper = ({ children, isTransitioning, slideDirection = 'right'
   };
 
   return (
-    <div className={`min-h-screen transition-all duration-300 ease-out ${getTransformClass()}`}>
-      {!isTransitioning && children}
-      {isTransitioning && (
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse animation-delay-100"></div>
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse animation-delay-200"></div>
-          </div>
-        </div>
-      )}
+    <div className={`min-h-screen transition-all duration-200 ease-out ${getTransformClass()}`}>
+      {children}
     </div>
   );
 };

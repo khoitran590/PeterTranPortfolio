@@ -1,14 +1,15 @@
 // src/App.js
-import React, { useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import Layout from './components/Layout';
 import TransitionWrapper from './components/TransitionWrapper';
-import Home from './components/Home';
-import Projects from './components/Projects';
-import Skills from './components/Skills';
-import Weather from './components/Weather';
-import Contact from './components/Contact';
-import Settings from './components/Settings';
-import Gallery from './components/Gallery';
+
+// Code-split each tab
+const Home = React.lazy(() => import('./components/Home'));
+const Projects = React.lazy(() => import('./components/Projects'));
+const Skills = React.lazy(() => import('./components/Skills'));
+const Weather = React.lazy(() => import('./components/Weather'));
+const Contact = React.lazy(() => import('./components/Contact'));
+const Gallery = React.lazy(() => import('./components/Gallery'));
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -17,20 +18,18 @@ function App() {
 
   const handleTabChange = (newTab) => {
     if (newTab === activeTab) return;
-    
-    // Determine slide direction based on tab order
-  const tabOrder = ['home', 'projects', 'skills', 'weather', 'gallery', 'contact', 'settings'];
+    const tabOrder = ['home', 'projects', 'skills', 'weather', 'gallery', 'contact'];
     const currentIndex = tabOrder.indexOf(activeTab);
     const newIndex = tabOrder.indexOf(newTab);
     setSlideDirection(newIndex > currentIndex ? 'right' : 'left');
-    
+
+    // Trigger a quick enter animation without blocking render
     setIsTransitioning(true);
-    setTimeout(() => {
-      setActiveTab(newTab);
-      setTimeout(() => {
-        setIsTransitioning(false);
-      }, 50);
-    }, 200);
+    setActiveTab(newTab);
+    // Let the browser paint once, then end the transition
+    requestAnimationFrame(() => {
+      setTimeout(() => setIsTransitioning(false), 0);
+    });
   };
 
   const renderActiveComponent = () => {
@@ -47,17 +46,41 @@ function App() {
         return <Gallery />;
       case 'contact':
         return <Contact />;
-      case 'settings':
-        return <Settings />;
       default:
         return <Home setActiveTab={handleTabChange} />;
     }
   };
 
+  // Idle-time preloading of other tabs to speed up first navigation
+  useEffect(() => {
+    const idle = window.requestIdleCallback || function (cb) { return setTimeout(cb, 300); };
+    const cancel = window.cancelIdleCallback || clearTimeout;
+    const id = idle(() => {
+      import('./components/Projects');
+      import('./components/Skills');
+      import('./components/Weather');
+      import('./components/Gallery');
+      import('./components/Contact');
+    });
+    return () => cancel(id);
+  }, []);
+
   return (
     <Layout activeTab={activeTab} setActiveTab={handleTabChange}>
       <TransitionWrapper isTransitioning={isTransitioning} slideDirection={slideDirection}>
-        {renderActiveComponent()}
+        <Suspense
+          fallback={
+            <div className="min-h-screen flex items-center justify-center">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse animation-delay-100"></div>
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse animation-delay-200"></div>
+              </div>
+            </div>
+          }
+        >
+          {renderActiveComponent()}
+        </Suspense>
       </TransitionWrapper>
     </Layout>
   );

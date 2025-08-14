@@ -32,6 +32,22 @@ code {
   animation: fadeIn 0.2s ease-out;
 }
 
+/* Scroll reveal: fade and slide */
+.reveal-container {
+  will-change: opacity, transform;
+}
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-transition {
+  transition: opacity 400ms ease, transform 400ms ease;
+}
+
 /* Animation delays for loading dots */
 .animation-delay-100 {
   animation-delay: 0.1s;
@@ -46,8 +62,8 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Enhanced transitions */
-* {
+/* Enhanced transitions (avoid applying globally to all elements to reduce jank) */
+.transition-colors, .transition, .transition-all, .transition-opacity, .transition-transform {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -56,33 +72,4 @@ html {
 .no-theme-transition *::before,
 .no-theme-transition *::after {
   transition: none !important;
-}
-
-/* Accent color variables (light mode) with P3 support */
-:root {
-  /* Default: blue-ish gradient */
-  --accent-1: #38bdf8; /* from */
-  --accent-2: #2563eb; /* via */
-  --accent-3: #4f46e5; /* to */
-  --accent-strong: #2563eb; /* text */
-  --accent-soft: rgba(37, 99, 235, 0.12); /* active bg */
-  /* Light background tints (used for gradients and light surfaces) */
-  --bg-1: #f0f9ff; /* sky-50 */
-  --bg-2: #eff6ff; /* blue-50 */
-  --bg-3: #eef2ff; /* indigo-50 */
-}
-
-@supports (color: color(display-p3 1 0 0)) {
-  :root {
-    /* display-p3 equivalents for extra vibrancy */
-    --accent-1: color(display-p3 0.29 0.72 0.98);
-    --accent-2: color(display-p3 0.15 0.39 0.93);
-    --accent-3: color(display-p3 0.31 0.27 0.88);
-    --accent-strong: color(display-p3 0.15 0.39 0.93);
-    --accent-soft: color(display-p3 0.15 0.39 0.93 / 0.12);
-    /* P3-approx pastel backgrounds */
-    --bg-1: color(display-p3 0.93 0.97 1.00);
-    --bg-2: color(display-p3 0.93 0.96 1.00);
-    --bg-3: color(display-p3 0.93 0.94 1.00);
-  }
 }
