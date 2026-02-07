@@ -151,7 +151,7 @@ const Skills = () => {
   );
 
   return (
-  <section className="relative min-h-screen py-20 overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-slate-900 dark:to-gray-800">
+  <section className="relative min-h-screen py-20 overflow-hidden bg-[#e3f2fd] dark:bg-[#0d1b2a]">
       {/* Background orbs (hidden on small screens to reduce paint cost) */}
       <div className="hidden md:block pointer-events-none absolute -top-32 -left-24 h-72 w-72 rounded-full bg-gradient-to-br from-sky-300/30 to-indigo-300/20 blur-2xl" />
       <div className="hidden md:block pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-gradient-to-br from-fuchsia-300/20 to-rose-300/20 blur-2xl" />

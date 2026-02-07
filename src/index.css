@@ -73,3 +73,28 @@ html {
 .no-theme-transition *::after {
   transition: none !important;
 }
+
+/* Liquid Glass - Apple-inspired glassmorphism */
+@supports (backdrop-filter: blur(40px)) or (-webkit-backdrop-filter: blur(40px)) {
+  .glass-liquid {
+    backdrop-filter: saturate(180%) blur(40px);
+    -webkit-backdrop-filter: saturate(180%) blur(40px);
+  }
+  .glass-liquid-soft {
+    backdrop-filter: saturate(160%) blur(24px);
+    -webkit-backdrop-filter: saturate(160%) blur(24px);
+  }
+  .glass-liquid-strong {
+    backdrop-filter: saturate(200%) blur(60px);
+    -webkit-backdrop-filter: saturate(200%) blur(60px);
+  }
+}
+.glass-edge-light {
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.4) inset, 0 0 0 1px rgba(0, 0, 0, 0.03);
+}
+.dark .glass-edge-light {
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.08) inset, 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+.glass-shine {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%, rgba(255, 255, 255, 0.05) 100%);
+}

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 
 const Gallery = () => {
   const photos = [
@@ -19,6 +19,8 @@ const Gallery = () => {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [visibleCount, setVisibleCount] = useState(3);
   const [imageLoading, setImageLoading] = useState({});
+  const [loadedSrcs, setLoadedSrcs] = useState({});
+  const tileRefs = useRef({});
 
   const openModal = useCallback((photo) => {
     setSelectedPhoto(photo);
@@ -44,12 +46,40 @@ const Gallery = () => {
     setImageLoading(prev => ({ ...prev, [index]: true }));
   }, []);
 
+  const loadedRef = useRef({});
+  // Intersection Observer: load image only when tile is in (or near) viewport
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = entry.target.dataset.index;
+            if (index !== undefined && !loadedRef.current[index]) {
+              loadedRef.current[index] = true;
+              setLoadedSrcs((prev) => ({ ...prev, [index]: photos[Number(index)].src }));
+            }
+          }
+        });
+      },
+      { rootMargin: '100px', threshold: 0.01 }
+    );
+
+    Object.entries(tileRefs.current).forEach(([, el]) => {
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, [visibleCount, photos]);
+
+  const setTileRef = useCallback((index, el) => {
+    tileRefs.current[index] = el;
+  }, []);
+
   const visiblePhotos = photos.slice(0, visibleCount);
   const hasMorePhotos = visibleCount < photos.length;
   const canShowLess = visibleCount > 3;
 
   return (
-  <section className="relative min-h-screen py-20 overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-slate-900 dark:to-gray-800">
+  <section className="relative min-h-screen py-20 overflow-hidden bg-[#e3f2fd] dark:bg-[#0d1b2a]">
       {/* Background orbs (hidden on small screens) */}
       <div className="hidden md:block pointer-events-none absolute -top-32 -left-24 h-72 w-72 rounded-full bg-gradient-to-br from-sky-300/30 to-indigo-300/20 blur-2xl" />
       <div className="hidden md:block pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-gradient-to-br from-fuchsia-300/20 to-rose-300/20 blur-2xl" />
@@ -65,6 +95,8 @@ const Gallery = () => {
           {visiblePhotos.map((photo, index) => (
             <div
               key={index}
+              ref={(el) => setTileRef(index, el)}
+              data-index={index}
               className="relative group rounded-3xl p-2 sm:p-3 border border-black/5 dark:border-white/10 supports-[backdrop-filter]:backdrop-blur-md bg-white/60 dark:bg-gray-800/40 shadow-sm hover:shadow-md cursor-pointer transform-gpu [will-change:transform] motion-safe:transition-[box-shadow,transform,opacity] motion-safe:duration-200"
               onClick={() => openModal(photo)}
             >
@@ -73,19 +105,24 @@ const Gallery = () => {
 
               {/* image tile */}
               <div className="relative overflow-hidden rounded-2xl aspect-[4/3] bg-gray-100 dark:bg-gray-700">
-                {imageLoading[index] && (
+                {(!loadedSrcs[index] || imageLoading[index]) && (
                   <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-gray-200/70 to-gray-300/60 dark:from-gray-700/60 dark:to-gray-600/60" />
                 )}
-                <img
-                  src={photo.src}
-                  alt={photo.alt}
-                  loading="lazy"
-                  decoding="async"
-                  onLoad={() => handleImageLoad(index)}
-                  onLoadStart={() => handleImageLoadStart(index)}
-                  className="h-full w-full object-cover transform-gpu motion-safe:transition-transform motion-safe:duration-500 group-hover:scale-[1.03]"
-                  style={{ WebkitBackfaceVisibility: 'hidden' }}
-                />
+                {loadedSrcs[index] && (
+                  <img
+                    src={loadedSrcs[index]}
+                    alt={photo.alt}
+                    width={400}
+                    height={300}
+                    loading="lazy"
+                    decoding="async"
+                    fetchPriority={index < 2 ? 'high' : 'low'}
+                    onLoad={() => handleImageLoad(index)}
+                    onLoadStart={() => handleImageLoadStart(index)}
+                    className="h-full w-full object-cover transform-gpu motion-safe:transition-transform motion-safe:duration-500 group-hover:scale-[1.03]"
+                    style={{ WebkitBackfaceVisibility: 'hidden' }}
+                  />
+                )}
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 motion-safe:transition-opacity" />
               </div>
             </div>

@@ -71,8 +71,8 @@ const Layout = ({ children, activeTab, setActiveTab }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
-      <nav className="fixed top-0 w-full bg-white dark:bg-gray-700 shadow-sm z-50 transition-colors duration-300">
+    <div className="min-h-screen bg-[#e3f2fd] dark:bg-[#0d1b2a] transition-colors duration-300">
+      <nav className="fixed top-0 w-full glass-liquid glass-edge-light bg-white/60 dark:bg-black/40 z-50 transition-colors duration-300 border-b border-black/5 dark:border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
@@ -113,7 +113,7 @@ const Layout = ({ children, activeTab, setActiveTab }) => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden animate-fadeIn">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-700">
+            <div className="px-2 pt-2 pb-3 space-y-1 glass-liquid-soft bg-white/80 dark:bg-black/60 backdrop-blur-xl">
               {navItems.map((item) => (
                 <button
                   key={item.name}
