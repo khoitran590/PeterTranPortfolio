@@ -1,5 +1,5 @@
 // src/components/Weather.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Cloud, Sun, CloudRain, CloudSnow, Wind, Eye, Droplets, Thermometer } from 'lucide-react';
 
 const Weather = () => {
@@ -12,7 +12,7 @@ const Weather = () => {
   // TODO: Add your weather API key here
   const API_KEY = '6a6b48405c070ffa29c6e7a4ea6c6499';
 
-  const fetchWeather = async () => {
+  const fetchWeather = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -64,11 +64,11 @@ const Weather = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [city]);
 
   useEffect(() => {
     fetchWeather();
-  }, [city]);
+  }, [fetchWeather]);
 
   // Temperature conversion functions
   const convertTemp = (temp) => {

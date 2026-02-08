@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 
-const Gallery = () => {
-  const photos = [
+const PHOTOS = [
     { src: '/assets/DSCF2424-2.jpg', alt: 'Photo 1' },
     { src: '/assets/PIC00687-2.jpg', alt: 'Photo 2' },
     { src: '/assets/PIC00210.jpg', alt: 'Photo 3' },
@@ -14,8 +13,10 @@ const Gallery = () => {
     { src: '/assets/IMG_2524.jpeg', alt: 'Photo 10' },
     { src: '/assets/IMG_2526.jpeg', alt: 'Photo 11' },
     { src: '/assets/IMG_2527.jpeg', alt: 'Photo 12' },
-  ];
+];
 
+const Gallery = () => {
+  const photos = PHOTOS;
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [visibleCount, setVisibleCount] = useState(3);
   const [imageLoading, setImageLoading] = useState({});
@@ -56,7 +57,7 @@ const Gallery = () => {
             const index = entry.target.dataset.index;
             if (index !== undefined && !loadedRef.current[index]) {
               loadedRef.current[index] = true;
-              setLoadedSrcs((prev) => ({ ...prev, [index]: photos[Number(index)].src }));
+              setLoadedSrcs((prev) => ({ ...prev, [index]: PHOTOS[Number(index)].src }));
             }
           }
         });
@@ -68,7 +69,7 @@ const Gallery = () => {
       if (el) observer.observe(el);
     });
     return () => observer.disconnect();
-  }, [visibleCount, photos]);
+  }, [visibleCount]);
 
   const setTileRef = useCallback((index, el) => {
     tileRefs.current[index] = el;
