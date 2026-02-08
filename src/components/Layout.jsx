@@ -67,7 +67,6 @@ const Layout = ({ children, activeTab, setActiveTab }) => {
     { name: 'Skills', id: 'skills' },
     { name: 'Weather', id: 'weather' },
     { name: 'Gallery', id: 'gallery' },
-    { name: 'Contact', id: 'contact' },
   ];
 
   return (

@@ -8,7 +8,6 @@ const Home = React.lazy(() => import('./components/Home'));
 const Projects = React.lazy(() => import('./components/Projects'));
 const Skills = React.lazy(() => import('./components/Skills'));
 const Weather = React.lazy(() => import('./components/Weather'));
-const Contact = React.lazy(() => import('./components/Contact'));
 const Gallery = React.lazy(() => import('./components/Gallery'));
 
 function App() {
@@ -18,7 +17,7 @@ function App() {
 
   const handleTabChange = (newTab) => {
     if (newTab === activeTab) return;
-    const tabOrder = ['home', 'projects', 'skills', 'weather', 'gallery', 'contact'];
+    const tabOrder = ['home', 'projects', 'skills', 'weather', 'gallery'];
     const currentIndex = tabOrder.indexOf(activeTab);
     const newIndex = tabOrder.indexOf(newTab);
     setSlideDirection(newIndex > currentIndex ? 'right' : 'left');
@@ -44,8 +43,6 @@ function App() {
         return <Weather />;
       case 'gallery':
         return <Gallery />;
-      case 'contact':
-        return <Contact />;
       default:
         return <Home setActiveTab={handleTabChange} />;
     }
@@ -60,7 +57,6 @@ function App() {
       import('./components/Skills');
       import('./components/Weather');
       import('./components/Gallery');
-      import('./components/Contact');
     });
     return () => cancel(id);
   }, []);
