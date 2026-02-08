@@ -1,9 +1,52 @@
 // src/components/Home.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useInView } from './useInView';
 import { Download, Github, Linkedin, Mail } from 'lucide-react';
 import ContactForm from './ContactForm';
 import { useScrollReveal } from './useScrollReveal';
+
+const FactOfTheDay = () => {
+  const apiKey = process.env.REACT_APP_FACT_OF_DAY_API_KEY;
+  const [fact, setFact] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!apiKey) {
+      setLoading(false);
+      return;
+    }
+    const fetchFact = async () => {
+      try {
+        const res = await fetch('https://api.api-ninjas.com/v1/factoftheday', {
+          headers: { 'X-Api-Key': apiKey },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setFact(data.fact || (Array.isArray(data) && data[0]?.fact) || '');
+        }
+      } catch {
+        setFact('');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFact();
+  }, [apiKey]);
+
+  if (!fact && !loading) return null;
+
+  return (
+    <div className="w-full py-3 px-4 text-center glass-liquid glass-edge-light bg-white/20 dark:bg-white/5 border-b border-black/5 dark:border-white/5">
+      <p className="text-sm md:text-base text-gray-700 dark:text-gray-300 max-w-4xl mx-auto">
+        {loading ? (
+          <span className="animate-pulse">Loading fact of the day…</span>
+        ) : (
+          <>Did you know? {fact}</>
+        )}
+      </p>
+    </div>
+  );
+};
 
 const Home = ({ setActiveTab }) => {
   const { ref, inView } = useInView({ root: null, rootMargin: '100px', threshold: 0 });
@@ -13,6 +56,8 @@ const Home = ({ setActiveTab }) => {
 
   return (
     <div className="min-h-screen bg-[#e3f2fd] dark:bg-[#0d1b2a]">
+      {/* Fact of the Day - top of page */}
+      <FactOfTheDay />
       {/* Hero Section - Liquid Glass */}
       <section ref={heroReveal.ref} className={`relative flex items-center justify-center min-h-screen overflow-hidden reveal-container ${heroReveal.visible ? 'reveal-visible' : 'reveal-hidden'} reveal-transition`}>
         {/* Ambient gradient orbs */}
