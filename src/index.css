@@ -38,14 +38,14 @@ code {
 }
 .reveal-hidden {
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(20px);
 }
 .reveal-visible {
   opacity: 1;
   transform: translateY(0);
 }
 .reveal-transition {
-  transition: opacity 400ms ease, transform 400ms ease;
+  transition: opacity 500ms cubic-bezier(0.22, 1, 0.36, 1), transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Animation delays for loading dots */

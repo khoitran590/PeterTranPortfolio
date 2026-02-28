@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useInView } from './useInView';
 import { Download, Github, Linkedin, Mail } from 'lucide-react';
 import ContactForm from './ContactForm';
-import { useScrollReveal } from './useScrollReveal';
+import { useIntersectionRatio, useScrollReveal } from './useScrollReveal';
 
 const FactOfTheDay = () => {
   const apiKey = process.env.REACT_APP_FACT_OF_DAY_API_KEY;
@@ -50,16 +50,19 @@ const FactOfTheDay = () => {
 
 const Home = ({ setActiveTab }) => {
   const { ref, inView } = useInView({ root: null, rootMargin: '100px', threshold: 0 });
-  const heroReveal = useScrollReveal({ root: null, rootMargin: '0px', threshold: 0.12 });
-  const aboutReveal = useScrollReveal({ root: null, rootMargin: '0px', threshold: 0.12 });
+  const aboutFill = useIntersectionRatio('15% 0px 15% 0px');
   const contactReveal = useScrollReveal({ root: null, rootMargin: '0px', threshold: 0.12 });
+
+  const aboutOpacity = Math.min(1, aboutFill.ratio * 1.2);
+  const aboutY = 24 * (1 - aboutFill.ratio);
+  const aboutScale = 0.97 + 0.03 * aboutFill.ratio;
 
   return (
     <div className="min-h-screen bg-[#e3f2fd] dark:bg-[#0d1b2a]">
       {/* Fact of the Day - top of page */}
       <FactOfTheDay />
       {/* Hero Section - Liquid Glass */}
-      <section ref={heroReveal.ref} className={`relative flex items-center justify-center min-h-screen overflow-hidden reveal-container ${heroReveal.visible ? 'reveal-visible' : 'reveal-hidden'} reveal-transition`}>
+      <section className="relative flex items-center justify-center min-h-screen overflow-hidden">
         {/* Ambient gradient orbs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-1/2 -left-1/4 w-[80vw] h-[80vw] rounded-full bg-gradient-to-br from-blue-200/40 via-indigo-100/30 to-transparent blur-3xl dark:from-blue-500/10 dark:via-indigo-500/5" />
@@ -87,9 +90,7 @@ const Home = ({ setActiveTab }) => {
             <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 mb-6">
               Software Engineer Graduate at Cal State Fullerton
             </p>
-            <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-xl mx-auto mb-12 leading-relaxed">
-              A very normal person who enjoys designing stuff and making things work.
-            </p>
+            
             <div className="flex flex-wrap justify-center gap-4">
               <a
                 href="#home-contact"
@@ -108,17 +109,23 @@ const Home = ({ setActiveTab }) => {
         </div>
       </section>
 
-      {/* About Section - Liquid Glass */}
-      <section ref={aboutReveal.ref} className={`relative py-24 overflow-hidden reveal-container ${aboutReveal.visible ? 'reveal-visible' : 'reveal-hidden'} reveal-transition`}>
+      {/* About Section - fills in slowly as user scrolls */}
+      <section ref={aboutFill.ref} className="relative py-24 overflow-hidden min-h-[60vh] flex items-center">
         {/* Ambient orbs */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-gradient-to-br from-sky-200/40 via-indigo-100/30 to-transparent blur-3xl dark:from-sky-500/15 dark:via-indigo-500/10" />
           <div className="absolute -bottom-24 -right-24 w-80 h-80 rounded-full bg-gradient-to-tl from-rose-200/30 via-fuchsia-100/20 to-transparent blur-3xl dark:from-rose-500/10 dark:via-fuchsia-500/5" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-center text-gray-900 dark:text-white mb-14">About Me</h2>
-          <div className="grid md:grid-cols-2 gap-6 items-stretch">
+        <div
+          className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-end w-full transition-[opacity,transform] duration-500 ease-out"
+          style={{
+            opacity: aboutOpacity,
+            transform: `translateY(${aboutY}px) scale(${aboutScale})`,
+          }}
+        >
+          <div className="max-w-2xl w-full">
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 dark:text-white text-center mb-6">About Me</h2>
             <div className="glass-liquid glass-edge-light rounded-[1.75rem] p-6 md:p-8 bg-white/30 dark:bg-white/5 border border-black/5 dark:border-white/10 shadow-xl shadow-black/5 dark:shadow-black/20">
               <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Background</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
@@ -146,19 +153,6 @@ const Home = ({ setActiveTab }) => {
                   <Download size={20} className="mr-2" />
                   Download Resume
                 </a>
-              </div>
-            </div>
-            <div className="glass-liquid glass-edge-light rounded-[1.75rem] p-6 md:p-8 bg-white/30 dark:bg-white/5 border border-black/5 dark:border-white/10 shadow-xl shadow-black/5 dark:shadow-black/20">
-              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Education</h3>
-              <div className="space-y-3">
-                <div className="glass-liquid-soft rounded-2xl p-4 bg-white/40 dark:bg-white/5 border border-black/5 dark:border-white/5">
-                  <h4 className="font-medium text-gray-900 dark:text-white">Cal State Fullerton</h4>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">BS in Computer Science, 2025</p>
-                </div>
-                <div className="glass-liquid-soft rounded-2xl p-4 bg-white/40 dark:bg-white/5 border border-black/5 dark:border-white/5">
-                  <h4 className="font-medium text-gray-900 dark:text-white">Cypress College</h4>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">Associate Degree, 2021</p>
-                </div>
               </div>
             </div>
           </div>
