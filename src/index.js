@@ -39,7 +39,9 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// Defer web-vitals until idle to avoid blocking main thread
+if (window.requestIdleCallback) {
+  requestIdleCallback(() => reportWebVitals(), { timeout: 2000 });
+} else {
+  setTimeout(() => reportWebVitals(), 2000);
+}

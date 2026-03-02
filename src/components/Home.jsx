@@ -1,9 +1,7 @@
 // src/components/Home.jsx
 import React, { useState, useEffect } from 'react';
-import { useInView } from './useInView';
-import { Download, Github, Linkedin, Mail } from 'lucide-react';
-import ContactForm from './ContactForm';
-import { useIntersectionRatio, useScrollReveal } from './useScrollReveal';
+import { Download } from 'lucide-react';
+import { useIntersectionRatio } from './useScrollReveal';
 
 const FactOfTheDay = () => {
   const apiKey = process.env.REACT_APP_FACT_OF_DAY_API_KEY;
@@ -48,10 +46,8 @@ const FactOfTheDay = () => {
   );
 };
 
-const Home = ({ setActiveTab }) => {
-  const { ref, inView } = useInView({ root: null, rootMargin: '100px', threshold: 0 });
+const Home = () => {
   const aboutFill = useIntersectionRatio('15% 0px 15% 0px');
-  const contactReveal = useScrollReveal({ root: null, rootMargin: '0px', threshold: 0.12 });
 
   const aboutOpacity = Math.min(1, aboutFill.ratio * 1.2);
   const aboutY = 24 * (1 - aboutFill.ratio);
@@ -62,24 +58,26 @@ const Home = ({ setActiveTab }) => {
       {/* Fact of the Day - top of page */}
       <FactOfTheDay />
       {/* Hero Section - Liquid Glass */}
-      <section className="relative flex items-center justify-center min-h-screen overflow-hidden">
+      <section id="home" className="relative flex items-center justify-center min-h-screen overflow-hidden scroll-mt-20">
         {/* Ambient gradient orbs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-[1]">
           <div className="absolute -top-1/2 -left-1/4 w-[80vw] h-[80vw] rounded-full bg-gradient-to-br from-blue-200/40 via-indigo-100/30 to-transparent blur-3xl dark:from-blue-500/10 dark:via-indigo-500/5" />
           <div className="absolute -bottom-1/4 -right-1/4 w-[60vw] h-[60vw] rounded-full bg-gradient-to-tl from-amber-100/30 via-rose-100/20 to-transparent blur-3xl dark:from-amber-500/5 dark:via-rose-500/5" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 z-10">
           <div className="text-center">
-            <div ref={ref} className="mb-10 relative inline-block">
+            <div className="mb-10 relative inline-block">
               {/* Glass ring around profile */}
               <div className="absolute -inset-4 rounded-[2rem] glass-liquid glass-edge-light bg-white/25 dark:bg-white/5 ring-1 ring-black/5 dark:ring-white/10" />
               <img
-                src={inView ? "/assets/52660347.jpg" : undefined}
+                src="/assets/52660347.jpg"
                 alt="Profile"
                 className="relative mx-auto rounded-[1.5rem] object-cover select-none ring-1 ring-black/5 dark:ring-white/10 shadow-xl"
-                style={{ width: 280, height: 280 }}
-                loading="lazy"
+                width={280}
+                height={280}
+                fetchPriority="high"
+                loading="eager"
                 decoding="async"
                 draggable={false}
               />
@@ -93,24 +91,24 @@ const Home = ({ setActiveTab }) => {
             
             <div className="flex flex-wrap justify-center gap-4">
               <a
-                href="#home-contact"
+                href="#contact"
                 className="rounded-full px-6 py-3 inline-flex items-center justify-center text-white bg-gray-900 dark:bg-white dark:text-gray-900 hover:opacity-90 transition-all duration-300 shadow-lg shadow-black/10 dark:shadow-white/10 hover:scale-[1.02] active:scale-[0.98]"
               >
                 Get in Touch
               </a>
-              <button
-                onClick={() => setActiveTab && setActiveTab('projects')}
+              <a
+                href="#projects"
                 className="rounded-full px-6 py-3 inline-flex items-center justify-center glass-liquid glass-edge-light bg-white/40 dark:bg-white/10 text-gray-900 dark:text-gray-100 border border-black/5 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
                 View Projects
-              </button>
+              </a>
             </div>
           </div>
         </div>
       </section>
 
       {/* About Section - fills in slowly as user scrolls */}
-      <section ref={aboutFill.ref} className="relative py-24 overflow-hidden min-h-[60vh] flex items-center">
+      <section id="about" ref={aboutFill.ref} className="relative py-24 overflow-hidden min-h-[60vh] flex items-center scroll-mt-20">
         {/* Ambient orbs */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-gradient-to-br from-sky-200/40 via-indigo-100/30 to-transparent blur-3xl dark:from-sky-500/15 dark:via-indigo-500/10" />
@@ -154,36 +152,6 @@ const Home = ({ setActiveTab }) => {
                   Download Resume
                 </a>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact (compact) Section */}
-  <section id="home-contact" ref={contactReveal.ref} className={`relative py-24 overflow-hidden reveal-container ${contactReveal.visible ? 'reveal-visible' : 'reveal-hidden'} reveal-transition`}>
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 -left-32 w-64 h-64 rounded-full bg-gradient-to-r from-indigo-200/30 to-transparent blur-3xl dark:from-indigo-500/10" />
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-8 items-start">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 dark:text-white">Let’s work together</h2>
-              <p className="mt-4 text-gray-600 dark:text-gray-300 max-w-prose">Have a project or role in mind? Drop a line and I’ll get back within 1–2 days.</p>
-              <div className="mt-8 space-y-3">
-                <h3 className="text-xl font-medium text-gray-900 dark:text-white">Connect With Me</h3>
-                <a href="https://github.com/khoitran590" target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
-                  <Github size={20} className="mr-3" /> GitHub
-                </a>
-                <a href="https://www.linkedin.com/in/peterkhoitran/?profileId=ACoAACGBcowB9vVKOLWHOZfsW5ygkiZQdDbbSEs" target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
-                  <Linkedin size={20} className="mr-3" /> LinkedIn
-                </a>
-                <a href="mailto:khoitran590@gmail.com" className="flex items-center text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
-                  <Mail size={20} className="mr-3" /> khoitran590@gmail.com
-                </a>
-              </div>
-            </div>
-            <div className="glass-liquid glass-edge-light rounded-[1.75rem] p-6 md:p-8 bg-white/30 dark:bg-white/5 border border-black/5 dark:border-white/10 shadow-xl shadow-black/5 dark:shadow-black/20">
-              <ContactForm compact />
             </div>
           </div>
         </div>

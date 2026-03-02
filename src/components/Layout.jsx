@@ -1,9 +1,21 @@
 // src/components/Layout.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { Menu, X } from 'lucide-react';
 import DarkModeToggle from './DarkModeToggle';
+import { useThrottledCallback } from '../hooks/useThrottle';
 
-const Layout = ({ children, activeTab, setActiveTab }) => {
+const HeroScene = React.lazy(() => import('./HeroScene'));
+
+const Layout = ({ children }) => {
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  const updateMouse = useCallback((e) => {
+    const x = (e.clientX / window.innerWidth) * 2 - 1;
+    const y = -(e.clientY / window.innerHeight) * 2 + 1;
+    setMouse({ x, y });
+  }, []);
+  const onGlobalMouseMove = useThrottledCallback(updateMouse, 80);
+  const onGlobalMouseLeave = useCallback(() => setMouse({ x: 0, y: 0 }), []);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(() => {
     // Check if user has a dark mode preference
@@ -62,15 +74,26 @@ const Layout = ({ children, activeTab, setActiveTab }) => {
   };
 
   const navItems = [
-    { name: 'Home', id: 'home' },
-    { name: 'Projects', id: 'projects' },
-    { name: 'Skills', id: 'skills' },
-    { name: 'Weather', id: 'weather' },
-    { name: 'Gallery', id: 'gallery' },
+    { name: 'Home', href: '#home' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Skills', href: '#skills' },
+    { name: 'Weather', href: '#weather' },
+    { name: 'Gallery', href: '#gallery' },
+    { name: 'Contact', href: '#contact' },
   ];
 
   return (
-    <div className="min-h-screen bg-[#e3f2fd] dark:bg-[#0d1b2a] transition-colors duration-300">
+    <div
+      className="min-h-screen bg-[#e3f2fd] dark:bg-[#0d1b2a] transition-colors duration-300 relative"
+      onMouseMove={onGlobalMouseMove}
+      onMouseLeave={onGlobalMouseLeave}
+    >
+      {/* Site-wide Three.js background (lazy loaded for faster initial paint) */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <Suspense fallback={null}>
+          <HeroScene mouse={mouse} />
+        </Suspense>
+      </div>
       <nav className="fixed top-0 w-full glass-liquid glass-edge-light bg-white/60 dark:bg-black/40 z-50 transition-colors duration-300 border-b border-black/5 dark:border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
@@ -81,17 +104,13 @@ const Layout = ({ children, activeTab, setActiveTab }) => {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
               {navItems.map((item) => (
-                <button
+                <a
                   key={item.name}
-                  onClick={() => setActiveTab(item.id)}
-                  className={`text-sm font-medium transition-all duration-200 ease-in-out px-3 py-2 rounded-md transform hover:scale-105 ${
-                    activeTab === item.id
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 shadow-sm'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-600'
-                  }`}
+                  href={item.href}
+                  className="text-sm font-medium transition-all duration-200 ease-in-out px-3 py-2 rounded-md transform hover:scale-105 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
                 >
                   {item.name}
-                </button>
+                </a>
               ))}
               <DarkModeToggle isDark={isDark} toggleDarkMode={toggleDarkMode} />
             </div>
@@ -114,27 +133,21 @@ const Layout = ({ children, activeTab, setActiveTab }) => {
           <div className="md:hidden animate-fadeIn">
             <div className="px-2 pt-2 pb-3 space-y-1 glass-liquid-soft bg-white/80 dark:bg-black/60 backdrop-blur-xl">
               {navItems.map((item) => (
-                <button
+                <a
                   key={item.name}
-                  onClick={() => {
-                    setActiveTab(item.id);
-                    setIsMenuOpen(false);
-                  }}
-                  className={`block w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ease-in-out transform hover:scale-[1.02] ${
-                    activeTab === item.id
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 shadow-sm'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-600'
-                  }`}
+                  href={item.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ease-in-out transform hover:scale-[1.02] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
                 >
                   {item.name}
-                </button>
+                </a>
               ))}
             </div>
           </div>
         )}
       </nav>
 
-      <main className="pt-16 min-h-screen">{children}</main>
+      <main className="relative pt-16 min-h-screen z-10">{children}</main>
     </div>
   );
 };
