@@ -143,14 +143,6 @@ const Home = () => {
                   </svg>
                   View Resume
                 </a>
-                <a
-                  href="/Resume (1).pdf"
-                  download="Peter_Tran_Resume.pdf"
-                  className="inline-flex items-center justify-center px-4 py-2.5 rounded-full text-white bg-gray-900 dark:bg-white dark:text-gray-900 hover:opacity-90 transition-all duration-300 shadow-lg shadow-black/10 hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  <Download size={20} className="mr-2" />
-                  Download Resume
-                </a>
               </div>
             </div>
           </div>
