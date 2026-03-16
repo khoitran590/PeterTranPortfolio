@@ -1,6 +1,5 @@
 // src/components/Home.jsx
 import React, { useState, useEffect } from 'react';
-import { Download } from 'lucide-react';
 import { useIntersectionRatio } from './useScrollReveal';
 
 const FactOfTheDay = () => {
