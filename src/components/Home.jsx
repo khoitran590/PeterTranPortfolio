@@ -1,5 +1,6 @@
 // src/components/Home.jsx
 import React, { useState, useEffect } from 'react';
+import StockQuotePanel from './StockQuotePanel';
 import { useIntersectionRatio } from './useScrollReveal';
 
 const FactOfTheDay = () => {
@@ -115,21 +116,25 @@ const Home = () => {
         </div>
 
         <div
-          className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-end w-full transition-[opacity,transform] duration-500 ease-out"
+          className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full transition-[opacity,transform] duration-500 ease-out"
           style={{
             opacity: aboutOpacity,
             transform: `translateY(${aboutY}px) scale(${aboutScale})`,
           }}
         >
-          <div className="max-w-2xl w-full">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 dark:text-white text-center mb-6">About Me</h2>
-            <div className="glass-liquid glass-edge-light rounded-[1.75rem] p-6 md:p-8 bg-white/30 dark:bg-white/5 border border-black/5 dark:border-white/10 shadow-xl shadow-black/5 dark:shadow-black/20">
-              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Background</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-                I am an aspiring software engineer with a passion for technology and innovation. I have a strong foundation in computer science principles and a keen interest in web development, mobile applications, and software engineering practices.
-                I'm passionate about creating innovative solutions and enjoy the challenge of bringing ideas to life through code.
-              </p>
-              
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-10 items-start w-full">
+            <div className="order-2 md:order-1 w-full max-w-xl md:max-w-none mx-auto md:mx-0">
+              <StockQuotePanel />
+            </div>
+            <div className="order-1 md:order-2 w-full max-w-2xl md:max-w-none ml-auto">
+              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 dark:text-white text-center md:text-right mb-6">About Me</h2>
+              <div className="glass-liquid glass-edge-light rounded-[1.75rem] p-6 md:p-8 bg-white/30 dark:bg-white/5 border border-black/5 dark:border-white/10 shadow-xl shadow-black/5 dark:shadow-black/20">
+                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Background</h3>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  I am an aspiring software engineer with a passion for technology and innovation. I have a strong foundation in computer science principles and a keen interest in web development, mobile applications, and software engineering practices.
+                  I'm passionate about creating innovative solutions and enjoy the challenge of bringing ideas to life through code.
+                </p>
+              </div>
             </div>
           </div>
         </div>

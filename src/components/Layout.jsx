@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { Menu, X } from 'lucide-react';
 import DarkModeToggle from './DarkModeToggle';
+import MarketTicker from './MarketTicker';
 import { useThrottledCallback } from '../hooks/useThrottle';
 
 const HeroScene = React.lazy(() => import('./HeroScene'));
@@ -94,7 +95,9 @@ const Layout = ({ children }) => {
           <HeroScene mouse={mouse} />
         </Suspense>
       </div>
-      <nav className="fixed top-0 w-full glass-liquid glass-edge-light bg-white/60 dark:bg-black/40 z-50 transition-colors duration-300 border-b border-black/5 dark:border-white/5">
+      <header className="sticky top-0 z-[60] w-full">
+        <MarketTicker />
+        <nav className="w-full glass-liquid glass-edge-light bg-white/60 dark:bg-black/40 transition-colors duration-300 border-b border-black/5 dark:border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
@@ -146,8 +149,9 @@ const Layout = ({ children }) => {
           </div>
         )}
       </nav>
+      </header>
 
-      <main className="relative pt-16 min-h-screen z-10">{children}</main>
+      <main className="relative min-h-screen z-10">{children}</main>
     </div>
   );
 };
