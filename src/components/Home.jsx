@@ -35,7 +35,7 @@ const FactOfTheDay = () => {
   if (!fact && !loading) return null;
 
   return (
-    <div className="w-full py-3 px-4 text-center glass-liquid glass-edge-light bg-white/20 dark:bg-white/5 border-b border-black/5 dark:border-white/5">
+    <div className="w-full pb-3 pt-3 sm:pt-28 px-4 text-center glass-liquid glass-edge-light bg-white/20 dark:bg-white/5 border-b border-black/5 dark:border-white/5">
       <p className="text-sm md:text-base text-gray-700 dark:text-gray-300 max-w-4xl mx-auto">
         {loading ? (
           <span className="animate-pulse">Loading fact of the day…</span>
