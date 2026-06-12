@@ -1,5 +1,6 @@
 // src/components/Home.jsx
 import React, { useState, useEffect } from 'react';
+import { Github, Linkedin, Mail, ArrowDown } from 'lucide-react';
 import StockQuotePanel from './StockQuotePanel';
 import { useIntersectionRatio } from './useScrollReveal';
 
@@ -54,54 +55,70 @@ const Home = () => {
   const aboutScale = 0.97 + 0.03 * aboutFill.ratio;
 
   return (
-    <div className="min-h-screen bg-[#e3f2fd] dark:bg-[#0d1b2a]">
+    <div className="min-h-screen">
       {/* Fact of the Day - top of page */}
       <FactOfTheDay />
-      {/* Hero Section - Liquid Glass */}
+      {/* Hero Section - dark monochrome */}
       <section id="home" className="relative flex items-center justify-center min-h-screen overflow-hidden scroll-mt-20">
-        {/* Ambient gradient orbs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none z-[1]">
-          <div className="absolute -top-1/2 -left-1/4 w-[80vw] h-[80vw] rounded-full bg-gradient-to-br from-blue-200/40 via-indigo-100/30 to-transparent blur-3xl dark:from-blue-500/10 dark:via-indigo-500/5" />
-          <div className="absolute -bottom-1/4 -right-1/4 w-[60vw] h-[60vw] rounded-full bg-gradient-to-tl from-amber-100/30 via-rose-100/20 to-transparent blur-3xl dark:from-amber-500/5 dark:via-rose-500/5" />
-        </div>
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 z-10 w-full">
+          <div className="flex flex-col items-center text-center">
+            {/* Gradient sphere */}
+            <div
+              className="mb-10 h-36 w-36 rounded-full shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)]"
+              style={{
+                background:
+                  'radial-gradient(circle at 35% 30%, #fafafa, #a3a3a3 45%, #404040 100%)',
+              }}
+            />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 z-10">
-          <div className="text-center">
-            <div className="mb-10 relative inline-block">
-              {/* Glass ring around profile */}
-              <div className="absolute -inset-4 rounded-[2rem] glass-liquid glass-edge-light bg-white/25 dark:bg-white/5 ring-1 ring-black/5 dark:ring-white/10" />
-              <img
-                src="/assets/52660347.jpg"
-                alt="Profile"
-                className="relative mx-auto rounded-[1.5rem] object-cover select-none ring-1 ring-black/5 dark:ring-white/10 shadow-xl"
-                width={280}
-                height={280}
-                fetchPriority="high"
-                loading="eager"
-                decoding="async"
-                draggable={false}
-              />
-            </div>
-            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-gray-900 dark:text-white mb-3">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-white mb-4">
               Peter Tran
             </h1>
-            <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 mb-6">
+            <p className="text-base md:text-lg font-medium text-white/60 mb-6">
               Software Engineer Graduate at Cal State Fullerton
             </p>
-            
+            <p className="max-w-2xl text-base md:text-xl text-white/50 mb-10 leading-relaxed">
+              I'm an aspiring software engineer with a passion for technology and
+              innovation. With a strong foundation in computer science and a keen
+              interest in web development, mobile applications, and clean
+              engineering practices, I love bringing ideas to life through code.
+            </p>
+
             <div className="flex flex-wrap justify-center gap-4">
               <a
                 href="#contact"
-                className="rounded-full px-6 py-3 inline-flex items-center justify-center text-white bg-gray-900 dark:bg-white dark:text-gray-900 hover:opacity-90 transition-all duration-300 shadow-lg shadow-black/10 dark:shadow-white/10 hover:scale-[1.02] active:scale-[0.98]"
+                className="rounded-xl px-7 py-3.5 inline-flex items-center justify-center gap-2 font-semibold text-black bg-neutral-100 hover:bg-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
+                <Mail size={18} />
                 Get in Touch
               </a>
               <a
                 href="#projects"
-                className="rounded-full px-6 py-3 inline-flex items-center justify-center glass-liquid glass-edge-light bg-white/40 dark:bg-white/10 text-gray-900 dark:text-gray-100 border border-black/5 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                className="rounded-xl px-7 py-3.5 inline-flex items-center justify-center gap-2 font-semibold text-white bg-white/5 border border-white/15 hover:bg-white/10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
                 View Projects
+                <ArrowDown size={18} />
               </a>
+            </div>
+
+            {/* Social icons */}
+            <div className="mt-12 flex items-center gap-4">
+              {[
+                { href: 'https://github.com/khoitran590', label: 'GitHub', Icon: Github },
+                { href: 'https://www.linkedin.com/in/peterkhoitran/', label: 'LinkedIn', Icon: Linkedin },
+                { href: '#contact', label: 'Email', Icon: Mail },
+              ].map(({ href, label, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith('http') ? '_blank' : undefined}
+                  rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  aria-label={label}
+                  className="h-12 w-12 inline-flex items-center justify-center rounded-full bg-white/5 text-white/80 hover:bg-white/10 hover:text-white transition-all duration-300 hover:scale-105"
+                >
+                  <Icon size={20} />
+                </a>
+              ))}
             </div>
           </div>
         </div>
@@ -122,19 +139,10 @@ const Home = () => {
             transform: `translateY(${aboutY}px) scale(${aboutScale})`,
           }}
         >
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-10 items-start w-full">
-            <div className="order-2 md:order-1 w-full max-w-xl md:max-w-none mx-auto md:mx-0">
+          <div className="flex flex-col items-center w-full">
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white text-center mb-8">Market Snapshot</h2>
+            <div className="w-full max-w-xl">
               <StockQuotePanel />
-            </div>
-            <div className="order-1 md:order-2 w-full max-w-2xl md:max-w-none ml-auto">
-              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 dark:text-white text-center md:text-right mb-6">About Me</h2>
-              <div className="glass-liquid glass-edge-light rounded-[1.75rem] p-6 md:p-8 bg-white/30 dark:bg-white/5 border border-black/5 dark:border-white/10 shadow-xl shadow-black/5 dark:shadow-black/20">
-                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Background</h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  I am an aspiring software engineer with a passion for technology and innovation. I have a strong foundation in computer science principles and a keen interest in web development, mobile applications, and software engineering practices.
-                  I'm passionate about creating innovative solutions and enjoy the challenge of bringing ideas to life through code.
-                </p>
-              </div>
             </div>
           </div>
         </div>

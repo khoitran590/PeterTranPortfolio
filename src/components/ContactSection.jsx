@@ -4,7 +4,7 @@ import ContactForm from './ContactForm';
 
 export default function ContactSection() {
   return (
-    <section id="contact" className="relative py-24 overflow-hidden scroll-mt-20 bg-[#e3f2fd] dark:bg-[#0d1b2a]">
+    <section id="contact" className="relative py-24 overflow-hidden scroll-mt-20">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 -left-32 w-64 h-64 rounded-full bg-gradient-to-r from-indigo-200/30 to-transparent blur-3xl dark:from-indigo-500/10" />
       </div>

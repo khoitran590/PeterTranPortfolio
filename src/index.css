@@ -57,9 +57,12 @@ code {
   animation-delay: 0.2s;
 }
 
-/* Smooth scroll behavior for better UX */
+/* Smooth scroll behavior for better UX (Lenis takes over when active) */
 html {
   scroll-behavior: smooth;
+}
+html.lenis {
+  scroll-behavior: auto;
 }
 
 /* Enhanced transitions (avoid applying globally to all elements to reduce jank) */
@@ -120,4 +123,32 @@ html {
 }
 .glass-shine {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%, rgba(255, 255, 255, 0.05) 100%);
+}
+
+/* 3D tilt + glare for interactive project cards */
+.tilt-container {
+  perspective: 1000px;
+}
+.tilt-card {
+  transition: transform 0.15s ease-out;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.tilt-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.18),
+    transparent 45%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 20;
+}
+.tilt-card:hover::before {
+  opacity: 1;
 }
