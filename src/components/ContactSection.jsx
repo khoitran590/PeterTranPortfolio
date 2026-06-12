@@ -1,35 +1,112 @@
+// src/components/ContactSection.jsx – ContactCard layout with corner plus icons
 import React from 'react';
-import { Github, Linkedin, Mail } from 'lucide-react';
+import { Github, Linkedin, Mail, Plus } from 'lucide-react';
+import { cn } from '../lib/utils';
 import ContactForm from './ContactForm';
+
+const contactInfo = [
+  {
+    icon: Github,
+    label: 'GitHub',
+    value: 'khoitran590',
+    href: 'https://github.com/khoitran590',
+  },
+  {
+    icon: Linkedin,
+    label: 'LinkedIn',
+    value: 'peterkhoitran',
+    href: 'https://www.linkedin.com/in/peterkhoitran/',
+  },
+  {
+    icon: Mail,
+    label: 'Email',
+    value: 'khoitran590@gmail.com',
+    href: 'mailto:khoitran590@gmail.com',
+  },
+];
+
+function ContactInfo({ icon: Icon, label, value, href, className }) {
+  const external = href.startsWith('http');
+  return (
+    <a
+      href={href}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
+      className={cn(
+        'flex items-center gap-3 py-3 group/info rounded-lg transition-colors',
+        className
+      )}
+    >
+      <div className="bg-white/10 rounded-lg p-3 transition-colors group-hover/info:bg-white/20">
+        <Icon className="h-5 w-5 text-white" />
+      </div>
+      <div className="min-w-0">
+        <p className="font-medium text-white">{label}</p>
+        <p className="text-gray-400 text-xs truncate">{value}</p>
+      </div>
+    </a>
+  );
+}
+
+export function ContactCard({
+  title = 'Get in Touch',
+  description,
+  contactInfo: info,
+  className,
+  formSectionClassName,
+  children,
+}) {
+  return (
+    <div
+      className={cn(
+        'relative grid h-full w-full border border-white/10 bg-white/[0.03] supports-[backdrop-filter]:backdrop-blur-md shadow-2xl shadow-black/40 md:grid-cols-2 lg:grid-cols-3',
+        className
+      )}
+    >
+      <Plus className="absolute -top-3 -left-3 h-6 w-6 text-white/40" />
+      <Plus className="absolute -top-3 -right-3 h-6 w-6 text-white/40" />
+      <Plus className="absolute -bottom-3 -left-3 h-6 w-6 text-white/40" />
+      <Plus className="absolute -right-3 -bottom-3 h-6 w-6 text-white/40" />
+
+      <div className="flex flex-col justify-between lg:col-span-2">
+        <div className="relative h-full space-y-4 px-4 py-8 md:p-8">
+          <h2 className="text-3xl font-bold md:text-4xl lg:text-5xl text-white">{title}</h2>
+          <p className="text-gray-400 max-w-xl text-sm md:text-base lg:text-lg">
+            {description}
+          </p>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {info?.map((item, index) => (
+              <ContactInfo key={index} {...item} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div
+        className={cn(
+          'bg-white/[0.03] flex h-full w-full items-center border-t border-white/10 p-5 md:col-span-1 md:border-t-0 md:border-l',
+          formSectionClassName
+        )}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
 
 export default function ContactSection() {
   return (
     <section id="contact" className="relative py-24 overflow-hidden scroll-mt-20">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 -left-32 w-64 h-64 rounded-full bg-gradient-to-r from-indigo-200/30 to-transparent blur-3xl dark:from-indigo-500/10" />
-      </div>
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-8 items-start">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 dark:text-white">Let's work together</h2>
-            <p className="mt-4 text-gray-600 dark:text-gray-300 max-w-prose">Have a project or role in mind? Drop a line and I'll get back within 1–2 days.</p>
-            <div className="mt-8 space-y-3">
-              <h3 className="text-xl font-medium text-gray-900 dark:text-white">Connect With Me</h3>
-              <a href="https://github.com/khoitran590" target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
-                <Github size={20} className="mr-3" /> GitHub
-              </a>
-              <a href="https://www.linkedin.com/in/peterkhoitran/?profileId=ACoAACGBcowB9vVKOLWHOZfsW5ygkiZQdDbbSEs" target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
-                <Linkedin size={20} className="mr-3" /> LinkedIn
-              </a>
-              <a href="mailto:khoitran590@gmail.com" className="flex items-center text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
-                <Mail size={20} className="mr-3" /> khoitran590@gmail.com
-              </a>
-            </div>
-          </div>
-          <div className="glass-liquid glass-edge-light rounded-[1.75rem] p-6 md:p-8 bg-white/30 dark:bg-white/5 border border-black/5 dark:border-white/10 shadow-xl shadow-black/5 dark:shadow-black/20">
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
+        <ContactCard
+          title="Get in Touch"
+          description="Have a project or role in mind? Fill out the form and I'll get back within 1–2 business days."
+          contactInfo={contactInfo}
+        >
+          <div className="w-full">
             <ContactForm compact />
           </div>
-        </div>
+        </ContactCard>
       </div>
     </section>
   );
