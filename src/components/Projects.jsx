@@ -5,6 +5,20 @@ import { ExternalLink } from 'lucide-react';
 const Projects = () => {
   const projects = [
     {
+      title: 'TripSplit',
+      description: 'A travel-expenses for efficient group expense management',
+      image: '/assets/tripsplit2.jpeg',
+      technologies: ['ReactNative', 'Node.js', 'Firebase', 'ExpressJS', 'Expo', 'TypeScipt'],
+      link: 'https://github.com/hungbenjamin402/tripsplit_capstone',
+    },
+    {
+      title: 'Movielly',
+      description: 'A movie rating and review platform where users can share what they have watched and what they think about it',
+      image: '/assets/movielly.jpeg',
+      technologies: ['NextJS', "ExpressJS", 'Supabase', 'TailwindCSS', 'TypeScipt'],
+      link: 'https://github.com/khoitran590/movielly',
+    },
+    {
       title: 'Weather App',
       description: 'A web application that displays weather',
       image: '/assets/weatherapp.png',
@@ -25,13 +39,7 @@ const Projects = () => {
       technologies: ['Python'],
       link: 'https://github.com/sebavillani916/flappybird',
     },
-    {
-      title: 'TripSplit',
-      description: 'A travel-expenses for efficient group expense management',
-      image: '/assets/tripsplit2.jpeg',
-      technologies: ['ReactNative', 'Node.js', 'Firebase', 'ExpressJS', 'Expo', 'TypeScipt'],
-      link: 'https://github.com/hungbenjamin402/tripsplit_capstone',
-    },
+  
   ];
 
   const TechPill = ({ label }) => (
