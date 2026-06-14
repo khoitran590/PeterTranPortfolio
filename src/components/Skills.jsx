@@ -121,13 +121,13 @@ const BentoGrid = ({ items }) => (
           </div>
 
           <div className="space-y-2">
-            <h3 className="font-medium text-gray-100 tracking-tight text-[15px]">
+            <h3 className="font-medium text-gray-100 tracking-tight text-[20px]">
               {item.title}
-              <span className="ml-2 text-xs text-gray-400 font-normal">
+              <span className="ml-2 text-base text-gray-400 font-normal">
                 {item.meta}
               </span>
             </h3>
-            <p className="text-sm text-gray-300 leading-snug">
+            <p className="text-base font-medium text-gray-300 leading-snug">
               {item.description}
             </p>
           </div>
@@ -136,7 +136,7 @@ const BentoGrid = ({ items }) => (
             {item.skills.map((skill, i) => (
               <span
                 key={i}
-                className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-xs text-gray-300 bg-white/10 backdrop-blur-sm transition-all duration-200 hover:bg-white/20"
+                className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-sm font-semibold text-gray-300 bg-white/10 backdrop-blur-sm transition-all duration-200 hover:bg-white/20"
               >
                 {skill.Icon && <skill.Icon size={13} style={{ color: skill.color }} />}
                 {skill.name}

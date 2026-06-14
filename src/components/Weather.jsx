@@ -375,7 +375,7 @@ const WeatherWidget = ({ city, isCelsius, onToggleUnit }) => {
 
   return (
     <div
-      className="w-64 overflow-hidden rounded-xl border border-white/10 shadow-lg bg-white/[0.05] supports-[backdrop-filter]:backdrop-blur-md"
+      className="w-80 p-2 overflow-hidden rounded-2xl border border-white/10 shadow-lg bg-white/[0.05] supports-[backdrop-filter]:backdrop-blur-md"
       role="region"
       aria-live="polite"
       aria-atomic="true"
@@ -462,29 +462,29 @@ const WeatherWidget = ({ city, isCelsius, onToggleUnit }) => {
                 <div className="space-y-1">
                   <motion.div
                     variants={weatherAnimations.item}
-                    className="text-4xl font-extralight"
+                    className="text-5xl font-extralight"
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ type: 'spring', damping: 10 }}
                     aria-label={`Temperature: ${displayTemp} degrees ${isCelsius ? 'celsius' : 'fahrenheit'}`}
                   >
                     {displayTemp}
-                    <span className="text-2xl">°{isCelsius ? 'C' : 'F'}</span>
+                    <span className="text-3xl">°{isCelsius ? 'C' : 'F'}</span>
                   </motion.div>
                   <motion.div
                     variants={weatherAnimations.item}
-                    className="flex items-center text-xs text-gray-400"
+                    className="flex items-center text-sm text-gray-400"
                   >
                     <MapPin size={12} className="mr-1" aria-hidden="true" />
                     <span>{weather.city}</span>
                   </motion.div>
                   <motion.div
                     variants={weatherAnimations.item}
-                    className="text-xs text-gray-400 capitalize"
+                    className="text-sm text-gray-400 capitalize"
                   >
                     {weather.description}
                   </motion.div>
-                  <motion.div variants={weatherAnimations.item} className="text-xs text-gray-400">
+                  <motion.div variants={weatherAnimations.item} className="text-sm text-gray-400">
                     {weather.dateTime}
                   </motion.div>
                 </div>
@@ -498,12 +498,12 @@ const WeatherWidget = ({ city, isCelsius, onToggleUnit }) => {
                   >
                     {forecast.map((day) => (
                       <div key={day.key} className="flex flex-col items-center gap-1">
-                        <span className="text-[10px] text-gray-400">{day.weekday}</span>
+                        <span className="text-sm text-gray-400">{day.weekday}</span>
                         <ForecastIcon type={day.weatherType} />
-                        <span className="text-[10px] text-white font-medium">
+                        <span className="text-sm text-white font-medium">
                           {convertTemp(day.high, isCelsius)}°
                         </span>
-                        <span className="text-[10px] text-gray-500">
+                        <span className="text-sm text-gray-500">
                           {convertTemp(day.low, isCelsius)}°
                         </span>
                       </div>

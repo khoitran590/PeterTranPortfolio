@@ -83,7 +83,7 @@ const projects = [
 const TechPill = ({ label }) => {
   const { name, Icon, color } = getTech(label);
   return (
-    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs bg-white/10 border border-white/10 text-gray-200">
+    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold bg-white/10 border border-white/10 text-gray-200">
       {Icon && <Icon size={14} style={{ color }} />}
       {name}
     </span>
@@ -143,7 +143,7 @@ const ProjectCard = ({ project }) => {
             )}
           </div>
           <div className="min-w-0">
-            <h2 className="text-2xl font-bold leading-tight truncate">{project.title}</h2>
+            <h2 className="text-3xl font-bold leading-tight truncate">{project.title}</h2>
             <p className="text-indigo-300">{project.subtitle}</p>
           </div>
           <a
@@ -158,7 +158,7 @@ const ProjectCard = ({ project }) => {
         </div>
 
         {/* Description */}
-        <p className="text-gray-300 leading-relaxed">{project.description}</p>
+        <p className="text-gray-300 text-base font-medium leading-relaxed">{project.description}</p>
 
         {/* Tech stack */}
         <div className="mt-5 flex flex-wrap gap-2">

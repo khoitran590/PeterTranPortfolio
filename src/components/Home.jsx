@@ -77,7 +77,7 @@ const Home = () => {
             <p className="text-base md:text-lg font-medium text-white/60 mb-6">
               Software Engineer Graduate at Cal State Fullerton
             </p>
-            <p className="max-w-2xl text-base md:text-xl text-white/50 mb-10 leading-relaxed">
+            <p className="max-w-2xl text-base font-medium md:text-xl text-white/50 mb-10 leading-relaxed">
               I'm an aspiring software engineer with a passion for technology and
               innovation. With a strong foundation in computer science and a keen
               interest in web development, mobile applications, and clean
