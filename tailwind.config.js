@@ -5,7 +5,19 @@ module.exports = {
   ],
   darkMode: 'class', // Enable dark mode with class strategy
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: [
+          'CDA Independence',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'Helvetica Neue',
+          'sans-serif',
+        ],
+      },
+    },
   },
   plugins: [],
 }
