@@ -1,6 +1,6 @@
 // src/components/Home.jsx
 import React, { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, ArrowDown } from 'lucide-react';
+import { Github, Linkedin, Mail, ArrowDown, FileText } from 'lucide-react';
 import StockQuotePanel from './StockQuotePanel';
 import { WeatherCard } from './Weather';
 import { useIntersectionRatio } from './useScrollReveal';
@@ -107,19 +107,23 @@ const Home = () => {
               {[
                 { href: 'https://github.com/khoitran590', label: 'GitHub', Icon: Github },
                 { href: 'https://www.linkedin.com/in/peterkhoitran/', label: 'LinkedIn', Icon: Linkedin },
+                { href: '/assets/Peter_Tran_Resume.pdf', label: 'Resume', Icon: FileText },
                 { href: '#contact', label: 'Email', Icon: Mail },
-              ].map(({ href, label, Icon }) => (
+              ].map(({ href, label, Icon }) => {
+                const external = href.startsWith('http') || href.endsWith('.pdf');
+                return (
                 <a
                   key={label}
                   href={href}
-                  target={href.startsWith('http') ? '_blank' : undefined}
-                  rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  target={external ? '_blank' : undefined}
+                  rel={external ? 'noopener noreferrer' : undefined}
                   aria-label={label}
                   className="h-12 w-12 inline-flex items-center justify-center rounded-full bg-white/5 text-white/80 hover:bg-white/10 hover:text-white transition-all duration-300 hover:scale-105"
                 >
                   <Icon size={20} />
                 </a>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -127,12 +131,6 @@ const Home = () => {
 
       {/* About Section - fills in slowly as user scrolls */}
       <section id="about" ref={aboutFill.ref} className="relative py-16 overflow-hidden flex items-center scroll-mt-20">
-        {/* Ambient orbs */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-gradient-to-br from-sky-200/40 via-indigo-100/30 to-transparent blur-3xl dark:from-sky-500/15 dark:via-indigo-500/10" />
-          <div className="absolute -bottom-24 -right-24 w-80 h-80 rounded-full bg-gradient-to-tl from-rose-200/30 via-fuchsia-100/20 to-transparent blur-3xl dark:from-rose-500/10 dark:via-fuchsia-500/5" />
-        </div>
-
         <div
           className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full transition-[opacity,transform] duration-500 ease-out"
           style={{

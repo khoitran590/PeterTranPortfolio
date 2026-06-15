@@ -17,6 +17,8 @@ const mediaItems = [
   { id: 10, type: 'image', title: 'Photo 10', desc: '', url: '/assets/opt/IMG_2524_full.jpg', thumb: '/assets/opt/IMG_2524_thumb.jpg', span: 'sm:col-span-2 sm:row-span-3 col-span-1 row-span-3' },
   { id: 11, type: 'image', title: 'Photo 11', desc: '', url: '/assets/opt/IMG_2526_full.jpg', thumb: '/assets/opt/IMG_2526_thumb.jpg', span: 'col-span-1 row-span-3' },
   { id: 12, type: 'image', title: 'Photo 12', desc: '', url: '/assets/opt/IMG_2527_full.jpg', thumb: '/assets/opt/IMG_2527_thumb.jpg', span: 'col-span-1 row-span-3' },
+  { id: 13, type: 'image', title: 'Photo 13', desc: '', url: '/assets/opt/PIC00027_full.jpg', thumb: '/assets/opt/PIC00027_thumb.jpg', span: 'col-span-1 row-span-3' },
+
 ];
 
 // Renders an image media item (video support could be added later).
@@ -25,7 +27,7 @@ const MediaItem = ({ item, className, onClick, full = false }) => (
   <img
     src={full ? item.url : item.thumb || item.url}
     alt={item.title}
-    className={`${className} object-cover cursor-pointer`}
+    className={`${className} ${full ? 'object-contain' : 'object-cover'} cursor-pointer`}
     onClick={onClick}
     loading="lazy"
     decoding="async"
@@ -54,7 +56,7 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedItem.id}
-                className="relative w-full aspect-[16/9] max-w-[95%] sm:max-w-[85%] md:max-w-3xl h-auto max-h-[70vh] rounded-lg overflow-hidden shadow-md"
+                className="relative max-w-[92vw] max-h-[85vh] rounded-lg overflow-hidden shadow-md"
                 initial={{ y: 20, scale: 0.97 }}
                 animate={{
                   y: 0,
@@ -67,7 +69,7 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
                 <MediaItem
                   item={selectedItem}
                   full
-                  className="w-full h-full object-contain bg-black/40"
+                  className="block w-auto h-auto max-w-[92vw] max-h-[85vh] object-contain bg-black/40"
                   onClick={onClose}
                 />
                 {selectedItem.desc && (
