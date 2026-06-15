@@ -6,7 +6,6 @@ import ContactSection from './ContactSection';
 const Home = React.lazy(() => import('./Home'));
 const Projects = React.lazy(() => import('./Projects'));
 const Skills = React.lazy(() => import('./Skills'));
-const Weather = React.lazy(() => import('./Weather'));
 const Gallery = React.lazy(() => import('./Gallery'));
 
 const SectionFallback = () => (
@@ -36,13 +35,6 @@ export default function SinglePage() {
         <LazySection fallback={<SectionFallback />}>
           <Suspense fallback={<SectionFallback />}>
             <Skills />
-          </Suspense>
-        </LazySection>
-      </div>
-      <div id="weather" className="scroll-mt-20">
-        <LazySection fallback={<SectionFallback />}>
-          <Suspense fallback={<SectionFallback />}>
-            <Weather />
           </Suspense>
         </LazySection>
       </div>

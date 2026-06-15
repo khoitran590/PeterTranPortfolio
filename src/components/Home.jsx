@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, Mail, ArrowDown } from 'lucide-react';
 import StockQuotePanel from './StockQuotePanel';
+import { WeatherCard } from './Weather';
 import { useIntersectionRatio } from './useScrollReveal';
 
 const FactOfTheDay = () => {
@@ -125,7 +126,7 @@ const Home = () => {
       </section>
 
       {/* About Section - fills in slowly as user scrolls */}
-      <section id="about" ref={aboutFill.ref} className="relative py-24 overflow-hidden min-h-[60vh] flex items-center scroll-mt-20">
+      <section id="about" ref={aboutFill.ref} className="relative py-16 overflow-hidden flex items-center scroll-mt-20">
         {/* Ambient orbs */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-gradient-to-br from-sky-200/40 via-indigo-100/30 to-transparent blur-3xl dark:from-sky-500/15 dark:via-indigo-500/10" />
@@ -139,10 +140,16 @@ const Home = () => {
             transform: `translateY(${aboutY}px) scale(${aboutScale})`,
           }}
         >
-          <div className="flex flex-col items-center w-full">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white text-center mb-8">Market Snapshot</h2>
-            <div className="w-full max-w-xl">
-              <StockQuotePanel />
+          <div className="flex flex-col lg:flex-row lg:items-start justify-center gap-10 w-full">
+            <div className="flex flex-col items-center w-full max-w-xl">
+              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white text-center mb-8">Market Snapshot</h2>
+              <div className="w-full">
+                <StockQuotePanel />
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white text-center mb-8">Weather</h2>
+              <WeatherCard />
             </div>
           </div>
         </div>

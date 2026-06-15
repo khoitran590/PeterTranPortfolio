@@ -173,7 +173,7 @@ const ProjectCard = ({ project }) => {
 
 const Projects = () => {
   return (
-    <section className="relative min-h-screen py-20 overflow-hidden">
+    <section className="relative py-16 overflow-hidden">
       {/* Background orbs */}
       <div className="hidden md:block pointer-events-none absolute -top-32 -left-24 h-72 w-72 rounded-full bg-gradient-to-br from-sky-300/10 to-indigo-300/10 blur-2xl" />
       <div className="hidden md:block pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-gradient-to-br from-fuchsia-300/10 to-rose-300/10 blur-2xl" />

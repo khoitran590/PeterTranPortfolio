@@ -159,7 +159,7 @@ const BentoGrid = ({ items }) => (
 
 const Skills = () => {
   return (
-    <section className="relative min-h-screen py-20 overflow-hidden">
+    <section className="relative py-16 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <AnimatedHeading text="Skills" className="mt-4" />

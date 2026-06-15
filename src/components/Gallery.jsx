@@ -174,7 +174,7 @@ const Gallery = () => {
   const [isDragging, setIsDragging] = useState(false);
 
   return (
-    <section className="relative min-h-screen py-20 overflow-hidden">
+    <section className="relative py-16 overflow-hidden">
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8 text-center">
           <AnimatedHeading text="Photography Gallery" className="mt-4" />

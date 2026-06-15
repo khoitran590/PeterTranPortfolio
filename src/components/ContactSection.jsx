@@ -96,7 +96,7 @@ export function ContactCard({
 
 export default function ContactSection() {
   return (
-    <section id="contact" className="relative py-24 overflow-hidden scroll-mt-20">
+    <section id="contact" className="relative py-16 overflow-hidden scroll-mt-20">
       <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
         <ContactCard
           title="Get in Touch"

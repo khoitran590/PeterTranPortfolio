@@ -7,7 +7,7 @@ const navItems = [
   { name: 'Home', url: '#home', icon: HomeIcon },
   { name: 'Projects', url: '#projects', icon: FolderGit2 },
   { name: 'Skills', url: '#skills', icon: Code2 },
-  { name: 'Weather', url: '#weather', icon: CloudSun },
+  { name: 'Weather', url: '#about', icon: CloudSun },
   { name: 'Gallery', url: '#gallery', icon: Images },
   { name: 'Contact', url: '#contact', icon: Mail },
 ];
