@@ -16,6 +16,7 @@ import {
   SiPostgresql,
   SiFirebase,
   SiMysql,
+  SiSupabase
 } from 'react-icons/si';
 import { cn } from '../lib/utils';
 import AnimatedHeading from './ScrollFx';
@@ -50,6 +51,8 @@ const bentoItems = [
       { name: 'Python', Icon: SiPython, color: '#3776AB' },
       { name: 'C++', Icon: SiCplusplus, color: '#00599C' },
       { name: 'SQL', Icon: SiMysql, color: '#4479A1' },
+      { name: 'JavaScript', Icon: SiJavascript, color: '#F7DF1E' },
+      { name: 'TypeScript', Icon: SiTypescript, color: '#3178C6' },
     ],
   },
   {
@@ -64,6 +67,8 @@ const bentoItems = [
       { name: 'Team Leadership' },
       { name: 'Communication' },
       { name: 'Time Management' },
+      { name: 'Adaptability' },
+      { name: 'Attention to Detail' },
     ],
   },
   {
@@ -80,6 +85,7 @@ const bentoItems = [
       { name: 'MongoDB', Icon: SiMongodb, color: '#47A248' },
       { name: 'PostgreSQL', Icon: SiPostgresql, color: '#4169E1' },
       { name: 'Firebase', Icon: SiFirebase, color: '#FFCA28' },
+      { name: 'Supabase', Icon: SiSupabase, color: '#3FCF8E' },
     ],
     colSpan: 2,
   },
