@@ -1,5 +1,5 @@
 // src/components/Gallery.jsx – interactive bento gallery with draggable dock modal
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import AnimatedHeading from './ScrollFx';
@@ -38,6 +38,27 @@ const MediaItem = ({ item, className, onClick, full = false }) => (
 // Modal with the selected photo and a draggable dock of thumbnails
 const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaItems: items }) => {
   const [dockPosition, setDockPosition] = useState({ x: 0, y: 0 });
+
+  // Keyboard navigation: ←/→ to move between photos, Esc to close.
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const handleKey = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        const index = items.findIndex((item) => item.id === selectedItem.id);
+        if (index === -1) return;
+        const delta = e.key === 'ArrowRight' ? 1 : -1;
+        const next = (index + delta + items.length) % items.length;
+        setSelectedItem(items[next]);
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [isOpen, items, selectedItem, setSelectedItem, onClose]);
 
   if (!isOpen) return null;
 
@@ -186,7 +207,7 @@ const Gallery = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Click a photo to view it — drag tiles to rearrange the grid.
+            Click a photo to view it — use ← → to browse and Esc to close. Drag tiles to rearrange the grid.
           </motion.p>
         </div>
 

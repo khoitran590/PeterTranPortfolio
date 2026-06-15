@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import registerServiceWorker from './registerServiceWorker';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
   faHtml5, 
@@ -45,3 +46,6 @@ if (window.requestIdleCallback) {
 } else {
   setTimeout(() => reportWebVitals(), 2000);
 }
+
+// Enable offline support / installability (production builds only)
+registerServiceWorker();
