@@ -282,7 +282,7 @@ const WeatherSkeleton = () => (
   </div>
 );
 
-const WeatherWidget = ({ city, isCelsius, onToggleUnit }) => {
+const WeatherWidget = ({ city, isCelsius, onToggleUnit, onCityChange }) => {
   const [weather, setWeather] = useState(null);
   const [forecast, setForecast] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -514,6 +514,24 @@ const WeatherWidget = ({ city, isCelsius, onToggleUnit }) => {
             )
           )}
         </AnimatePresence>
+
+        {/* City search — kept inside the card */}
+        <form onSubmit={onCityChange} className="mt-4 pt-4 border-t border-white/10">
+          <div className="flex gap-2">
+            <input
+              type="text"
+              name="city"
+              placeholder="Enter city name..."
+              className="flex-1 min-w-0 px-3 py-2 rounded-full border border-white/10 bg-white/5 supports-[backdrop-filter]:backdrop-blur-md text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/30 shadow-sm"
+            />
+            <button
+              type="submit"
+              className="px-4 py-2 rounded-full text-sm font-semibold text-black bg-neutral-100 hover:bg-white shadow motion-safe:transition-colors"
+            >
+              Search
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
@@ -536,29 +554,11 @@ export const WeatherCard = () => {
 
   return (
     <div className="flex flex-col items-center">
-      {/* City Search */}
-      <form onSubmit={handleCityChange} className="mb-6 w-full">
-        <div className="flex gap-2 max-w-md mx-auto">
-          <input
-            type="text"
-            name="city"
-            placeholder="Enter city name..."
-            className="flex-1 px-4 py-2 rounded-full border border-white/10 bg-white/5 supports-[backdrop-filter]:backdrop-blur-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/30 shadow-sm"
-          />
-          <button
-            type="submit"
-            className="px-5 py-2.5 rounded-full text-sm font-semibold text-black bg-neutral-100 hover:bg-white shadow motion-safe:transition-colors"
-          >
-            Search
-          </button>
-        </div>
-      </form>
-
-      {/* Weather Widget */}
       <WeatherWidget
         city={city}
         isCelsius={isCelsius}
         onToggleUnit={() => setIsCelsius((c) => !c)}
+        onCityChange={handleCityChange}
       />
     </div>
   );
