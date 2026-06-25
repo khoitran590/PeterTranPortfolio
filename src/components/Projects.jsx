@@ -16,6 +16,7 @@ import {
   SiMysql,
   SiPhp,
   SiPython,
+  SiSwift,
 } from 'react-icons/si';
 
 // Map each tech label to a display name, icon and brand color.
@@ -35,6 +36,8 @@ const TECH_META = {
   mysql: { name: 'MySQL', Icon: SiMysql, color: '#4479A1' },
   php: { name: 'PHP', Icon: SiPhp, color: '#777BB4' },
   python: { name: 'Python', Icon: SiPython, color: '#3776AB' },
+  swift: { name: 'Swift', Icon: SiSwift, color: '#FA7343' },
+  swiftui: { name: 'SwiftUI', Icon: SiSwift, color: '#FA7343' },
 };
 
 const getTech = (label) =>
@@ -47,6 +50,13 @@ const projects = [
     description: 'A travel-expenses app for efficient group expense management.',
     technologies: ['ReactNative', 'Node.js', 'Firebase', 'ExpressJS', 'Expo', 'TypeScipt'],
     link: 'https://github.com/hungbenjamin402/tripsplit_capstone',
+  },
+  {
+    title: 'Tripsplit IOS',
+    subtitle: 'iOS Expense Splitting App',
+    description: 'Native iOS application for splitting travel expenses and managing group payments.',
+    technologies: ['Swift', 'SwiftUI', 'Supabase'],
+    link: 'https://github.com/khoitran590/TripsplitIOS',
   },
   {
     title: 'Movielly',
