@@ -24,21 +24,21 @@ export default function SinglePage() {
       <Suspense fallback={<SectionFallback />}>
         <Home />
       </Suspense>
-      <div id="projects" className="scroll-mt-20">
+      <div id="projects" className="scroll-mt-24">
         <LazySection fallback={<SectionFallback />}>
           <Suspense fallback={<SectionFallback />}>
             <Projects />
           </Suspense>
         </LazySection>
       </div>
-      <div id="skills" className="scroll-mt-20">
+      <div id="skills" className="scroll-mt-24">
         <LazySection fallback={<SectionFallback />}>
           <Suspense fallback={<SectionFallback />}>
             <Skills />
           </Suspense>
         </LazySection>
       </div>
-      <div id="gallery" className="scroll-mt-20">
+      <div id="gallery" className="scroll-mt-24">
         <LazySection fallback={<SectionFallback />}>
           <Suspense fallback={<SectionFallback />}>
             <Gallery />

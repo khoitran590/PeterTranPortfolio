@@ -1,6 +1,7 @@
 // src/components/NavBar.jsx – tubelight bottom/top nav, adapted for CRA
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Moon, Sun } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 /**
@@ -10,18 +11,8 @@ import { cn } from '../lib/utils';
  * @property {import('lucide-react').LucideIcon} icon
  */
 
-export function NavBar({ items, className }) {
+export function NavBar({ items, className, isDark, onToggleTheme }) {
   const [activeTab, setActiveTab] = useState(items[0].name);
-  const [, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   // Keep the active tab in sync with the section currently in view.
   useEffect(() => {
@@ -52,11 +43,11 @@ export function NavBar({ items, className }) {
   return (
     <div
       className={cn(
-        'fixed bottom-0 sm:top-0 left-1/2 -translate-x-1/2 z-50 mb-6 sm:pt-6 pointer-events-none',
+        'fixed bottom-4 sm:top-5 sm:bottom-auto left-1/2 -translate-x-1/2 z-50 pointer-events-none',
         className
       )}
     >
-      <div className="pointer-events-auto flex items-center gap-3 bg-black/30 border border-white/10 backdrop-blur-lg py-1 px-1 rounded-full shadow-lg">
+      <div className="site-nav pointer-events-auto flex items-center gap-1 py-1 px-1 rounded-full shadow-lg">
         {items.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.name;
@@ -65,11 +56,16 @@ export function NavBar({ items, className }) {
             <a
               key={item.name}
               href={item.url}
-              onClick={() => setActiveTab(item.name)}
+              onClick={(event) => {
+                event.preventDefault();
+                setActiveTab(item.name);
+                document.getElementById(item.url.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              aria-current={isActive ? 'page' : undefined}
               className={cn(
-                'relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-colors',
-                'text-white/70 hover:text-white',
-                isActive && 'bg-white/10 text-white'
+                'relative cursor-pointer text-sm font-semibold px-3 sm:px-4 lg:px-5 py-2 rounded-full transition-colors',
+                'nav-link',
+                isActive && 'nav-link-active'
               )}
             >
               <span className="hidden md:inline">{item.name}</span>
@@ -93,6 +89,14 @@ export function NavBar({ items, className }) {
             </a>
           );
         })}
+        <button
+          type="button"
+          onClick={onToggleTheme}
+          className="theme-toggle ml-1 inline-flex h-9 w-9 items-center justify-center rounded-full"
+          aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+        >
+          {isDark ? <Sun size={17} /> : <Moon size={17} />}
+        </button>
       </div>
     </div>
   );

@@ -60,7 +60,7 @@ const Home = () => {
       {/* Fact of the Day - top of page */}
       <FactOfTheDay />
       {/* Hero Section - dark monochrome */}
-      <section id="home" className="relative flex items-center justify-center min-h-screen overflow-hidden scroll-mt-20">
+      <section id="home" className="relative flex items-center justify-center min-h-screen overflow-hidden scroll-mt-24">
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 z-10 w-full">
           <div className="flex flex-col items-center text-center">
             {/* Gradient sphere */}
@@ -130,7 +130,7 @@ const Home = () => {
       </section>
 
       {/* About Section - fills in slowly as user scrolls */}
-      <section id="about" ref={aboutFill.ref} className="relative py-16 overflow-hidden flex items-center scroll-mt-20">
+      <section id="about" ref={aboutFill.ref} className="relative py-20 overflow-hidden flex items-center scroll-mt-24">
         <div
           className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full transition-[opacity,transform] duration-500 ease-out"
           style={{
@@ -140,12 +140,14 @@ const Home = () => {
         >
           <div className="flex flex-col lg:flex-row lg:items-start justify-center gap-10 w-full">
             <div className="flex flex-col items-center w-full max-w-xl">
+              <p className="section-kicker">A quick look</p>
               <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white text-center mb-8">Market Snapshot</h2>
               <div className="w-full">
                 <StockQuotePanel />
               </div>
             </div>
             <div className="flex flex-col items-center">
+              <p className="section-kicker">Right now</p>
               <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white text-center mb-8">Weather</h2>
               <WeatherCard />
             </div>

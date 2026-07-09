@@ -1,8 +1,18 @@
 import { render, screen } from '@testing-library/react';
+
+jest.mock(
+  'lenis/react',
+  () => ({ __esModule: true, default: ({ children }) => children }),
+  { virtual: true }
+);
+
+jest.mock('./components/Weather', () => ({
+  WeatherCard: () => <div>Weather</div>,
+}));
+
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders the portfolio heading', async () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(await screen.findByRole('heading', { name: /peter tran/i })).toBeInTheDocument();
 });

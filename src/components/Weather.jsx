@@ -14,7 +14,6 @@ import {
   Thermometer,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import AnimatedHeading from './ScrollFx';
 
 const API_KEY = '6a6b48405c070ffa29c6e7a4ea6c6499';
 
@@ -563,16 +562,3 @@ export const WeatherCard = () => {
     </div>
   );
 };
-
-const Weather = () => (
-  <section className="relative py-16 overflow-hidden">
-    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="text-center mb-12">
-        <AnimatedHeading text="Weather" className="mt-4" />
-      </div>
-      <WeatherCard />
-    </div>
-  </section>
-);
-
-export default Weather;
