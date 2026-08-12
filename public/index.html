@@ -7,8 +7,11 @@
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="Portfolio of Peter Tran, a software engineer focused on web and mobile development."
+      content="Peter Tran is a software engineer building thoughtful web and mobile applications."
     />
+    <meta property="og:title" content="Peter Tran — Software Engineer" />
+    <meta property="og:description" content="Selected web and mobile projects by Peter Tran." />
+    <meta property="og:type" content="website" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -18,20 +21,16 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <link rel="preconnect" href="https://api.api-ninjas.com" crossorigin />
-    <link rel="preconnect" href="https://api.openweathermap.org" crossorigin />
     <link rel="preconnect" href="https://api.emailjs.com" crossorigin />
     <!-- Apply saved/system theme before styles load to avoid flicker -->
     <script>
       (function() {
         try {
-          var saved = localStorage.getItem('theme');
-          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          if (saved === 'dark' || (!saved && prefersDark)) {
-            document.documentElement.classList.add('dark');
-          } else {
-            document.documentElement.classList.remove('dark');
-          }
+          var saved = localStorage.getItem('portfolio-theme');
+          var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+          var isDark = saved ? saved === 'dark' : !prefersLight;
+          document.documentElement.classList.toggle('dark', isDark);
+          document.documentElement.classList.toggle('theme-light', !isDark);
         } catch (e) { /* no-op */ }
       })();
     </script>

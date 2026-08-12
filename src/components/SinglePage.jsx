@@ -1,11 +1,12 @@
-// src/components/SinglePage.jsx – unified single-page layout with progressive loading
+// src/components/SinglePage.jsx – recruiter-first single-page layout
 import React, { Suspense } from 'react';
 import LazySection from './LazySection';
 import ContactSection from './ContactSection';
+import Home from './Home';
+import Projects from './Projects';
+import About from './About';
+import Skills from './Skills';
 
-const Home = React.lazy(() => import('./Home'));
-const Projects = React.lazy(() => import('./Projects'));
-const Skills = React.lazy(() => import('./Skills'));
 const Gallery = React.lazy(() => import('./Gallery'));
 
 const SectionFallback = () => (
@@ -21,23 +22,10 @@ const SectionFallback = () => (
 export default function SinglePage() {
   return (
     <div className="min-h-screen">
-      <Suspense fallback={<SectionFallback />}>
-        <Home />
-      </Suspense>
-      <div id="projects" className="scroll-mt-24">
-        <LazySection fallback={<SectionFallback />}>
-          <Suspense fallback={<SectionFallback />}>
-            <Projects />
-          </Suspense>
-        </LazySection>
-      </div>
-      <div id="skills" className="scroll-mt-24">
-        <LazySection fallback={<SectionFallback />}>
-          <Suspense fallback={<SectionFallback />}>
-            <Skills />
-          </Suspense>
-        </LazySection>
-      </div>
+      <Home />
+      <Projects />
+      <About />
+      <Skills />
       <div id="gallery" className="scroll-mt-24">
         <LazySection fallback={<SectionFallback />}>
           <Suspense fallback={<SectionFallback />}>

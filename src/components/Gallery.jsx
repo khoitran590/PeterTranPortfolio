@@ -1,308 +1,177 @@
-// src/components/Gallery.jsx – interactive bento gallery with draggable dock modal
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
-import AnimatedHeading from './ScrollFx';
+// src/components/Gallery.jsx – accessible personal photography gallery
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 const mediaItems = [
-  { id: 1, type: 'image', title: 'Photo 1', desc: '', url: '/assets/opt/DSCF2424-2_full.jpg', thumb: '/assets/opt/DSCF2424-2_thumb.jpg', span: 'sm:col-span-2 sm:row-span-4 col-span-1 row-span-3' },
-  { id: 2, type: 'image', title: 'Photo 2', desc: '', url: '/assets/opt/PIC00687-2_full.jpg', thumb: '/assets/opt/PIC00687-2_thumb.jpg', span: 'col-span-1 row-span-3' },
-  { id: 3, type: 'image', title: 'Photo 3', desc: '', url: '/assets/opt/PIC00210_full.jpg', thumb: '/assets/opt/PIC00210_thumb.jpg', span: 'col-span-1 row-span-3' },
-  { id: 4, type: 'image', title: 'Photo 4', desc: '', url: '/assets/opt/PIC00211_full.jpg', thumb: '/assets/opt/PIC00211_thumb.jpg', span: 'col-span-1 row-span-4' },
-  { id: 5, type: 'image', title: 'Photo 5', desc: '', url: '/assets/opt/PIC00523_full.jpg', thumb: '/assets/opt/PIC00523_thumb.jpg', span: 'col-span-1 row-span-3' },
-  { id: 6, type: 'image', title: 'Photo 6', desc: '', url: '/assets/opt/000223860028_full.jpg', thumb: '/assets/opt/000223860028_thumb.jpg', span: 'sm:col-span-2 sm:row-span-3 col-span-1 row-span-3' },
-  { id: 7, type: 'image', title: 'Photo 7', desc: '', url: '/assets/opt/IMG_2508_full.jpg', thumb: '/assets/opt/IMG_2508_thumb.jpg', span: 'col-span-1 row-span-4' },
-  { id: 8, type: 'image', title: 'Photo 8', desc: '', url: '/assets/opt/IMG_2510_full.jpg', thumb: '/assets/opt/IMG_2510_thumb.jpg', span: 'col-span-1 row-span-3' },
-  { id: 9, type: 'image', title: 'Photo 9', desc: '', url: '/assets/opt/IMG_2522_full.jpg', thumb: '/assets/opt/IMG_2522_thumb.jpg', span: 'col-span-1 row-span-4' },
-  { id: 10, type: 'image', title: 'Photo 10', desc: '', url: '/assets/opt/IMG_2524_full.jpg', thumb: '/assets/opt/IMG_2524_thumb.jpg', span: 'sm:col-span-2 sm:row-span-3 col-span-1 row-span-3' },
-  { id: 11, type: 'image', title: 'Photo 11', desc: '', url: '/assets/opt/IMG_2526_full.jpg', thumb: '/assets/opt/IMG_2526_thumb.jpg', span: 'col-span-1 row-span-3' },
-  { id: 12, type: 'image', title: 'Photo 12', desc: '', url: '/assets/opt/IMG_2527_full.jpg', thumb: '/assets/opt/IMG_2527_thumb.jpg', span: 'col-span-1 row-span-3' },
-  { id: 13, type: 'image', title: 'Photo 13', desc: '', url: '/assets/opt/PIC00027_full.jpg', thumb: '/assets/opt/PIC00027_thumb.jpg', span: 'col-span-1 row-span-3' },
-
+  { id: 1, title: 'Photography 01', url: '/assets/opt/DSCF2424-2_full.jpg', thumb: '/assets/opt/DSCF2424-2_thumb.jpg', span: 'sm:col-span-2 sm:row-span-4' },
+  { id: 2, title: 'Photography 02', url: '/assets/opt/PIC00687-2_full.jpg', thumb: '/assets/opt/PIC00687-2_thumb.jpg', span: 'sm:row-span-3' },
+  { id: 3, title: 'Photography 03', url: '/assets/opt/PIC00210_full.jpg', thumb: '/assets/opt/PIC00210_thumb.jpg', span: 'sm:row-span-3' },
+  { id: 4, title: 'Photography 04', url: '/assets/opt/PIC00211_full.jpg', thumb: '/assets/opt/PIC00211_thumb.jpg', span: 'sm:row-span-4' },
+  { id: 5, title: 'Photography 05', url: '/assets/opt/PIC00523_full.jpg', thumb: '/assets/opt/PIC00523_thumb.jpg', span: 'sm:row-span-3' },
+  { id: 6, title: 'Photography 06', url: '/assets/opt/000223860028_full.jpg', thumb: '/assets/opt/000223860028_thumb.jpg', span: 'sm:col-span-2 sm:row-span-3' },
 ];
 
-// Renders an image media item (video support could be added later).
-// Uses the small thumbnail by default; pass `full` for the modal-size image.
-const MediaItem = ({ item, className, onClick, full = false }) => (
-  <img
-    src={full ? item.url : item.thumb || item.url}
-    alt={item.title}
-    className={`${className} ${full ? 'object-contain' : 'object-cover'} cursor-pointer`}
-    onClick={onClick}
-    loading="lazy"
-    decoding="async"
-    style={{ imageOrientation: 'from-image' }}
-  />
-);
+function GalleryDialog({ item, onClose, onPrevious, onNext }) {
+  const closeButtonRef = useRef(null);
+  const dialogRef = useRef(null);
 
-// Modal with the selected photo and a draggable dock of thumbnails
-const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaItems: items }) => {
-  const [dockPosition, setDockPosition] = useState({ x: 0, y: 0 });
-
-  // Keyboard navigation: ←/→ to move between photos, Esc to close.
   useEffect(() => {
-    if (!isOpen) return undefined;
-    const handleKey = (e) => {
-      if (e.key === 'Escape') {
-        onClose();
-        return;
+    closeButtonRef.current?.focus();
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') onClose();
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        onPrevious();
       }
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-        e.preventDefault();
-        const index = items.findIndex((item) => item.id === selectedItem.id);
-        if (index === -1) return;
-        const delta = e.key === 'ArrowRight' ? 1 : -1;
-        const next = (index + delta + items.length) % items.length;
-        setSelectedItem(items[next]);
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        onNext();
+      }
+      if (event.key === 'Tab') {
+        const focusable = dialogRef.current?.querySelectorAll('button:not([disabled])');
+        if (!focusable?.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
       }
     };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [isOpen, items, selectedItem, setSelectedItem, onClose]);
 
-  if (!isOpen) return null;
-
-  return (
-    <>
-      {/* Main Modal */}
-      <motion.div
-        initial={{ scale: 0.98, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.98, opacity: 0 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-        className="fixed inset-0 w-full min-h-screen bg-black/80 backdrop-blur-lg overflow-hidden z-[70]"
-      >
-        <div className="h-full flex flex-col">
-          <div className="flex-1 p-2 sm:p-3 md:p-4 flex items-center justify-center">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedItem.id}
-                className="relative max-w-[92vw] max-h-[85vh] rounded-lg overflow-hidden shadow-md"
-                initial={{ y: 20, scale: 0.97 }}
-                animate={{
-                  y: 0,
-                  scale: 1,
-                  transition: { type: 'spring', stiffness: 500, damping: 30, mass: 0.5 },
-                }}
-                exit={{ y: 20, scale: 0.97, transition: { duration: 0.15 } }}
-                onClick={onClose}
-              >
-                <MediaItem
-                  item={selectedItem}
-                  full
-                  className="block w-auto h-auto max-w-[92vw] max-h-[85vh] object-contain bg-black/40"
-                  onClick={onClose}
-                />
-                {selectedItem.desc && (
-                  <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 bg-gradient-to-t from-black/50 to-transparent">
-                    <h3 className="text-white text-base sm:text-lg md:text-xl font-semibold">
-                      {selectedItem.title}
-                    </h3>
-                    <p className="text-white/80 text-xs sm:text-sm mt-1">{selectedItem.desc}</p>
-                  </div>
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-
-        {/* Close Button */}
-        <motion.button
-          className="absolute top-2 sm:top-2.5 md:top-3 right-2 sm:right-2.5 md:right-3 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 text-xs sm:text-sm backdrop-blur-sm"
-          onClick={onClose}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          aria-label="Close gallery"
-        >
-          <X className="w-3 h-3" />
-        </motion.button>
-      </motion.div>
-
-      {/* Draggable Dock */}
-      <motion.div
-        drag
-        dragMomentum={false}
-        dragElastic={0.1}
-        initial={false}
-        animate={{ x: dockPosition.x, y: dockPosition.y }}
-        onDragEnd={(_, info) => {
-          setDockPosition((prev) => ({
-            x: prev.x + info.offset.x,
-            y: prev.y + info.offset.y,
-          }));
-        }}
-        className="fixed z-[80] left-1/2 bottom-4 -translate-x-1/2 touch-none"
-      >
-        <motion.div className="relative rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg cursor-grab active:cursor-grabbing">
-          <div className="flex items-center -space-x-2 px-3 py-2">
-            {items.map((item, index) => (
-              <motion.div
-                key={item.id}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedItem(item);
-                }}
-                style={{
-                  zIndex: selectedItem.id === item.id ? 30 : items.length - index,
-                }}
-                className={`
-                  relative group
-                  w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 flex-shrink-0
-                  rounded-lg overflow-hidden
-                  cursor-pointer hover:z-20
-                  ${selectedItem.id === item.id
-                    ? 'ring-2 ring-white/70 shadow-lg'
-                    : 'hover:ring-2 hover:ring-white/30'}
-                `}
-                initial={{ rotate: index % 2 === 0 ? -15 : 15 }}
-                animate={{
-                  scale: selectedItem.id === item.id ? 1.2 : 1,
-                  rotate: selectedItem.id === item.id ? 0 : index % 2 === 0 ? -15 : 15,
-                  y: selectedItem.id === item.id ? -8 : 0,
-                }}
-                whileHover={{
-                  scale: 1.3,
-                  rotate: 0,
-                  y: -10,
-                  transition: { type: 'spring', stiffness: 400, damping: 25 },
-                }}
-              >
-                <MediaItem
-                  item={item}
-                  className="w-full h-full"
-                  onClick={() => setSelectedItem(item)}
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-white/20" />
-                {selectedItem.id === item.id && (
-                  <motion.div
-                    layoutId="activeGlow"
-                    className="absolute -inset-2 bg-white/20 blur-xl"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.2 }}
-                  />
-                )}
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </motion.div>
-    </>
-  );
-};
-
-const Gallery = () => {
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [items, setItems] = useState(mediaItems);
-  const [isDragging, setIsDragging] = useState(false);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose, onNext, onPrevious]);
 
   return (
-    <section className="relative py-16 overflow-hidden">
-      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 text-center">
-          <AnimatedHeading text="Photography Gallery" className="mt-4" />
-          <motion.p
-            className="mt-3 text-sm sm:text-base text-gray-400"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+    <div
+      className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/90 p-4 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="gallery-dialog-title"
+    >
+      <div ref={dialogRef} className="relative flex max-h-[92vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-white/15 bg-slate-900 shadow-2xl">
+        <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
+          <p id="gallery-dialog-title" className="text-sm font-semibold text-white">
+            {item.title}
+          </p>
+          <button
+            ref={closeButtonRef}
+            type="button"
+            onClick={onClose}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300"
+            aria-label="Close photography viewer"
           >
-            Click a photo to view it — use ← → to browse and Esc to close. Drag tiles to rearrange the grid.
-          </motion.p>
+            <X size={20} aria-hidden="true" />
+          </button>
+        </div>
+        <div className="relative flex min-h-0 flex-1 items-center justify-center bg-black p-2 sm:p-5">
+          <img
+            src={item.url}
+            alt={`${item.title} by Peter Tran`}
+            className="max-h-[72vh] max-w-full object-contain"
+          />
+          <button
+            type="button"
+            onClick={onPrevious}
+            className="absolute left-3 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-slate-950/75 text-white transition-colors hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 sm:left-5"
+            aria-label="View previous photo"
+          >
+            <ChevronLeft size={22} aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            onClick={onNext}
+            className="absolute right-3 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-slate-950/75 text-white transition-colors hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 sm:right-5"
+            aria-label="View next photo"
+          >
+            <ChevronRight size={22} aria-hidden="true" />
+          </button>
+        </div>
+        <p className="px-5 py-4 text-sm text-white/65">Use the arrow keys to browse, or Escape to close.</p>
+      </div>
+    </div>
+  );
+}
+
+export default function Gallery() {
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const openerRef = useRef(null);
+  const selectedItem = selectedIndex === null ? null : mediaItems[selectedIndex];
+
+  const openGallery = useCallback((index, event) => {
+    openerRef.current = event.currentTarget;
+    setSelectedIndex(index);
+  }, []);
+
+  const closeGallery = useCallback(() => {
+    setSelectedIndex(null);
+    window.setTimeout(() => openerRef.current?.focus(), 0);
+  }, []);
+
+  const showPrevious = useCallback(() => {
+    setSelectedIndex((index) => (index === 0 ? mediaItems.length - 1 : index - 1));
+  }, []);
+
+  const showNext = useCallback(() => {
+    setSelectedIndex((index) => (index === mediaItems.length - 1 ? 0 : index + 1));
+  }, []);
+
+  return (
+    <section aria-labelledby="gallery-heading" className="relative py-20 sm:py-24">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-10 max-w-2xl">
+          <p className="section-kicker">Beyond the code</p>
+          <h2 id="gallery-heading" className="mt-3 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+            A little perspective outside the screen.
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-white/65 sm:text-lg">
+            Photography is a personal creative practice that keeps me observant, curious, and
+            attentive to detail.
+          </p>
         </div>
 
-        <AnimatePresence mode="wait">
-          {selectedItem ? (
-            <GalleryModal
-              selectedItem={selectedItem}
-              isOpen={true}
-              onClose={() => setSelectedItem(null)}
-              setSelectedItem={setSelectedItem}
-              mediaItems={items}
-            />
-          ) : (
-            <motion.div
-              className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-3 auto-rows-[60px]"
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-              }}
+        <div className="grid auto-rows-[120px] grid-cols-2 gap-3 sm:grid-cols-3 sm:auto-rows-[100px] md:grid-cols-4">
+          {mediaItems.map((item, index) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={(event) => openGallery(index, event)}
+              className={`group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 text-left outline-none transition-transform duration-300 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-indigo-300 ${item.span}`}
+              aria-label={`View ${item.title}`}
             >
-              {items.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  layoutId={`media-${item.id}`}
-                  className={`relative overflow-hidden rounded-xl cursor-move border border-white/10 ${item.span}`}
-                  onClick={() => !isDragging && setSelectedItem(item)}
-                  variants={{
-                    hidden: { y: 50, scale: 0.9, opacity: 0 },
-                    visible: {
-                      y: 0,
-                      scale: 1,
-                      opacity: 1,
-                      transition: {
-                        type: 'spring',
-                        stiffness: 350,
-                        damping: 25,
-                        delay: index * 0.05,
-                      },
-                    },
-                  }}
-                  whileHover={{ scale: 1.02 }}
-                  drag
-                  dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                  dragElastic={1}
-                  onDragStart={() => setIsDragging(true)}
-                  onDragEnd={(e, info) => {
-                    setIsDragging(false);
-                    const moveDistance = info.offset.x + info.offset.y;
-                    if (Math.abs(moveDistance) > 50) {
-                      const newItems = [...items];
-                      const draggedItem = newItems[index];
-                      const targetIndex =
-                        moveDistance > 0
-                          ? Math.min(index + 1, items.length - 1)
-                          : Math.max(index - 1, 0);
-                      newItems.splice(index, 1);
-                      newItems.splice(targetIndex, 0, draggedItem);
-                      setItems(newItems);
-                    }
-                  }}
-                >
-                  <MediaItem
-                    item={item}
-                    className="absolute inset-0 w-full h-full"
-                    onClick={() => !isDragging && setSelectedItem(item)}
-                  />
-                  <motion.div
-                    className="absolute inset-0 flex flex-col justify-end p-2 sm:p-3 md:p-4"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="absolute inset-0 flex flex-col justify-end p-2 sm:p-3 md:p-4">
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                      <h3 className="relative text-white text-xs sm:text-sm md:text-base font-medium line-clamp-1">
-                        {item.title}
-                      </h3>
-                      {item.desc && (
-                        <p className="relative text-white/70 text-[10px] sm:text-xs md:text-sm mt-0.5 line-clamp-2">
-                          {item.desc}
-                        </p>
-                      )}
-                    </div>
-                  </motion.div>
-                </motion.div>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <img
+                src={item.thumb}
+                alt=""
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+                decoding="async"
+              />
+              <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/85 to-transparent px-3 pb-3 pt-8 text-sm font-semibold text-white">
+                {item.title}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
+
+      {selectedItem ? (
+        <GalleryDialog
+          item={selectedItem}
+          onClose={closeGallery}
+          onPrevious={showPrevious}
+          onNext={showNext}
+        />
+      ) : null}
     </section>
   );
-};
-
-export default Gallery;
+}

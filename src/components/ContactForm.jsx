@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import emailjs from 'emailjs-com';
 
+const DIRECT_EMAIL = 'khoitran590@gmail.com';
+
 const hasEnv = () => (
   !!process.env.REACT_APP_EMAILJS_SERVICE_ID &&
   !!process.env.REACT_APP_EMAILJS_TEMPLATE_ID &&
@@ -12,6 +14,7 @@ const ContactForm = ({ compact = false, onSent }) => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('');
   const [sending, setSending] = useState(false);
+  const isConfigured = hasEnv();
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -20,7 +23,7 @@ const ContactForm = ({ compact = false, onSent }) => {
     setStatus('');
     setSending(true);
 
-    if (hasEnv()) {
+    if (isConfigured) {
       try {
         await emailjs.send(
           process.env.REACT_APP_EMAILJS_SERVICE_ID,
@@ -31,50 +34,64 @@ const ContactForm = ({ compact = false, onSent }) => {
         setStatus('Message sent successfully!');
         setFormData({ name: '', email: '', message: '' });
         onSent && onSent();
-      } catch (err) {
+      } catch {
         setStatus('Failed to send message, please try again.');
       } finally {
         setSending(false);
       }
     } else {
-      // Fallback: open mail client if EmailJS is not configured
-      const mailto = `mailto:khoitran590@gmail.com?subject=Portfolio%20message%20from%20${encodeURIComponent(formData.name)}&body=${encodeURIComponent(formData.message + '\n\nfrom: ' + formData.email)}`;
+      setStatus('Opening your email app…');
+      const mailto = `mailto:${DIRECT_EMAIL}?subject=Portfolio%20message%20from%20${encodeURIComponent(formData.name)}&body=${encodeURIComponent(formData.message + '\n\nfrom: ' + formData.email)}`;
       window.location.href = mailto;
       setSending(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4" aria-describedby="contact-form-note">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
+        <div>
+          <label className="sr-only" htmlFor="contact-name">Your name</label>
+          <input
+            id="contact-name"
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="Your name"
+            autoComplete="name"
+            required
+            className="w-full px-4 py-3 rounded-full border border-black/5 dark:border-white/10 bg-white/90 dark:bg-gray-800/60 supports-[backdrop-filter]:backdrop-blur text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/40"
+          />
+        </div>
+        <div>
+          <label className="sr-only" htmlFor="contact-email">Email address</label>
+          <input
+            id="contact-email"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Email address"
+            autoComplete="email"
+            required
+            className="w-full px-4 py-3 rounded-full border border-black/5 dark:border-white/10 bg-white/90 dark:bg-gray-800/60 supports-[backdrop-filter]:backdrop-blur text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/40"
+          />
+        </div>
+      </div>
+      <div>
+        <label className="sr-only" htmlFor="contact-message">Your message</label>
+        <textarea
+          id="contact-message"
+          name="message"
+          value={formData.message}
           onChange={handleChange}
-          placeholder="Your name"
+          rows={compact ? 3 : 5}
+          placeholder="Write your message..."
           required
-          className="w-full px-4 py-3 rounded-full border border-black/5 dark:border-white/10 bg-white/90 dark:bg-gray-800/60 supports-[backdrop-filter]:backdrop-blur text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/40"
-        />
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Email address"
-          required
-          className="w-full px-4 py-3 rounded-full border border-black/5 dark:border-white/10 bg-white/90 dark:bg-gray-800/60 supports-[backdrop-filter]:backdrop-blur text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/40"
+          className="w-full px-4 py-3 rounded-2xl border border-black/5 dark:border-white/10 bg-white/90 dark:bg-gray-800/60 supports-[backdrop-filter]:backdrop-blur text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/40"
         />
       </div>
-      <textarea
-        name="message"
-        value={formData.message}
-        onChange={handleChange}
-        rows={compact ? 3 : 5}
-        placeholder="Write your message..."
-        required
-        className="w-full px-4 py-3 rounded-2xl border border-black/5 dark:border-white/10 bg-white/90 dark:bg-gray-800/60 supports-[backdrop-filter]:backdrop-blur text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/40"
-      />
       <div className="flex items-center justify-between gap-3">
         <button
           type="submit"
@@ -84,9 +101,14 @@ const ContactForm = ({ compact = false, onSent }) => {
           {sending ? 'Sending…' : 'Send Message'}
         </button>
         {status && (
-          <span className="text-sm text-gray-600 dark:text-gray-300">{status}</span>
+          <span role="status" aria-live="polite" className="text-sm text-gray-600 dark:text-gray-300">{status}</span>
         )}
       </div>
+      <p id="contact-form-note" className="text-xs leading-relaxed text-gray-500 dark:text-gray-400">
+        {!isConfigured ? (
+          <>Submitting opens your email app. Prefer a direct link? <a href={`mailto:${DIRECT_EMAIL}`} className="font-semibold text-gray-700 underline underline-offset-2 hover:text-gray-950 dark:text-gray-200 dark:hover:text-white">{DIRECT_EMAIL}</a></>
+        ) : 'I’ll respond to your message as soon as I can.'}
+      </p>
     </form>
   );
 };

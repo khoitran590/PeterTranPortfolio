@@ -1,18 +1,12 @@
 import { render, screen } from '@testing-library/react';
 
-jest.mock(
-  'lenis/react',
-  () => ({ __esModule: true, default: ({ children }) => children }),
-  { virtual: true }
-);
-
-jest.mock('./components/Weather', () => ({
-  WeatherCard: () => <div>Weather</div>,
-}));
-
 import App from './App';
 
-test('renders the portfolio heading', async () => {
+test('renders recruiter-first hero actions', () => {
   render(<App />);
-  expect(await screen.findByRole('heading', { name: /peter tran/i })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: /peter tran/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /view selected work/i })).toHaveAttribute('href', '#projects');
+  screen.getAllByRole('link', { name: /download résumé/i }).forEach((link) => {
+    expect(link).toHaveAttribute('href', '/assets/Peter_Tran_Resume.pdf');
+  });
 });

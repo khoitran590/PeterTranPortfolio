@@ -43,11 +43,11 @@ export function NavBar({ items, className, isDark, onToggleTheme }) {
   return (
     <div
       className={cn(
-        'fixed bottom-4 sm:top-5 sm:bottom-auto left-1/2 -translate-x-1/2 z-50 pointer-events-none',
+        'fixed bottom-3 sm:top-5 sm:bottom-auto left-1/2 -translate-x-1/2 z-50 pointer-events-none',
         className
       )}
     >
-      <div className="site-nav pointer-events-auto flex items-center gap-1 py-1 px-1 rounded-full shadow-lg">
+      <nav aria-label="Primary navigation" className="site-nav pointer-events-auto flex items-center gap-1 rounded-2xl px-1 py-1 shadow-lg sm:rounded-full">
         {items.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.name;
@@ -59,19 +59,24 @@ export function NavBar({ items, className, isDark, onToggleTheme }) {
               onClick={(event) => {
                 event.preventDefault();
                 setActiveTab(item.name);
-                document.getElementById(item.url.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                document.getElementById(item.url.slice(1))?.scrollIntoView({
+                  behavior: prefersReducedMotion ? 'auto' : 'smooth',
+                  block: 'start',
+                });
               }}
-              aria-current={isActive ? 'page' : undefined}
+              aria-current={isActive ? 'location' : undefined}
               className={cn(
-                'relative cursor-pointer text-sm font-semibold px-3 sm:px-4 lg:px-5 py-2 rounded-full transition-colors',
+                'relative inline-flex min-w-[3.25rem] flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-1.5 text-[10px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 sm:min-w-0 sm:flex-row sm:gap-2 sm:rounded-full sm:px-4 sm:py-2 sm:text-sm lg:px-5',
                 'nav-link',
+                !item.mobile && 'hidden sm:inline-flex',
                 isActive && 'nav-link-active'
               )}
             >
-              <span className="hidden md:inline">{item.name}</span>
-              <span className="md:hidden">
-                <Icon size={18} strokeWidth={2.5} />
+              <span className="sm:hidden" aria-hidden="true">
+                <Icon size={16} strokeWidth={2.5} />
               </span>
+              <span>{item.name}</span>
               {isActive && (
                 <motion.div
                   layoutId="lamp"
@@ -92,12 +97,13 @@ export function NavBar({ items, className, isDark, onToggleTheme }) {
         <button
           type="button"
           onClick={onToggleTheme}
-          className="theme-toggle ml-1 inline-flex h-9 w-9 items-center justify-center rounded-full"
+          className="theme-toggle ml-1 inline-flex h-9 w-9 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300"
           aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+          title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
         >
           {isDark ? <Sun size={17} /> : <Moon size={17} />}
         </button>
-      </div>
+      </nav>
     </div>
   );
 }

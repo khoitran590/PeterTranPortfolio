@@ -19,7 +19,6 @@ import {
   SiSupabase
 } from 'react-icons/si';
 import { cn } from '../lib/utils';
-import AnimatedHeading from './ScrollFx';
 
 const bentoItems = [
   {
@@ -28,7 +27,6 @@ const bentoItems = [
     description:
       'Building responsive, accessible interfaces with modern frameworks and clean component architecture.',
     icon: <Monitor className="w-4 h-4 text-sky-400" />,
-    status: 'Featured',
     skills: [
       { name: 'HTML5', Icon: SiHtml5, color: '#E34F26' },
       { name: 'CSS3', Icon: SiCss, color: '#1572B6' },
@@ -39,14 +37,12 @@ const bentoItems = [
       { name: 'Tailwind CSS', Icon: SiTailwindcss, color: '#38BDF8' },
     ],
     colSpan: 2,
-    hasPersistentHover: true,
   },
   {
     title: 'Languages',
     meta: 'Core',
     description: 'General-purpose languages for systems, scripting, and data.',
     icon: <Code2 className="w-4 h-4 text-amber-400" />,
-    status: 'Active',
     skills: [
       { name: 'Python', Icon: SiPython, color: '#3776AB' },
       { name: 'C++', Icon: SiCplusplus, color: '#00599C' },
@@ -61,7 +57,6 @@ const bentoItems = [
     description:
       'Leading teams, communicating clearly, and solving problems under pressure.',
     icon: <Users className="w-4 h-4 text-fuchsia-400" />,
-    status: 'Active',
     skills: [
       { name: 'Problem Solving' },
       { name: 'Team Leadership' },
@@ -77,7 +72,6 @@ const bentoItems = [
     description:
       'Designing APIs and data layers with relational and document databases.',
     icon: <Server className="w-4 h-4 text-emerald-400" />,
-    status: 'Featured',
     skills: [
       { name: 'Node.js', Icon: SiNodedotjs, color: '#5FA04E' },
       { name: 'Python', Icon: SiPython, color: '#3776AB' },
@@ -100,17 +94,15 @@ const BentoGrid = ({ items }) => (
           'group relative p-5 rounded-xl overflow-hidden transition-all duration-300',
           'border border-white/10 bg-white/[0.03]',
           'hover:shadow-[0_2px_12px_rgba(255,255,255,0.05)]',
-          'hover:-translate-y-0.5 will-change-transform',
+          'hover:-translate-y-0.5',
           item.colSpan === 2 ? 'md:col-span-2' : 'col-span-1',
-          item.hasPersistentHover &&
-            '-translate-y-0.5 shadow-[0_2px_12px_rgba(255,255,255,0.05)]'
         )}
       >
         {/* dotted texture overlay */}
         <div
           className={cn(
             'absolute inset-0 transition-opacity duration-300',
-            item.hasPersistentHover ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+            'opacity-0 group-hover:opacity-100'
           )}
         >
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[length:4px_4px]" />
@@ -122,16 +114,13 @@ const BentoGrid = ({ items }) => (
               {item.icon}
             </div>
             <span className="text-xs font-medium px-2 py-1 rounded-lg backdrop-blur-sm bg-white/10 text-gray-300 transition-colors duration-300 group-hover:bg-white/20">
-              {item.status || 'Active'}
+              {item.meta}
             </span>
           </div>
 
           <div className="space-y-2">
             <h3 className="font-medium text-gray-100 tracking-tight text-[20px]">
               {item.title}
-              <span className="ml-2 text-base text-gray-400 font-normal">
-                {item.meta}
-              </span>
             </h3>
             <p className="text-base font-medium text-gray-300 leading-snug">
               {item.description}
@@ -155,7 +144,7 @@ const BentoGrid = ({ items }) => (
         <div
           className={cn(
             'absolute inset-0 -z-10 rounded-xl p-px bg-gradient-to-br from-transparent via-white/10 to-transparent transition-opacity duration-300',
-            item.hasPersistentHover ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+            'opacity-0 group-hover:opacity-100'
           )}
         />
       </div>
@@ -165,10 +154,14 @@ const BentoGrid = ({ items }) => (
 
 const Skills = () => {
   return (
-    <section className="relative py-16 overflow-hidden">
+    <section id="skills" aria-labelledby="skills-heading" className="relative scroll-mt-24 py-20 overflow-hidden sm:py-24">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <AnimatedHeading text="Skills" className="mt-4" />
+        <div className="mb-12 max-w-2xl">
+          <p className="section-kicker">Technical toolkit</p>
+          <h2 id="skills-heading" className="mt-3 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">Skills I use to build products.</h2>
+          <p className="mt-4 text-base leading-relaxed text-white/65 sm:text-lg">
+            A practical toolkit spanning interface work, APIs, data, and collaborative delivery.
+          </p>
         </div>
 
         <BentoGrid items={bentoItems} />
