@@ -1,6 +1,5 @@
-// src/components/NavBar.jsx – tubelight bottom/top nav, adapted for CRA
+// src/components/NavBar.jsx – responsive section navigation
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import { Moon, Sun } from 'lucide-react';
 import { cn } from '../lib/utils';
 
@@ -13,41 +12,82 @@ import { cn } from '../lib/utils';
 
 export function NavBar({ items, className, isDark, onToggleTheme }) {
   const [activeTab, setActiveTab] = useState(items[0].name);
+  const [pendingTab, setPendingTab] = useState(null);
 
-  // Keep the active tab in sync with the section currently in view.
+  // Keep a clicked destination selected while smooth scrolling is in progress.
+  // This avoids the indicator jumping back to the section leaving the viewport.
   useEffect(() => {
-    const ids = items
-      .map((item) => item.url.replace('#', ''))
-      .filter(Boolean);
-    const sections = ids
-      .map((id) => document.getElementById(id))
-      .filter(Boolean);
-    if (sections.length === 0) return;
+    if (!pendingTab) return undefined;
+    const timeoutId = window.setTimeout(() => setPendingTab(null), 1500);
+    return () => window.clearTimeout(timeoutId);
+  }, [pendingTab]);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) {
-          const match = items.find((i) => i.url === `#${visible.target.id}`);
-          if (match) setActiveTab(match.name);
-        }
-      },
-      { rootMargin: '-40% 0px -55% 0px', threshold: [0, 0.25, 0.5, 1] }
-    );
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
-  }, [items]);
+  // Select the last section above a fixed reading line. This is deterministic
+  // for short sections such as Contact that sit immediately after Gallery.
+  useEffect(() => {
+    const sections = items
+      .map((item) => ({ item, element: document.getElementById(item.url.slice(1)) }))
+      .filter(({ element }) => element);
+    if (sections.length === 0) return undefined;
+
+    let frameId = null;
+    const updateActiveTab = () => {
+      frameId = null;
+      const readingLine = window.innerHeight * 0.38;
+      const pendingSection = pendingTab
+        ? sections.find(({ item }) => item.name === pendingTab)
+        : null;
+
+      if (pendingSection) {
+        const targetTop = pendingSection.element.getBoundingClientRect().top;
+        const targetHasArrived = targetTop >= -4 && targetTop <= 144;
+        if (!targetHasArrived) return;
+
+        setActiveTab(pendingSection.item.name);
+        setPendingTab(null);
+        return;
+      }
+
+      const passedSections = sections.filter(
+        ({ element }) => element.getBoundingClientRect().top <= readingLine
+      );
+      const currentSection = passedSections.length
+        ? passedSections[passedSections.length - 1]
+        : sections[0];
+
+      setActiveTab((current) =>
+        current === currentSection.item.name ? current : currentSection.item.name
+      );
+    };
+
+    const requestUpdate = () => {
+      if (frameId === null) frameId = window.requestAnimationFrame(updateActiveTab);
+    };
+
+    requestUpdate();
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
+    window.addEventListener('hashchange', requestUpdate);
+
+    return () => {
+      if (frameId !== null) window.cancelAnimationFrame(frameId);
+      window.removeEventListener('scroll', requestUpdate);
+      window.removeEventListener('resize', requestUpdate);
+      window.removeEventListener('hashchange', requestUpdate);
+    };
+  }, [items, pendingTab]);
 
   return (
     <div
       className={cn(
-        'fixed bottom-3 sm:top-5 sm:bottom-auto left-1/2 -translate-x-1/2 z-50 pointer-events-none',
+        'pointer-events-none fixed bottom-3 left-1/2 z-50 -translate-x-1/2 sm:top-5 sm:bottom-auto',
         className
       )}
     >
-      <nav aria-label="Primary navigation" className="site-nav pointer-events-auto flex items-center gap-1 rounded-2xl px-1 py-1 shadow-lg sm:rounded-full">
+      <nav
+        aria-label="Primary navigation"
+        className="site-nav pointer-events-auto flex items-center gap-1 rounded-2xl px-1 py-1 shadow-lg sm:rounded-full"
+      >
         {items.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.name;
@@ -58,16 +98,20 @@ export function NavBar({ items, className, isDark, onToggleTheme }) {
               href={item.url}
               onClick={(event) => {
                 event.preventDefault();
-                setActiveTab(item.name);
+                const target = document.getElementById(item.url.slice(1));
+                if (!target) return;
+
                 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                document.getElementById(item.url.slice(1))?.scrollIntoView({
-                  behavior: prefersReducedMotion ? 'auto' : 'smooth',
-                  block: 'start',
-                });
+                const behavior = prefersReducedMotion ? 'auto' : 'smooth';
+
+                setActiveTab(item.name);
+                setPendingTab(behavior === 'smooth' ? item.name : null);
+                window.history.pushState(null, '', item.url);
+                target.scrollIntoView({ behavior, block: 'start' });
               }}
               aria-current={isActive ? 'location' : undefined}
               className={cn(
-                'relative inline-flex min-w-[3.25rem] flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-1.5 text-[10px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 sm:min-w-0 sm:flex-row sm:gap-2 sm:rounded-full sm:px-4 sm:py-2 sm:text-sm lg:px-5',
+                'relative inline-flex min-w-[3.25rem] flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-1.5 text-[10px] font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 sm:min-w-0 sm:flex-row sm:gap-2 sm:rounded-full sm:px-4 sm:py-2 sm:text-sm lg:px-5',
                 'nav-link',
                 !item.mobile && 'hidden sm:inline-flex',
                 isActive && 'nav-link-active'
@@ -77,20 +121,6 @@ export function NavBar({ items, className, isDark, onToggleTheme }) {
                 <Icon size={16} strokeWidth={2.5} />
               </span>
               <span>{item.name}</span>
-              {isActive && (
-                <motion.div
-                  layoutId="lamp"
-                  className="absolute inset-0 w-full bg-white/5 rounded-full -z-10"
-                  initial={false}
-                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                >
-                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-white rounded-t-full">
-                    <div className="absolute w-12 h-6 bg-white/20 rounded-full blur-md -top-2 -left-2" />
-                    <div className="absolute w-8 h-6 bg-white/20 rounded-full blur-md -top-1" />
-                    <div className="absolute w-4 h-4 bg-white/20 rounded-full blur-sm top-0 left-2" />
-                  </div>
-                </motion.div>
-              )}
             </a>
           );
         })}
