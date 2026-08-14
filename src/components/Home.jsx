@@ -1,6 +1,7 @@
 // src/components/Home.jsx
 import React from 'react';
 import { ArrowDown, FileText, Github, Linkedin, Mail } from 'lucide-react';
+import FlipDiskMatrix from './ui/flip-disk-matrix';
 
 const socialLinks = [
   { href: 'https://github.com/khoitran590', label: 'GitHub', Icon: Github },
@@ -10,15 +11,19 @@ const socialLinks = [
 
 const Home = () => {
   return (
-    <section id="home" className="relative flex min-h-[100svh] items-center justify-center overflow-hidden scroll-mt-24">
-      <div className="relative z-10 mx-auto w-full max-w-5xl px-4 py-28 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center text-center">
-            <div
-              className="mb-8 h-24 w-24 rounded-full shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] sm:h-28 sm:w-28"
-              style={{
-                background:
-                  'radial-gradient(circle at 35% 30%, #fafafa, #a3a3a3 45%, #404040 100%)',
-              }}
+    <section id="home" className="relative overflow-hidden scroll-mt-24">
+      <div className="relative z-10 mx-auto flex min-h-[92svh] w-full max-w-5xl items-center px-4 py-24 sm:px-6 lg:px-8">
+          <div className="flex w-full flex-col items-center text-center">
+            {/* fetchpriority stays lowercase: React 18 passes unknown lowercase
+                attributes straight to the DOM but warns on the camelCase form. */}
+            <img
+              src="/assets/peter-portrait.jpg"
+              alt="Peter Tran"
+              width={320}
+              height={320}
+              fetchpriority="high"
+              decoding="async"
+              className="mb-8 h-24 w-24 rounded-full object-cover shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] ring-1 ring-white/15 sm:h-28 sm:w-28"
             />
 
             <p className="section-kicker mb-3">Software engineering portfolio</p>
@@ -63,7 +68,7 @@ const Home = () => {
                   target={external ? '_blank' : undefined}
                   rel={external ? 'noopener noreferrer' : undefined}
                   aria-label={label}
-                  className="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-2.5 text-sm font-semibold text-white/80 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300"
+                  className="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-2.5 text-sm font-semibold text-white/80 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)]"
                 >
                   <Icon size={17} aria-hidden="true" />
                   {label}
@@ -72,6 +77,16 @@ const Home = () => {
               })}
             </div>
           </div>
+      </div>
+
+      <div className="relative z-10 mx-auto w-full max-w-5xl px-4 pb-24 sm:px-6 lg:px-8">
+        <div className="mb-8 text-center">
+          <p className="section-kicker">Responsive matrix</p>
+          <h2 className="mt-3 text-3xl font-light tracking-tight text-white sm:text-4xl">
+            Electromechanical clock
+          </h2>
+        </div>
+        <FlipDiskMatrix />
       </div>
     </section>
   );

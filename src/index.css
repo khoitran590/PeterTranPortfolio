@@ -20,6 +20,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Dark is the base palette. Every accent lives here as a variable so it can be
+   re-tuned per theme -- hardcoding indigo-300/400 previously dropped the light
+   theme to 1.91:1 and 2.85:1, both well under WCAG AA. */
 :root {
   --page-background: #0a0a0a;
   --page-foreground: #ffffff;
@@ -28,6 +31,11 @@ body {
   --nav-border: rgba(255, 255, 255, 0.13);
   --nav-text: rgba(255, 255, 255, 0.62);
   --nav-active-background: rgba(255, 255, 255, 0.1);
+  /* indigo-400 on #0a0a0a = 6.64:1 */
+  --accent: #818cf8;
+  /* indigo-300 on #0a0a0a = 9.93:1 -- used for larger/secondary accent text */
+  --accent-soft: #a5b4fc;
+  --focus-ring: #a5b4fc;
 }
 
 :root.theme-light {
@@ -38,6 +46,11 @@ body {
   --nav-border: rgba(15, 23, 42, 0.12);
   --nav-text: rgba(15, 23, 42, 0.68);
   --nav-active-background: rgba(15, 23, 42, 0.08);
+  /* indigo-600 on #f8fafc = 7.04:1 */
+  --accent: #4f46e5;
+  /* indigo-700 on #f8fafc = 8.97:1 */
+  --accent-soft: #4338ca;
+  --focus-ring: #4338ca;
 }
 
 .app-shell {
@@ -64,59 +77,80 @@ body {
   transition: color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
 }
 .nav-link:hover, .theme-toggle:hover { color: var(--page-foreground); background: var(--nav-active-background); }
-.nav-link-active {
-  color: var(--page-foreground);
+.nav-link-active { color: var(--page-foreground); }
+/* The active pill is its own element so it can slide between tabs. It sits
+   behind the label, which is why every label inside a nav link is positioned. */
+.nav-indicator {
   background: var(--nav-active-background);
   box-shadow: inset 0 0 0 1px var(--nav-border);
 }
-.section-kicker { margin: 0 0 0.5rem; color: #818cf8; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+
+/* Accent text. Both read from theme variables so they stay above 4.5:1 on
+   either ground. `accent-text` is the section eyebrow, `accent-text-soft` the
+   secondary label on project cards. */
+.accent-text { color: var(--accent); }
+.accent-text-soft { color: var(--accent-soft); }
+.accent-bullet { background: var(--accent); }
+.section-kicker {
+  margin: 0 0 0.5rem;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
 
 /* Light mode keeps the existing glass components readable without duplicating their markup. */
 :root.theme-light .text-white { color: #0f172a; }
 :root.theme-light .text-white\/80 { color: rgba(15, 23, 42, 0.8); }
+:root.theme-light .text-white\/75 { color: rgba(15, 23, 42, 0.75); }
 :root.theme-light .text-white\/70 { color: rgba(15, 23, 42, 0.7); }
+/* /65 is the single most-used variant in the app and had no mapping at all, so
+   nine places rendered white-on-near-white (about 1.05:1) in the light theme. */
+:root.theme-light .text-white\/65 { color: rgba(15, 23, 42, 0.68); }
 :root.theme-light .text-white\/60 { color: rgba(15, 23, 42, 0.64); }
-:root.theme-light .text-white\/50, :root.theme-light .text-gray-300 { color: #475569; }
+:root.theme-light .text-white\/50, :root.theme-light .text-white\/40, :root.theme-light .text-gray-300 { color: #475569; }
 :root.theme-light .text-gray-200 { color: #334155; }
 :root.theme-light .text-gray-400 { color: #64748b; }
 :root.theme-light .bg-white\/5, :root.theme-light .bg-white\/10, :root.theme-light .bg-white\/\[0\.03\], :root.theme-light .bg-white\/\[0\.04\] { background-color: rgba(15, 23, 42, 0.05); }
 :root.theme-light .border-white\/5, :root.theme-light .border-white\/10, :root.theme-light .border-white\/15 { border-color: rgba(15, 23, 42, 0.12); }
+
+/* The override above repaints `text-white` dark, which silently broke any
+   element that pairs it with a dark background -- the contact form's submit
+   button rendered #0f172a text on #111827 (1.01:1, unreadable). Elements that
+   own their own foreground opt out with `keep-fg`. */
+:root.theme-light .keep-fg,
+:root.theme-light .keep-fg .text-white { color: #ffffff; }
+/* The opacity variants and the hairline surfaces need the same carve-out, or a
+   caption sitting on a photo and the photography lightbox (both dark in either
+   theme) get repainted to slate on slate. */
+:root.theme-light .keep-fg .text-white\/80 { color: rgba(255, 255, 255, 0.8); }
+:root.theme-light .keep-fg .text-white\/70 { color: rgba(255, 255, 255, 0.7); }
+:root.theme-light .keep-fg .text-white\/65 { color: rgba(255, 255, 255, 0.65); }
+:root.theme-light .keep-fg .border-white\/10 { border-color: rgba(255, 255, 255, 0.1); }
+:root.theme-light .keep-fg .border-white\/15 { border-color: rgba(255, 255, 255, 0.15); }
+:root.theme-light .keep-fg .bg-white\/5 { background-color: rgba(255, 255, 255, 0.05); }
+:root.theme-light .keep-fg .bg-white\/10 { background-color: rgba(255, 255, 255, 0.1); }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
-/* Custom animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
+/* Flip-disk matrix.
+   The flip angle rides on a custom property so the hover "knock" can be a plain
+   CSS rule. Setting the transform inline (as the upstream component does) makes
+   any hover class inert, because an inline style always wins. */
+.flip-disk-faces {
+  transform-style: preserve-3d;
+  transform: rotateX(var(--flip-angle, 0deg));
+  transition: transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@media (hover: hover) {
+  .flip-disk:hover .flip-disk-faces {
+    transform: rotateX(90deg);
+    transition-duration: 100ms;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.2s ease-out;
-}
-
-/* Scroll reveal: fade and slide */
-.reveal-container {
-  will-change: opacity, transform;
-}
-.reveal-hidden {
-  opacity: 0;
-  transform: translateY(20px);
-}
-.reveal-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-.reveal-transition {
-  transition: opacity 500ms cubic-bezier(0.22, 1, 0.36, 1), transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Animation delays for loading dots */
@@ -128,12 +162,28 @@ code {
   animation-delay: 0.2s;
 }
 
-/* Smooth scroll behavior for better UX (Lenis takes over when active) */
+/* Reading-progress rail. Scroll-driven animations are widely supported now, so
+   this runs without JavaScript; browsers that lack it never show the bar. */
+.scroll-progress {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    display: block;
+    transform-origin: 0 50%;
+    background: var(--accent);
+    animation: scroll-progress-grow linear;
+    animation-timeline: scroll(root block);
+  }
+}
+@keyframes scroll-progress-grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Smooth scroll behavior for better UX */
 html {
   scroll-behavior: smooth;
-}
-html.lenis {
-  scroll-behavior: auto;
 }
 
 /* Enhanced transitions (avoid applying globally to all elements to reduce jank) */
@@ -141,94 +191,14 @@ html.lenis {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Disable transitions during theme switch to prevent staggered updates */
-.no-theme-transition *,
-.no-theme-transition *::before,
-.no-theme-transition *::after {
-  transition: none !important;
-}
-
-/* Liquid Glass - Apple-inspired glassmorphism */
-@supports (backdrop-filter: blur(40px)) or (-webkit-backdrop-filter: blur(40px)) {
-  .glass-liquid {
-    backdrop-filter: saturate(180%) blur(40px);
-    -webkit-backdrop-filter: saturate(180%) blur(40px);
-  }
-  .glass-liquid-soft {
-    backdrop-filter: saturate(160%) blur(24px);
-    -webkit-backdrop-filter: saturate(160%) blur(24px);
-  }
-  .glass-liquid-strong {
-    backdrop-filter: saturate(200%) blur(60px);
-    -webkit-backdrop-filter: saturate(200%) blur(60px);
-  }
-}
-.glass-edge-light {
-  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.4) inset, 0 0 0 1px rgba(0, 0, 0, 0.03);
-}
-.dark .glass-edge-light {
-  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.08) inset, 0 0 0 1px rgba(255, 255, 255, 0.06);
-}
-
-/* Market ticker: infinite horizontal loop */
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-.ticker-marquee-track {
-  animation: marquee 55s linear infinite;
-  will-change: transform;
-}
-.ticker-marquee-wrap:hover .ticker-marquee-track {
-  animation-play-state: paused;
-}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  *, *::before, *::after {
+  *:not(.scroll-progress), *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }
-  .ticker-marquee-track {
-    animation: none;
-    transform: none;
-  }
-}
-.glass-shine {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%, rgba(255, 255, 255, 0.05) 100%);
-}
-
-/* 3D tilt + glare for interactive project cards */
-.tilt-container {
-  perspective: 1000px;
-}
-.tilt-card {
-  transition: transform 0.15s ease-out;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-.tilt-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(255, 255, 255, 0.18),
-    transparent 45%
-  );
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-  z-index: 20;
-}
-.tilt-card:hover::before {
-  opacity: 1;
 }

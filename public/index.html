@@ -5,15 +5,38 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
+    <title>Peter Tran — Software Engineer</title>
     <meta
       name="description"
       content="Peter Tran is a software engineer building thoughtful web and mobile applications."
     />
+    <meta name="author" content="Peter Tran" />
+
+    <!--
+      ONE THING TO EDIT AFTER DEPLOYING: replace the two absolute URLs below
+      (og:url and og:image) with your live domain. Link previews on LinkedIn,
+      Slack and iMessage need absolute URLs — a relative path renders as a bare
+      text link. Once the domain is settled, also add:
+        <link rel="canonical" href="https://your-domain/" />
+    -->
+    <meta property="og:url" content="https://REPLACE-WITH-YOUR-DOMAIN/" />
+    <meta property="og:image" content="https://REPLACE-WITH-YOUR-DOMAIN/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Peter Tran — Software Engineer" />
     <meta property="og:title" content="Peter Tran — Software Engineer" />
     <meta property="og:description" content="Selected web and mobile projects by Peter Tran." />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Peter Tran" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Peter Tran — Software Engineer" />
+    <meta name="twitter:description" content="Selected web and mobile projects by Peter Tran." />
+    <meta name="twitter:image" content="https://REPLACE-WITH-YOUR-DOMAIN/assets/og-image.png" />
+
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!-- Standard name; supersedes apple-mobile-web-app-capable, which browsers
+         now log as deprecated. Honored by iOS Safari since 15.4. -->
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Peter Tran" />
     <!--
@@ -22,42 +45,48 @@
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link rel="preconnect" href="https://api.emailjs.com" crossorigin />
-    <!-- Apply saved/system theme before styles load to avoid flicker -->
+
+    <!-- Apply saved/system theme before styles load to avoid flicker. No stored
+         value means "follow the system", which is also the reset state of the
+         three-way toggle in the nav. -->
     <script>
       (function() {
         try {
           var saved = localStorage.getItem('portfolio-theme');
           var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-          var isDark = saved ? saved === 'dark' : !prefersLight;
+          var isDark = (saved === 'light' || saved === 'dark')
+            ? saved === 'dark'
+            : !prefersLight;
           document.documentElement.classList.toggle('dark', isDark);
           document.documentElement.classList.toggle('theme-light', !isDark);
+          document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
         } catch (e) { /* no-op */ }
       })();
     </script>
     <meta name="color-scheme" content="light dark" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>Peter Tran — Software Engineer</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Peter Tran",
+        "jobTitle": "Software Engineer",
+        "email": "mailto:khoitran590@gmail.com",
+        "description": "Software engineer building responsive web and mobile applications.",
+        "alumniOf": [
+          { "@type": "CollegeOrUniversity", "name": "California State University, Fullerton" },
+          { "@type": "CollegeOrUniversity", "name": "Cypress College" }
+        ],
+        "knowsAbout": ["React", "React Native", "Node.js", "TypeScript", "SwiftUI", "SQL", "Firebase", "Supabase"],
+        "sameAs": [
+          "https://github.com/khoitran590",
+          "https://www.linkedin.com/in/peterkhoitran/"
+        ]
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>

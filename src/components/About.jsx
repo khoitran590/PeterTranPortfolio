@@ -20,14 +20,14 @@ const About = () => (
             href="/assets/Peter_Tran_Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 font-semibold text-slate-950 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300"
+            className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 font-semibold text-slate-950 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)]"
           >
             <FileText size={18} aria-hidden="true" />
             Download résumé
           </a>
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-3 font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300"
+            className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-3 font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)]"
           >
             Start a conversation
             <ArrowUpRight size={18} aria-hidden="true" />
@@ -37,7 +37,7 @@ const About = () => (
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
         <article className="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
-          <GraduationCap className="h-6 w-6 text-indigo-300" aria-hidden="true" />
+          <GraduationCap className="h-6 w-6 accent-text" aria-hidden="true" />
           <h3 className="mt-4 text-lg font-bold text-white">Education</h3>
           <p className="mt-2 text-sm leading-relaxed text-white/65">
             B.S. in Computer Science, Cal State Fullerton — 2025<br />
@@ -45,7 +45,7 @@ const About = () => (
           </p>
         </article>
         <article className="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
-          <Layers3 className="h-6 w-6 text-indigo-300" aria-hidden="true" />
+          <Layers3 className="h-6 w-6 accent-text" aria-hidden="true" />
           <h3 className="mt-4 text-lg font-bold text-white">Product focus</h3>
           <p className="mt-2 text-sm leading-relaxed text-white/65">
             Clear interfaces, practical full-stack solutions, and mobile experiences that
@@ -53,7 +53,7 @@ const About = () => (
           </p>
         </article>
         <article className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 sm:col-span-2 lg:col-span-1">
-          <Code2 className="h-6 w-6 text-indigo-300" aria-hidden="true" />
+          <Code2 className="h-6 w-6 accent-text" aria-hidden="true" />
           <h3 className="mt-4 text-lg font-bold text-white">Core toolkit</h3>
           <p className="mt-2 text-sm leading-relaxed text-white/65">
             React, React Native, Node.js, TypeScript, SwiftUI, SQL, Firebase, and Supabase.
