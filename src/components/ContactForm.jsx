@@ -1,6 +1,8 @@
 // src/components/ContactForm.jsx
 import React, { useId, useRef, useState } from 'react';
 import emailjs from 'emailjs-com';
+import { Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import { cn } from '../lib/utils';
 
 const DIRECT_EMAIL = 'khoitran590@gmail.com';
 
@@ -23,14 +25,15 @@ const validate = ({ name, email, message }) => {
   return errors;
 };
 
-const fieldClasses = (hasError) => [
-  'w-full px-4 py-3 border bg-white/90 dark:bg-gray-800/60 supports-[backdrop-filter]:backdrop-blur',
-  'text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400',
-  'focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)]',
-  hasError
-    ? 'border-red-600 dark:border-red-400'
-    : 'border-gray-400/70 dark:border-white/20',
-].join(' ');
+const inputBaseClasses = (hasError) =>
+  cn(
+    'w-full px-4 py-3.5 rounded-xl text-sm transition-all duration-200',
+    'bg-white/[0.04] border text-white placeholder:text-white/40',
+    'focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] focus:border-transparent',
+    hasError
+      ? 'border-rose-500/80 bg-rose-500/[0.05] focus-visible:ring-rose-400'
+      : 'border-white/10 hover:border-white/20 focus:bg-white/[0.07]'
+  );
 
 const ContactForm = ({ compact = false, onSent }) => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -82,13 +85,13 @@ const ContactForm = ({ compact = false, onSent }) => {
           formData,
           process.env.REACT_APP_EMAILJS_USER_ID
         );
-        setStatus({ tone: 'ok', text: 'Message sent. I’ll reply within 1–2 business days.' });
+        setStatus({ tone: 'ok', text: 'Message sent! I’ll reply within 1–2 business days.' });
         setFormData({ name: '', email: '', message: '' });
         onSent && onSent();
       } catch {
         setStatus({
           tone: 'error',
-          text: `Sending failed. Email me directly at ${DIRECT_EMAIL}.`,
+          text: `Sending failed. Please email me directly at ${DIRECT_EMAIL}.`,
         });
       } finally {
         setSending(false);
@@ -101,15 +104,10 @@ const ContactForm = ({ compact = false, onSent }) => {
     }
   };
 
-  const statusTone = {
-    ok: 'text-green-700 dark:text-green-300',
-    error: 'text-red-700 dark:text-red-300',
-    info: 'text-gray-600 dark:text-gray-300',
-  };
-
   const renderError = (field) =>
     errors[field] ? (
-      <p id={errorId(field)} className="mt-1.5 text-xs font-medium text-red-700 dark:text-red-300">
+      <p id={errorId(field)} className="mt-1.5 text-xs font-medium text-rose-400 flex items-center gap-1">
+        <AlertCircle size={13} aria-hidden="true" />
         {errors[field]}
       </p>
     ) : null;
@@ -118,7 +116,9 @@ const ContactForm = ({ compact = false, onSent }) => {
     <form onSubmit={handleSubmit} noValidate className="space-y-4" aria-describedby={`${uid}-note`}>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="sr-only" htmlFor={fieldId('name')}>Your name</label>
+          <label className="block text-xs font-semibold text-white/80 mb-1.5" htmlFor={fieldId('name')}>
+            Your name
+          </label>
           <input
             id={fieldId('name')}
             type="text"
@@ -126,16 +126,18 @@ const ContactForm = ({ compact = false, onSent }) => {
             value={formData.name}
             onChange={handleChange}
             onBlur={handleBlur}
-            placeholder="Your name"
+            placeholder="e.g. Alex Johnson"
             autoComplete="name"
             aria-invalid={errors.name ? 'true' : undefined}
             aria-describedby={errors.name ? errorId('name') : undefined}
-            className={`${fieldClasses(errors.name)} rounded-full`}
+            className={inputBaseClasses(errors.name)}
           />
           {renderError('name')}
         </div>
         <div>
-          <label className="sr-only" htmlFor={fieldId('email')}>Email address</label>
+          <label className="block text-xs font-semibold text-white/80 mb-1.5" htmlFor={fieldId('email')}>
+            Email address
+          </label>
           <input
             id={fieldId('email')}
             type="email"
@@ -143,33 +145,36 @@ const ContactForm = ({ compact = false, onSent }) => {
             value={formData.email}
             onChange={handleChange}
             onBlur={handleBlur}
-            placeholder="Email address"
+            placeholder="alex@company.com"
             autoComplete="email"
             aria-invalid={errors.email ? 'true' : undefined}
             aria-describedby={errors.email ? errorId('email') : undefined}
-            className={`${fieldClasses(errors.email)} rounded-full`}
+            className={inputBaseClasses(errors.email)}
           />
           {renderError('email')}
         </div>
       </div>
+
       <div>
-        <label className="sr-only" htmlFor={fieldId('message')}>Your message</label>
+        <label className="block text-xs font-semibold text-white/80 mb-1.5" htmlFor={fieldId('message')}>
+          Your message
+        </label>
         <textarea
           id={fieldId('message')}
           name="message"
           value={formData.message}
           onChange={handleChange}
           onBlur={handleBlur}
-          rows={compact ? 3 : 5}
-          placeholder="Write your message..."
+          rows={compact ? 3 : 4}
+          placeholder="Hi Peter, I'd like to discuss an opportunity or project..."
           aria-invalid={errors.message ? 'true' : undefined}
           aria-describedby={errors.message ? errorId('message') : undefined}
-          className={`${fieldClasses(errors.message)} rounded-2xl`}
+          className={inputBaseClasses(errors.message)}
         />
         {renderError('message')}
       </div>
 
-      {/* Honeypot. Hidden from sight and from assistive tech, but present in the DOM. */}
+      {/* Honeypot */}
       <div className="absolute h-px w-px overflow-hidden opacity-0" aria-hidden="true">
         <label htmlFor={fieldId('company')}>Company (leave this empty)</label>
         <input
@@ -182,23 +187,51 @@ const ContactForm = ({ compact = false, onSent }) => {
         />
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
         <button
           type="submit"
           disabled={sending}
-          className="keep-fg inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-gray-900 dark:bg-white dark:text-gray-900 hover:opacity-90 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)]"
+          className="keep-fg inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-slate-950 shadow-md transition-all hover:bg-slate-100 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)]"
         >
-          {sending ? 'Sending…' : 'Send Message'}
+          <Send size={15} aria-hidden="true" />
+          <span>{sending ? 'Sending…' : 'Send Message'}</span>
         </button>
-        <p role="status" aria-live="polite" className={`text-sm ${status ? statusTone[status.tone] : ''}`}>
-          {status?.text ?? ''}
-        </p>
+
+        {status && (
+          <p
+            role="status"
+            aria-live="polite"
+            className={cn(
+              'text-xs font-medium flex items-center gap-1.5',
+              status.tone === 'ok' && 'text-emerald-400',
+              status.tone === 'error' && 'text-rose-400',
+              status.tone === 'info' && 'text-white/70'
+            )}
+          >
+            {status.tone === 'ok' ? (
+              <CheckCircle2 size={15} aria-hidden="true" />
+            ) : status.tone === 'error' ? (
+              <AlertCircle size={15} aria-hidden="true" />
+            ) : null}
+            {status.text}
+          </p>
+        )}
       </div>
 
-      <p id={`${uid}-note`} className="text-xs leading-relaxed text-gray-500 dark:text-gray-400">
+      <p id={`${uid}-note`} className="text-[11px] leading-relaxed text-white/50 pt-1">
         {!isConfigured ? (
-          <>Submitting opens your email app. Prefer a direct link? <a href={`mailto:${DIRECT_EMAIL}`} className="font-semibold text-gray-700 underline underline-offset-2 hover:text-gray-950 dark:text-gray-200 dark:hover:text-white">{DIRECT_EMAIL}</a></>
-        ) : 'I’ll respond to your message as soon as I can.'}
+          <>
+            Submitting opens your email app. Prefer direct email?{' '}
+            <a
+              href={`mailto:${DIRECT_EMAIL}`}
+              className="font-semibold text-white/80 underline underline-offset-2 hover:text-white"
+            >
+              {DIRECT_EMAIL}
+            </a>
+          </>
+        ) : (
+          'Protected with honeypot spam filtering. Responses are sent within 24–48 hours.'
+        )}
       </p>
     </form>
   );
