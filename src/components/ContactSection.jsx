@@ -123,7 +123,7 @@ export default function ContactSection() {
                           <Icon size={18} aria-hidden="true" />
                         </div>
                         <div className="min-w-0">
-                          <p className="text-xs font-semibold text-white/90">{label}</p>
+                          <p className="text-xs font-semibold text-white/80">{label}</p>
                           <p className="text-xs text-white/60 truncate">{value}</p>
                         </div>
                       </div>
@@ -138,7 +138,7 @@ export default function ContactSection() {
                 <div className="flex flex-wrap items-center gap-4 text-xs text-white/60">
                   <div className="flex items-center gap-1.5">
                     <Clock size={14} className="accent-text" aria-hidden="true" />
-                    <span>Replies within 24h</span>
+                    <span>Replies within 24–48h</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <MapPin size={14} className="accent-text" aria-hidden="true" />

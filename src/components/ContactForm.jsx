@@ -85,7 +85,7 @@ const ContactForm = ({ compact = false, onSent }) => {
           formData,
           process.env.REACT_APP_EMAILJS_USER_ID
         );
-        setStatus({ tone: 'ok', text: 'Message sent! I’ll reply within 1–2 business days.' });
+        setStatus({ tone: 'ok', text: 'Message sent! I’ll reply within 24–48 hours.' });
         setFormData({ name: '', email: '', message: '' });
         onSent && onSent();
       } catch {
@@ -191,31 +191,32 @@ const ContactForm = ({ compact = false, onSent }) => {
         <button
           type="submit"
           disabled={sending}
-          className="keep-fg inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-slate-950 shadow-md transition-all hover:bg-slate-100 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)]"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-slate-950 shadow-md transition-all hover:bg-slate-100 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)]"
         >
           <Send size={15} aria-hidden="true" />
           <span>{sending ? 'Sending…' : 'Send Message'}</span>
         </button>
 
-        {status && (
-          <p
-            role="status"
-            aria-live="polite"
-            className={cn(
-              'text-xs font-medium flex items-center gap-1.5',
-              status.tone === 'ok' && 'text-emerald-400',
-              status.tone === 'error' && 'text-rose-400',
-              status.tone === 'info' && 'text-white/70'
-            )}
-          >
-            {status.tone === 'ok' ? (
-              <CheckCircle2 size={15} aria-hidden="true" />
-            ) : status.tone === 'error' ? (
-              <AlertCircle size={15} aria-hidden="true" />
-            ) : null}
-            {status.text}
-          </p>
-        )}
+        {/* Stays mounted even while empty: a live region inserted into the DOM
+            together with its text is generally not announced, so screen readers
+            would miss every send result. Only the contents swap. */}
+        <p
+          role="status"
+          aria-live="polite"
+          className={cn(
+            'text-xs font-medium flex items-center gap-1.5',
+            status?.tone === 'ok' && 'text-emerald-400',
+            status?.tone === 'error' && 'text-rose-400',
+            status?.tone === 'info' && 'text-white/70'
+          )}
+        >
+          {status?.tone === 'ok' ? (
+            <CheckCircle2 size={15} aria-hidden="true" />
+          ) : status?.tone === 'error' ? (
+            <AlertCircle size={15} aria-hidden="true" />
+          ) : null}
+          {status?.text}
+        </p>
       </div>
 
       <p id={`${uid}-note`} className="text-[11px] leading-relaxed text-white/50 pt-1">

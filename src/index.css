@@ -114,6 +114,15 @@ body {
 :root.theme-light .text-gray-400 { color: #64748b; }
 :root.theme-light .bg-white\/5, :root.theme-light .bg-white\/10, :root.theme-light .bg-white\/\[0\.03\], :root.theme-light .bg-white\/\[0\.04\] { background-color: rgba(15, 23, 42, 0.05); }
 :root.theme-light .border-white\/5, :root.theme-light .border-white\/10, :root.theme-light .border-white\/15 { border-color: rgba(15, 23, 42, 0.12); }
+/* Placeholders compile to their own selector (`.placeholder\:text-white\/40::placeholder`),
+   which the `.text-white\/40` mapping above never matched -- the contact form's three
+   placeholders rendered white on a light field. */
+:root.theme-light .placeholder\:text-white\/40::placeholder { color: rgba(15, 23, 42, 0.55); }
+/* The 300/400 accent steps are tuned for a dark surface and land at 1.5-2.6:1 on the
+   light glass, under AA for the small text that uses them: form errors, the send
+   confirmation, the availability badge, the copied-to-clipboard check. */
+:root.theme-light .text-rose-400 { color: #be123c; }
+:root.theme-light .text-emerald-400, :root.theme-light .text-emerald-300 { color: #047857; }
 
 /* The override above repaints `text-white` dark, which silently broke any
    element that pairs it with a dark background -- the contact form's submit
