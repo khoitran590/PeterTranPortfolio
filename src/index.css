@@ -162,6 +162,26 @@ code {
   }
 }
 
+/* The colour picker writes both theme variants of the lit disc onto the wrapper
+   and CSS picks between them, so flipping the site theme repaints all 341 discs
+   without a React render. A swatch button carries its own variants, which is why
+   it reads --disk-on-light/dark directly instead of the resolved --disk-on: the
+   resolved value is inherited from the wrapper and would ignore its override. */
+.flip-matrix {
+  --disk-on: var(--disk-on-light);
+  --disk-on-border: var(--disk-on-light-border);
+}
+.dark .flip-matrix {
+  --disk-on: var(--disk-on-dark);
+  --disk-on-border: var(--disk-on-dark-border);
+}
+.flip-swatch {
+  background: var(--disk-on-light);
+}
+.dark .flip-swatch {
+  background: var(--disk-on-dark);
+}
+
 /* Animation delays for loading dots */
 .animation-delay-100 {
   animation-delay: 0.1s;

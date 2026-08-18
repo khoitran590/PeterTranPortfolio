@@ -123,3 +123,28 @@ test('the flip-disk matrix exposes a text alternative rather than 341 bare divs'
   render(<App />);
   expect(screen.getByRole('img', { name: /flip-disk clock reading \d{2}:\d{2}/i })).toBeInTheDocument();
 });
+
+test('picking a disc color repaints the matrix and survives a reload', () => {
+  window.localStorage.removeItem('flip-disk-color');
+  const { unmount } = render(<App />);
+
+  const group = screen.getByRole('group', { name: /disc color/i });
+  const cyan = within(group).getByRole('button', { name: 'Cyan' });
+  fireEvent.click(cyan);
+
+  expect(cyan).toHaveAttribute('aria-pressed', 'true');
+  expect(within(group).getByRole('button', { name: 'Lime' })).toHaveAttribute('aria-pressed', 'false');
+
+  // The two theme variants both land on the wrapper; CSS picks between them, so
+  // asserting on the properties is the only place the choice is observable.
+  const matrix = document.querySelector('.flip-matrix');
+  expect(matrix.style.getPropertyValue('--disk-on-dark')).toBe('#38e1f0');
+  expect(matrix.style.getPropertyValue('--disk-on-light')).toBe('#09727b');
+  expect(window.localStorage.getItem('flip-disk-color')).toBe('#38e1f0');
+
+  unmount();
+  render(<App />);
+  expect(
+    within(screen.getByRole('group', { name: /disc color/i })).getByRole('button', { name: 'Cyan' })
+  ).toHaveAttribute('aria-pressed', 'true');
+});

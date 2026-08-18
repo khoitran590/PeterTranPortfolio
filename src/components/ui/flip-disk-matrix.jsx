@@ -16,6 +16,9 @@
 //   4. prefers-reduced-motion renders a single static frame instead of looping.
 //   5. The grid carries role="img" with a live-updating label, so the display
 //      is not a silent pile of 341 divs to a screen reader.
+//   6. The lit-disc colour is adjustable and remembered, rather than a hardcoded
+//      fluorescent lime. See diskFaces() below for why one picked colour has to
+//      become two.
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
 
@@ -115,12 +118,110 @@ const reconcile = (prev, next) => {
 const readClock = () =>
   new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
 
+const DEFAULT_COLOR = '#e5fd52';
+const STORED_COLOR_KEY = 'flip-disk-color';
+const HEX = /^#[0-9a-f]{6}$/i;
+
+const PRESETS = [
+  { name: 'Lime', hex: DEFAULT_COLOR },
+  { name: 'Amber', hex: '#ffb020' },
+  { name: 'Cyan', hex: '#38e1f0' },
+  { name: 'Rose', hex: '#ff6fa5' },
+  { name: 'Bone', hex: '#f5f0e6' },
+];
+
+const hexToHsl = (hex) => {
+  const int = parseInt(hex.slice(1), 16);
+  const r = ((int >> 16) & 255) / 255;
+  const g = ((int >> 8) & 255) / 255;
+  const b = (int & 255) / 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  const d = max - min;
+  if (!d) return { h: 0, s: 0, l };
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h;
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+  else if (max === g) h = ((b - r) / d + 2) / 6;
+  else h = ((r - g) / d + 4) / 6;
+  return { h, s, l };
+};
+
+const hslToHex = ({ h, s, l }) => {
+  const channel = (n) => {
+    const k = (n + h * 12) % 12;
+    const a = s * Math.min(l, 1 - l);
+    const value = l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+    return Math.round(255 * value).toString(16).padStart(2, '0');
+  };
+  return `#${channel(0)}${channel(8)}${channel(4)}`;
+};
+
+// The unlit disc in each theme, and what a lit one has to clear against it.
+const DARK_GROUND = '#171717';
+const LIGHT_GROUND = '#e5e5e5';
+
+const luminance = (hex) => {
+  const int = parseInt(hex.slice(1), 16);
+  const [r, g, b] = [(int >> 16) & 255, (int >> 8) & 255, int & 255].map((channel) => {
+    const v = channel / 255;
+    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+
+const contrast = (a, b) => {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+};
+
+// Walks the lightness until the face clears `target` against the disc beside it,
+// then stops — first pass wins, so a colour that is already fine is left alone.
+// A single fixed lightness cannot serve every hue: HSL lightness is not
+// luminance, and a yellow-green and a navy at L=26% are four stops apart.
+const tuneLightness = (h, s, ground, target, start, end) => {
+  const step = end > start ? 0.02 : -0.02;
+  let lightness = start;
+  for (let l = start; step > 0 ? l <= end + 1e-9 : l >= end - 1e-9; l += step) {
+    lightness = l;
+    if (contrast(hslToHex({ h, s, l }), ground) >= target) break;
+  }
+  return lightness;
+};
+
+// One picked colour has to become two, because the disc it paints sits on a
+// different ground in each theme. The fluorescent lime that reads at 15.8:1 on
+// the black bezel is about 1.2:1 on the light one, so the light theme keeps the
+// hue and finds its own lightness. The border is the moulded rim: darker than
+// the face on the dark ground, lighter on the light one.
+const diskFaces = (hex) => {
+  const { h, s, l } = hexToHsl(hex);
+  const darkL = tuneLightness(h, s, DARK_GROUND, 7, Math.max(l, 0.55), 0.92);
+  const lightL = tuneLightness(h, s, LIGHT_GROUND, 4.5, 0.3, 0.06);
+  return {
+    '--disk-on-dark': hslToHex({ h, s, l: darkL }),
+    '--disk-on-dark-border': hslToHex({ h, s, l: darkL * 0.78 }),
+    '--disk-on-light': hslToHex({ h, s, l: lightL }),
+    '--disk-on-light-border': hslToHex({ h, s, l: Math.min(lightL + 0.14, 0.6) }),
+  };
+};
+
+const readStoredColor = () => {
+  try {
+    const saved = window.localStorage.getItem(STORED_COLOR_KEY);
+    return saved && HEX.test(saved) ? saved.toLowerCase() : DEFAULT_COLOR;
+  } catch {
+    return DEFAULT_COLOR;
+  }
+};
+
 const Disk = memo(function Disk({ on }) {
   return (
     <div className="flip-disk relative aspect-square w-full cursor-crosshair" style={{ perspective: '400px' }}>
       <div className="flip-disk-faces absolute inset-0 h-full w-full" style={{ '--flip-angle': on ? '180deg' : '0deg' }}>
         <div className="absolute inset-0 rounded-full border border-neutral-300 bg-neutral-200 shadow-[inset_0_1px_3px_rgba(0,0,0,0.15)] [backface-visibility:hidden] dark:border-neutral-800 dark:bg-neutral-900 dark:shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)]" />
-        <div className="absolute inset-0 rounded-full border border-neutral-700 bg-neutral-900 shadow-[inset_0_-1px_3px_rgba(0,0,0,0.4)] [backface-visibility:hidden] [transform:rotateX(180deg)] dark:border-[#c4db3f] dark:bg-[#E5FD52] dark:shadow-[inset_0_-2px_6px_rgba(0,0,0,0.2)]" />
+        <div className="absolute inset-0 rounded-full border border-[color:var(--disk-on-border)] bg-[color:var(--disk-on)] shadow-[inset_0_-1px_3px_rgba(0,0,0,0.4)] [backface-visibility:hidden] [transform:rotateX(180deg)] dark:shadow-[inset_0_-2px_6px_rgba(0,0,0,0.2)]" />
       </div>
     </div>
   );
@@ -134,6 +235,19 @@ export function FlipDiskMatrix() {
   const [text, setText] = useState('FLIP');
   const [clock, setClock] = useState(readClock);
   const [bits, setBits] = useState(blankGrid);
+  const [color, setColor] = useState(readStoredColor);
+
+  // Both theme variants ride on the wrapper so switching the site theme
+  // repaints every disc from CSS alone, with no React render involved.
+  const faces = useMemo(() => diskFaces(color), [color]);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(STORED_COLOR_KEY, color);
+    } catch {
+      // Private-mode Safari throws on write; the picker still works for the session.
+    }
+  }, [color]);
 
   // Only the two text-driven modes have something to spell out.
   const display = mode === 'time' ? clock : mode === 'text' ? text : null;
@@ -179,7 +293,8 @@ export function FlipDiskMatrix() {
   }, [mode, clock, text]);
 
   return (
-    <div className="flex w-full flex-col items-center gap-6">
+    <div className="flip-matrix flex w-full flex-col items-center gap-6" style={faces}>
+      <div className="flex flex-wrap items-center justify-center gap-3">
       <div
         className="flex items-center gap-1.5 rounded-lg border border-neutral-300 bg-neutral-200/70 p-1 dark:border-neutral-800 dark:bg-neutral-900"
         role="group"
@@ -193,13 +308,49 @@ export function FlipDiskMatrix() {
             aria-pressed={mode === option}
             className={`min-h-[2.25rem] rounded-md px-3 py-1.5 font-mono text-xs uppercase transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] ${
               mode === option
-                ? 'bg-white font-semibold text-neutral-900 shadow-sm dark:bg-[#E5FD52] dark:text-black'
+                ? 'bg-white font-semibold text-neutral-900 shadow-sm dark:bg-[color:var(--disk-on)] dark:text-black'
                 : 'text-neutral-700 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200'
             }`}
           >
             {option}
           </button>
         ))}
+      </div>
+
+      <div
+        className="flex items-center gap-1.5 rounded-lg border border-neutral-300 bg-neutral-200/70 p-1 dark:border-neutral-800 dark:bg-neutral-900"
+        role="group"
+        aria-label="Disc color"
+      >
+        {PRESETS.map((preset) => (
+          <button
+            key={preset.hex}
+            type="button"
+            onClick={() => setColor(preset.hex)}
+            aria-pressed={color === preset.hex}
+            title={preset.name}
+            style={diskFaces(preset.hex)}
+            className={`flip-swatch h-9 w-9 rounded-md border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] ${
+              color === preset.hex
+                ? 'border-neutral-900 ring-2 ring-neutral-900/70 ring-offset-2 ring-offset-neutral-200 dark:border-white dark:ring-white/80 dark:ring-offset-neutral-900'
+                : 'border-black/15 hover:scale-105 dark:border-white/20'
+            }`}
+          >
+            <span className="sr-only">{preset.name}</span>
+          </button>
+        ))}
+        <label htmlFor="flip-disk-color" className="sr-only">
+          Custom disc color
+        </label>
+        <input
+          id="flip-disk-color"
+          type="color"
+          value={color}
+          onChange={(event) => setColor(event.target.value.toLowerCase())}
+          title="Custom color"
+          className="h-9 w-9 cursor-pointer rounded-md border border-black/15 bg-transparent p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] dark:border-white/20"
+        />
+      </div>
       </div>
 
       {mode === 'text' ? (
