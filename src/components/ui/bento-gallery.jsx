@@ -18,16 +18,6 @@ import React, { useRef } from 'react';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { cn } from '../../lib/utils';
 
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20, scale: 0.95 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 100, damping: 15 } },
-};
-
 // Drag-to-scroll for the mouse. Touch already scrolls the container natively,
 // so pointer events from a finger are left alone.
 function useDragScroll() {
@@ -91,14 +81,13 @@ export default function InteractiveImageBentoGallery({
         style={reduceMotion ? undefined : { opacity, y }}
         className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
       >
-        <p className="section-kicker">Beyond the code</p>
         <h2
           id={headingId}
-          className="mt-3 max-w-2xl text-4xl font-extrabold tracking-tight text-white sm:text-5xl"
+          className="page-heading max-w-2xl font-extrabold tracking-tight text-white"
         >
           {title}
         </h2>
-        <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/65 sm:text-lg">{description}</p>
+        <p className="page-intro mt-4 text-white/65">{description}</p>
       </motion.div>
 
       {/* Same container as the heading above, so the strip starts on the
@@ -117,16 +106,11 @@ export default function InteractiveImageBentoGallery({
               when six photos fit inside the container with room to spare. */}
           <motion.div
             className="grid w-max auto-cols-[13rem] grid-flow-col grid-rows-[9rem_9rem] gap-4 sm:auto-cols-[16rem] sm:grid-rows-[11rem_11rem] lg:auto-cols-[18rem] lg:grid-rows-[13rem_13rem]"
-            variants={reduceMotion ? undefined : containerVariants}
-            initial={reduceMotion ? false : 'hidden'}
-            whileInView={reduceMotion ? undefined : 'visible'}
-            viewport={{ once: true, amount: 0.2 }}
           >
             {imageItems.map((item, index) => (
               <motion.button
                 key={item.id}
                 type="button"
-                variants={reduceMotion ? undefined : itemVariants}
                 className={cn(
                   'group relative flex h-full w-full items-end overflow-hidden rounded-xl border border-white/10 bg-white/5 text-left shadow-sm transition-shadow duration-300 ease-in-out hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--page-background)]',
                   item.span
@@ -150,7 +134,7 @@ export default function InteractiveImageBentoGallery({
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100" />
-                <div className="keep-fg relative z-10 translate-y-4 p-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+                <div className="keep-fg relative z-10 translate-y-4 p-4 opacity-0 transition-[opacity,transform] duration-500 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
                   <h3 className="text-lg font-bold text-white">{item.title}</h3>
                   {item.desc ? <p className="mt-1 text-sm text-white/80">{item.desc}</p> : null}
                 </div>

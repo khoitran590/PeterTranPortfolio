@@ -1,5 +1,6 @@
 // src/components/Gallery.jsx – personal photography, on the bento strip
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import InteractiveImageBentoGallery from './ui/bento-gallery';
@@ -15,30 +16,32 @@ import InteractiveImageBentoGallery from './ui/bento-gallery';
 // The tall slots are the two true portraits plus the alley, the three frames
 // whose composition survives a vertical crop.
 //
-// `desc` is the hover caption and is Peter's to fill in — several of these are
-// recognisable, but I am not going to caption his own trip for him.
+// Titles identify the visible subject without guessing at locations or dates.
 const mediaItems = [
-  { id: 'PIC00523', title: 'Photography 01', desc: '', url: '/assets/opt/PIC00523_full.jpg', thumb: '/assets/opt/PIC00523_thumb.jpg', width: 640, height: 400, span: 'row-span-1' },
-  { id: '000223860028', title: 'Photography 02', desc: '', url: '/assets/opt/000223860028_full.jpg', thumb: '/assets/opt/000223860028_thumb.jpg', width: 640, height: 424, span: 'row-span-1' },
-  { id: 'IMG_2510', title: 'Photography 03', desc: '', url: '/assets/opt/IMG_2510_full.jpg', thumb: '/assets/opt/IMG_2510_thumb.jpg', width: 640, height: 960, span: 'row-span-2' },
-  { id: 'IMG_2508', title: 'Photography 04', desc: '', url: '/assets/opt/IMG_2508_full.jpg', thumb: '/assets/opt/IMG_2508_thumb.jpg', width: 640, height: 317, span: 'row-span-1' },
-  { id: 'IMG_2522', title: 'Photography 05', desc: '', url: '/assets/opt/IMG_2522_full.jpg', thumb: '/assets/opt/IMG_2522_thumb.jpg', width: 640, height: 387, span: 'row-span-1' },
-  { id: 'IMG_2526', title: 'Photography 06', desc: '', url: '/assets/opt/IMG_2526_full.jpg', thumb: '/assets/opt/IMG_2526_thumb.jpg', width: 640, height: 942, span: 'row-span-2' },
-  { id: 'PIC00687-2', title: 'Photography 07', desc: '', url: '/assets/opt/PIC00687-2_full.jpg', thumb: '/assets/opt/PIC00687-2_thumb.jpg', width: 640, height: 426, span: 'row-span-1' },
-  { id: 'PIC00210', title: 'Photography 08', desc: '', url: '/assets/opt/PIC00210_full.jpg', thumb: '/assets/opt/PIC00210_thumb.jpg', width: 640, height: 405, span: 'row-span-1' },
-  { id: 'IMG_2524', title: 'Photography 09', desc: '', url: '/assets/opt/IMG_2524_full.jpg', thumb: '/assets/opt/IMG_2524_thumb.jpg', width: 640, height: 375, span: 'row-span-2' },
-  { id: 'IMG_2527', title: 'Photography 10', desc: '', url: '/assets/opt/IMG_2527_full.jpg', thumb: '/assets/opt/IMG_2527_thumb.jpg', width: 640, height: 346, span: 'row-span-1' },
-  { id: 'PIC00211', title: 'Photography 11', desc: '', url: '/assets/opt/PIC00211_full.jpg', thumb: '/assets/opt/PIC00211_thumb.jpg', width: 640, height: 386, span: 'row-span-1' },
-  { id: 'DSCF2424-2', title: 'Photography 12', desc: '', url: '/assets/opt/DSCF2424-2_full.jpg', thumb: '/assets/opt/DSCF2424-2_thumb.jpg', width: 640, height: 426, span: 'row-span-1' },
-  { id: 'PIC00027', title: 'Photography 13', desc: '', url: '/assets/opt/PIC00027_full.jpg', thumb: '/assets/opt/PIC00027_thumb.jpg', width: 640, height: 400, span: 'row-span-1' },
+  { id: 'PIC00523', title: 'Canyon overlook', alt: 'A person stands on a rocky ledge above layered canyon walls.', url: '/assets/opt/PIC00523_full.jpg', thumb: '/assets/opt/PIC00523_thumb.jpg', fullHeight: 1281, width: 640, height: 400, span: 'row-span-1' },
+  { id: '000223860028', title: 'Waves at the rocky coast', alt: 'Surf breaks against a rocky coastline beneath a cloudy sky.', url: '/assets/opt/000223860028_full.jpg', thumb: '/assets/opt/000223860028_thumb.jpg', fullHeight: 1358, width: 640, height: 424, span: 'row-span-1' },
+  { id: 'IMG_2510', title: 'Illuminated tower at night', alt: 'An orange steel tower rises into a dark night sky.', url: '/assets/opt/IMG_2510_full.jpg', thumb: '/assets/opt/IMG_2510_thumb.jpg', fullHeight: 3072, width: 640, height: 960, span: 'row-span-2' },
+  { id: 'IMG_2508', title: 'Castle above the stone wall', alt: 'A white tiered castle stands behind a stone wall framed by leaves.', url: '/assets/opt/IMG_2508_full.jpg', thumb: '/assets/opt/IMG_2508_thumb.jpg', fullHeight: 1014, width: 640, height: 317, span: 'row-span-1' },
+  { id: 'IMG_2522', title: 'Painted barrels', alt: 'Rows of illustrated barrels line a long wall beside a path.', url: '/assets/opt/IMG_2522_full.jpg', thumb: '/assets/opt/IMG_2522_thumb.jpg', fullHeight: 1239, width: 640, height: 387, span: 'row-span-1' },
+  { id: 'IMG_2526', title: 'Woodland shrine', alt: 'A weathered red gate frames mossy stone steps in a wooded setting.', url: '/assets/opt/IMG_2526_full.jpg', thumb: '/assets/opt/IMG_2526_thumb.jpg', fullHeight: 3014, width: 640, height: 942, span: 'row-span-2' },
+  { id: 'PIC00687-2', title: 'Milky Way above the trees', alt: 'The Milky Way spans a star-filled sky above dark tree silhouettes.', url: '/assets/opt/PIC00687-2_full.jpg', thumb: '/assets/opt/PIC00687-2_thumb.jpg', fullHeight: 1365, width: 640, height: 426, span: 'row-span-1' },
+  { id: 'PIC00210', title: 'Portrait by a mountain bridge', alt: 'A person stands beside a steel bridge with snowy mountains behind them.', url: '/assets/opt/PIC00210_full.jpg', thumb: '/assets/opt/PIC00210_thumb.jpg', fullHeight: 1297, width: 640, height: 405, span: 'row-span-1' },
+  { id: 'IMG_2524', title: 'Lantern-lit alley', alt: 'A narrow alley with wooden facades and warm lamps after dark.', url: '/assets/opt/IMG_2524_full.jpg', thumb: '/assets/opt/IMG_2524_thumb.jpg', fullHeight: 1200, width: 640, height: 375, span: 'row-span-2' },
+  { id: 'IMG_2527', title: 'Red gate among the trees', alt: 'A bright red gate frames a tree-lined path.', url: '/assets/opt/IMG_2527_full.jpg', thumb: '/assets/opt/IMG_2527_thumb.jpg', fullHeight: 1106, width: 640, height: 346, span: 'row-span-1' },
+  { id: 'PIC00211', title: 'Yellow field and power lines', alt: 'Utility poles cross a broad field of yellow flowers under blue sky.', url: '/assets/opt/PIC00211_full.jpg', thumb: '/assets/opt/PIC00211_thumb.jpg', fullHeight: 1235, width: 640, height: 386, span: 'row-span-1' },
+  { id: 'DSCF2424-2', title: 'Stargazing beside a car', alt: 'A person stands beside a parked car beneath a starry sky.', url: '/assets/opt/DSCF2424-2_full.jpg', thumb: '/assets/opt/DSCF2424-2_thumb.jpg', fullHeight: 1365, width: 640, height: 426, span: 'row-span-1' },
+  { id: 'PIC00027', title: 'Figures beneath the Milky Way', alt: 'Two people stand in silhouette beneath the Milky Way at dusk.', url: '/assets/opt/PIC00027_full.jpg', thumb: '/assets/opt/PIC00027_thumb.jpg', fullHeight: 1281, width: 640, height: 400, span: 'row-span-1' },
 ];
 
-function GalleryDialog({ item, onClose, onPrevious, onNext }) {
+function GalleryDialog({ item, onClose, onPrevious, onNext, onRestoreFocus }) {
   const closeButtonRef = useRef(null);
   const dialogRef = useRef(null);
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
+    const appShell = document.querySelector('.app-shell');
+    const wasInert = appShell?.inert ?? false;
+    if (appShell) appShell.inert = true;
     closeButtonRef.current?.focus();
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -70,18 +73,24 @@ function GalleryDialog({ item, onClose, onPrevious, onNext }) {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => {
+      if (appShell) appShell.inert = wasInert;
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', handleKeyDown);
+      // StrictMode replays effects in development; restore focus only after
+      // the viewer has actually left the document.
+      window.setTimeout(() => {
+        if (!document.querySelector('[role="dialog"][aria-modal="true"]')) onRestoreFocus();
+      }, 0);
     };
-  }, [onClose, onNext, onPrevious]);
+  }, [onClose, onNext, onPrevious, onRestoreFocus]);
 
-  return (
+  return createPortal(
     <motion.div
       initial={reduceMotion ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
       transition={{ duration: reduceMotion ? 0 : 0.2 }}
-      className="keep-fg fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/90 p-4 backdrop-blur-md"
+      className="keep-fg fixed inset-0 z-[110] flex items-center justify-center bg-slate-950/90 p-4 backdrop-blur-md"
       role="dialog"
       aria-modal="true"
       aria-labelledby="gallery-dialog-title"
@@ -114,7 +123,9 @@ function GalleryDialog({ item, onClose, onPrevious, onNext }) {
         <div className="relative flex min-h-0 flex-1 items-center justify-center bg-black p-2 sm:p-5">
           <img
             src={item.url}
-            alt={`${item.title} by Peter Tran`}
+            alt={item.alt}
+            width={2048}
+            height={item.fullHeight}
             className="max-h-[72vh] max-w-full object-contain"
           />
           <button
@@ -136,7 +147,8 @@ function GalleryDialog({ item, onClose, onPrevious, onNext }) {
         </div>
         <p className="px-5 py-4 text-sm text-white/65">Use the arrow keys to browse, or Escape to close.</p>
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body
   );
 }
 
@@ -152,9 +164,9 @@ export default function Gallery() {
 
   const closeGallery = useCallback(() => {
     setSelectedIndex(null);
-    // Return focus to the card that opened the dialog.
-    window.setTimeout(() => openerRef.current?.focus?.(), 0);
   }, []);
+
+  const restoreFocus = useCallback(() => openerRef.current?.focus?.(), []);
 
   const showPrevious = useCallback(() => {
     setSelectedIndex((index) => (index === 0 ? mediaItems.length - 1 : index - 1));
@@ -182,6 +194,7 @@ export default function Gallery() {
             onClose={closeGallery}
             onPrevious={showPrevious}
             onNext={showNext}
+            onRestoreFocus={restoreFocus}
           />
         ) : null}
       </AnimatePresence>

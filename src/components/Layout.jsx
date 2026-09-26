@@ -50,6 +50,7 @@ const Layout = ({ children, section, onNavigate }) => {
     root.classList.toggle('dark', isDark);
     root.classList.toggle('theme-light', !isDark);
     root.style.colorScheme = isDark ? 'dark' : 'light';
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', isDark ? '#0e1014' : '#f7f8fa');
 
     if (theme === 'system') window.localStorage.removeItem(STORAGE_KEY);
     else window.localStorage.setItem(STORAGE_KEY, theme);
@@ -86,8 +87,6 @@ const Layout = ({ children, section, onNavigate }) => {
       <div className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-0.5" aria-hidden="true">
         <div className="scroll-progress h-full w-full" />
       </div>
-
-      <div className="site-grid pointer-events-none fixed inset-0 z-0" aria-hidden="true" />
 
       <NavBar
         items={navItems}

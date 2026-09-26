@@ -1,173 +1,61 @@
-// src/components/Skills.jsx – bento grid layout
 import React from 'react';
-import { Monitor, Server, Users, Code2 } from 'lucide-react';
-import {
-  SiHtml5,
-  SiCss,
-  SiJavascript,
-  SiTypescript,
-  SiReact,
-  SiTailwindcss,
-  SiCplusplus,
-  SiPython,
-  SiNodedotjs,
-  SiPhp,
-  SiMongodb,
-  SiPostgresql,
-  SiFirebase,
-  SiMysql,
-  SiSupabase
-} from 'react-icons/si';
-import { cn } from '../lib/utils';
+import { ArrowUpRight, Code2, Database, Smartphone } from 'lucide-react';
 
-const bentoItems = [
+const skillGroups = [
   {
-    title: 'Frontend Development',
-    meta: 'UI / UX',
-    description:
-      'Building responsive, accessible interfaces with modern frameworks and clean component architecture.',
-    icon: <Monitor className="w-4 h-4 text-sky-400" />,
-    skills: [
-      { name: 'HTML5', Icon: SiHtml5, color: '#E34F26' },
-      { name: 'CSS3', Icon: SiCss, color: '#1572B6' },
-      { name: 'JavaScript', Icon: SiJavascript, color: '#F7DF1E' },
-      { name: 'TypeScript', Icon: SiTypescript, color: '#3178C6' },
-      { name: 'React', Icon: SiReact, color: '#61DAFB' },
-      { name: 'React Native', Icon: SiReact, color: '#61DAFB' },
-      { name: 'Tailwind CSS', Icon: SiTailwindcss, color: '#38BDF8' },
-    ],
-    colSpan: 2,
+    title: 'Interfaces',
+    icon: Code2,
+    description: 'Responsive web and cross-platform experiences, from component systems to the details of everyday interactions.',
+    skills: ['React', 'React Native', 'Next.js', 'TypeScript', 'JavaScript', 'HTML & CSS', 'Tailwind CSS'],
+    evidence: 'See TripSplit',
+    href: 'https://github.com/hungbenjamin402/tripsplit_capstone',
   },
   {
-    title: 'Languages',
-    meta: 'Core',
-    description: 'General-purpose languages for systems, scripting, and data.',
-    icon: <Code2 className="w-4 h-4 text-amber-400" />,
-    skills: [
-      { name: 'Python', Icon: SiPython, color: '#3776AB' },
-      { name: 'C++', Icon: SiCplusplus, color: '#00599C' },
-      { name: 'SQL', Icon: SiMysql, color: '#4479A1' },
-      { name: 'JavaScript', Icon: SiJavascript, color: '#F7DF1E' },
-      { name: 'TypeScript', Icon: SiTypescript, color: '#3178C6' },
-    ],
+    title: 'APIs & data',
+    icon: Database,
+    description: 'Application services and data models that support shared state, search, and reliable persistence.',
+    skills: ['Node.js', 'Express', 'Firebase', 'Supabase', 'PostgreSQL', 'MongoDB', 'MySQL', 'SQL', 'PHP'],
+    evidence: 'See Academic Event Mgmt',
+    href: 'https://github.com/bwhelan212/academic-event-management-company',
   },
   {
-    title: 'Soft Skills',
-    meta: 'People',
-    description:
-      'Leading teams, communicating clearly, and solving problems under pressure.',
-    icon: <Users className="w-4 h-4 text-fuchsia-400" />,
-    skills: [
-      { name: 'Problem Solving' },
-      { name: 'Team Leadership' },
-      { name: 'Communication' },
-      { name: 'Time Management' },
-      { name: 'Adaptability' },
-      { name: 'Attention to Detail' },
-    ],
-  },
-  {
-    title: 'Backend Development',
-    meta: 'APIs / Data',
-    description:
-      'Designing APIs and data layers with relational and document databases.',
-    icon: <Server className="w-4 h-4 text-emerald-400" />,
-    skills: [
-      { name: 'Node.js', Icon: SiNodedotjs, color: '#5FA04E' },
-      { name: 'Python', Icon: SiPython, color: '#3776AB' },
-      { name: 'PHP', Icon: SiPhp, color: '#777BB4' },
-      { name: 'MongoDB', Icon: SiMongodb, color: '#47A248' },
-      { name: 'PostgreSQL', Icon: SiPostgresql, color: '#4169E1' },
-      { name: 'Firebase', Icon: SiFirebase, color: '#FFCA28' },
-      { name: 'Supabase', Icon: SiSupabase, color: '#3FCF8E' },
-    ],
-    colSpan: 2,
+    title: 'Native & software',
+    icon: Smartphone,
+    description: 'Native iOS development and focused software projects beyond the browser.',
+    skills: ['Swift', 'SwiftUI', 'Python', 'C++'],
+    evidence: 'See TripSplit iOS',
+    href: 'https://github.com/khoitran590/TripsplitIOS',
   },
 ];
 
-const BentoGrid = ({ items }) => (
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 max-w-7xl mx-auto">
-    {items.map((item, index) => (
-      <div
-        key={index}
-        className={cn(
-          'group relative p-5 rounded-xl overflow-hidden transition-all duration-300',
-          'border border-white/10 bg-white/[0.03]',
-          'hover:shadow-[0_2px_12px_rgba(255,255,255,0.05)]',
-          'hover:-translate-y-0.5',
-          item.colSpan === 2 ? 'md:col-span-2' : 'col-span-1',
-        )}
-      >
-        {/* dotted texture overlay */}
-        <div
-          className={cn(
-            'absolute inset-0 transition-opacity duration-300',
-            'opacity-0 group-hover:opacity-100'
-          )}
-        >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[length:4px_4px]" />
-        </div>
-
-        <div className="relative flex flex-col space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 transition-all duration-300">
-              {item.icon}
-            </div>
-            <span className="text-xs font-medium px-2 py-1 rounded-lg backdrop-blur-sm bg-white/10 text-gray-300 transition-colors duration-300 group-hover:bg-white/20">
-              {item.meta}
-            </span>
-          </div>
-
-          <div className="space-y-2">
-            <h3 className="font-medium text-gray-100 tracking-tight text-[20px]">
-              {item.title}
-            </h3>
-            <p className="text-base font-medium text-gray-300 leading-snug">
-              {item.description}
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-2 pt-1">
-            {item.skills.map((skill, i) => (
-              <span
-                key={i}
-                className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-sm font-semibold text-gray-300 bg-white/10 backdrop-blur-sm transition-all duration-200 hover:bg-white/20"
-              >
-                {skill.Icon && <skill.Icon size={13} style={{ color: skill.color }} />}
-                {skill.name}
+const Skills = () => (
+  <section id="skills" aria-labelledby="skills-heading" className="relative scroll-mt-24 overflow-hidden py-20 sm:py-24">
+    <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mb-10 max-w-2xl">
+        <h2 id="skills-heading" className="page-heading font-extrabold tracking-tight text-white">Skills I use to build products.</h2>
+        <p className="page-intro mt-4 text-white/65">The tools behind my portfolio work, grouped by the work they help me do.</p>
+      </div>
+      <div className="divide-y divide-white/10 border-y border-white/10">
+        {skillGroups.map(({ title, icon: Icon, description, skills, evidence, href }) => (
+          <article key={title} className="grid gap-4 py-7 sm:py-9 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-10">
+            <div className="flex items-center gap-3 lg:items-start">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/10 accent-text">
+                <Icon size={18} aria-hidden="true" />
               </span>
-            ))}
-          </div>
-        </div>
-
-        {/* gradient border glow */}
-        <div
-          className={cn(
-            'absolute inset-0 -z-10 rounded-xl p-px bg-gradient-to-br from-transparent via-white/10 to-transparent transition-opacity duration-300',
-            'opacity-0 group-hover:opacity-100'
-          )}
-        />
+              <h3 className="text-lg font-semibold tracking-tight text-white">{title}</h3>
+            </div>
+            <div>
+              <p className="max-w-2xl text-sm leading-relaxed text-white/70">{description}</p>
+              <p className="mt-4 text-sm leading-7 text-white/80">{skills.join(' · ')}</p>
+              <a href={href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold accent-text transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)]">
+                {evidence} <ArrowUpRight size={16} aria-hidden="true" />
+              </a>
+            </div>
+          </article>
+        ))}
       </div>
-    ))}
-  </div>
+    </div>
+  </section>
 );
-
-const Skills = () => {
-  return (
-    <section id="skills" aria-labelledby="skills-heading" className="relative scroll-mt-24 py-20 overflow-hidden sm:py-24">
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-12 max-w-2xl">
-          <p className="section-kicker">Technical toolkit</p>
-          <h2 id="skills-heading" className="mt-3 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">Skills I use to build products.</h2>
-          <p className="mt-4 text-base leading-relaxed text-white/65 sm:text-lg">
-            A practical toolkit spanning interface work, APIs, data, and collaborative delivery.
-          </p>
-        </div>
-
-        <BentoGrid items={bentoItems} />
-      </div>
-    </section>
-  );
-};
 
 export default Skills;

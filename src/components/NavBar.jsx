@@ -35,13 +35,13 @@ export function NavBar({ items, className, theme, onCycleTheme, activeSection, o
   return (
     <div
       className={cn(
-        'pointer-events-none fixed bottom-3 left-1/2 z-50 -translate-x-1/2 sm:top-5 sm:bottom-auto',
+        'floating-nav pointer-events-none fixed left-1/2 z-50 -translate-x-1/2',
         className
       )}
     >
       <nav
         aria-label="Primary navigation"
-        className="site-nav pointer-events-auto flex items-center gap-1 rounded-2xl px-1 py-1 shadow-lg sm:rounded-full"
+        className="site-nav pointer-events-auto flex items-center gap-0 rounded-2xl px-1 py-1 shadow-lg sm:gap-1 sm:rounded-full"
       >
         {items.map((item) => {
           const Icon = item.icon;
@@ -61,7 +61,7 @@ export function NavBar({ items, className, theme, onCycleTheme, activeSection, o
               className={cn(
                 // 2.75rem fits all six sections on a 360px viewport while still
                 // clearing the 44px minimum touch target.
-                'relative inline-flex min-w-[2.75rem] flex-col items-center justify-center gap-0.5 rounded-xl px-0.5 py-1.5 text-[9px] font-semibold tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] sm:min-w-0 sm:flex-row sm:gap-2 sm:rounded-full sm:px-4 sm:py-2 sm:text-sm sm:tracking-normal lg:px-5',
+                'relative inline-flex min-w-[2.75rem] flex-col items-center justify-center gap-0.5 rounded-xl px-0.5 py-1.5 text-xs font-semibold tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] sm:min-w-0 sm:flex-row sm:gap-2 sm:rounded-full sm:px-4 sm:py-2 sm:text-sm sm:tracking-normal lg:px-5',
                 'nav-link',
                 isActive && 'nav-link-active'
               )}
@@ -86,7 +86,7 @@ export function NavBar({ items, className, theme, onCycleTheme, activeSection, o
         <button
           type="button"
           onClick={onCycleTheme}
-          className="theme-toggle ml-1 inline-flex h-11 w-11 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)]"
+          className="theme-toggle inline-flex h-11 w-11 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] sm:ml-1"
           aria-label={`Theme: ${THEME_LABEL[currentTheme]}. Switch to ${THEME_LABEL[NEXT_THEME[currentTheme]].toLowerCase()}.`}
           title={`Theme: ${THEME_LABEL[currentTheme]}`}
         >

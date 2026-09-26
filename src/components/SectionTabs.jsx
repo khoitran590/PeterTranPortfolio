@@ -4,7 +4,6 @@
 // so the gallery's images and the contact form never cost anything until the
 // visitor actually opens those tabs.
 import React, { Suspense } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 
 import Home from './Home';
 import Projects from './Projects';
@@ -34,22 +33,11 @@ const SectionFallback = () => (
 );
 
 export default function SectionTabs({ section }) {
-  const reduceMotion = useReducedMotion();
   const Panel = PANELS[section] || Home;
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div
-        key={section}
-        initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -8 }}
-        transition={reduceMotion ? { duration: 0 } : { duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <Suspense fallback={<SectionFallback />}>
-          <Panel />
-        </Suspense>
-      </motion.div>
-    </AnimatePresence>
+    <Suspense fallback={<SectionFallback />}>
+      <Panel />
+    </Suspense>
   );
 }

@@ -18,8 +18,8 @@ const sections = [
 ];
 
 const Footer = () => (
-  // The bottom padding clears the fixed mobile nav bar.
-  <footer className="relative z-10 border-t border-white/10 pb-28 pt-12 sm:pb-12">
+  // The bottom padding clears the fixed mobile nav and the device safe area.
+  <footer className="site-footer relative z-10 border-t border-white/10 pt-12">
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
         <div className="max-w-sm">
@@ -28,7 +28,7 @@ const Footer = () => (
             Software engineer building responsive web and mobile applications.
             Open to new opportunities.
           </p>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1">
             {links.map(({ href, label, Icon }) => {
               const external = href.startsWith('http');
               return (
@@ -37,7 +37,7 @@ const Footer = () => (
                   href={href}
                   target={external || href.endsWith('.pdf') ? '_blank' : undefined}
                   rel={external || href.endsWith('.pdf') ? 'noopener noreferrer' : undefined}
-                  className="inline-flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-2 text-xs font-semibold text-white/80 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)]"
+                  className="inline-flex min-h-11 items-center gap-1.5 text-xs font-semibold text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)]"
                 >
                   <Icon size={14} aria-hidden="true" />
                   {label}

@@ -1,0 +1,399 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-26T21:32:21.647Z",
+  "title": "Design System: Peter Tran Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "dark-background": {
+        "role": "neutral",
+        "displayName": "Deep Ink",
+        "canonical": "#0e1014",
+        "tonalRamp": [
+          "oklch(15% 0.004913449546123348 264.3)",
+          "oklch(25% 0.008933544629315178 264.3)",
+          "oklch(35% 0.008933544629315178 264.3)",
+          "oklch(45% 0.008933544629315178 264.3)",
+          "oklch(55% 0.008933544629315178 264.3)",
+          "oklch(68% 0.008933544629315178 264.3)",
+          "oklch(82% 0.008933544629315178 264.3)",
+          "oklch(95% 0.004913449546123348 264.3)"
+        ]
+      },
+      "dark-foreground": {
+        "role": "neutral",
+        "displayName": "White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 2.0500697544356072e-8 89.9)",
+          "oklch(25% 3.727399553519285e-8 89.9)",
+          "oklch(35% 3.727399553519285e-8 89.9)",
+          "oklch(45% 3.727399553519285e-8 89.9)",
+          "oklch(55% 3.727399553519285e-8 89.9)",
+          "oklch(68% 3.727399553519285e-8 89.9)",
+          "oklch(82% 3.727399553519285e-8 89.9)",
+          "oklch(95% 2.0500697544356072e-8 89.9)"
+        ]
+      },
+      "dark-surface": {
+        "role": "neutral",
+        "displayName": "Charcoal Surface",
+        "canonical": "#171a20",
+        "tonalRamp": [
+          "oklch(15% 0.006964538391990144 264.3)",
+          "oklch(25% 0.012662797076345714 264.3)",
+          "oklch(35% 0.012662797076345714 264.3)",
+          "oklch(45% 0.012662797076345714 264.3)",
+          "oklch(55% 0.012662797076345714 264.3)",
+          "oklch(68% 0.012662797076345714 264.3)",
+          "oklch(82% 0.012662797076345714 264.3)",
+          "oklch(95% 0.006964538391990144 264.3)"
+        ]
+      },
+      "dark-border": {
+        "role": "neutral",
+        "displayName": "Dark Hairline",
+        "canonical": "rgba(255, 255, 255, 0.11)",
+        "tonalRamp": [
+          "oklch(15% 2.0500697544356072e-8 89.9)",
+          "oklch(25% 3.727399553519285e-8 89.9)",
+          "oklch(35% 3.727399553519285e-8 89.9)",
+          "oklch(45% 3.727399553519285e-8 89.9)",
+          "oklch(55% 3.727399553519285e-8 89.9)",
+          "oklch(68% 3.727399553519285e-8 89.9)",
+          "oklch(82% 3.727399553519285e-8 89.9)",
+          "oklch(95% 2.0500697544356072e-8 89.9)"
+        ]
+      },
+      "dark-muted": {
+        "role": "neutral",
+        "displayName": "Cool Gray",
+        "canonical": "#aeb5c1",
+        "tonalRamp": [
+          "oklch(15% 0.01033906037937795 261.3)",
+          "oklch(25% 0.018798291598868998 261.3)",
+          "oklch(35% 0.018798291598868998 261.3)",
+          "oklch(45% 0.018798291598868998 261.3)",
+          "oklch(55% 0.018798291598868998 261.3)",
+          "oklch(68% 0.018798291598868998 261.3)",
+          "oklch(82% 0.018798291598868998 261.3)",
+          "oklch(95% 0.01033906037937795 261.3)"
+        ]
+      },
+      "dark-accent": {
+        "role": "primary",
+        "displayName": "Quiet Violet on Ink",
+        "canonical": "#818cf8",
+        "tonalRamp": [
+          "oklch(15% 0.08706638404032986 276.9)",
+          "oklch(25% 0.15830251643696336 276.9)",
+          "oklch(35% 0.15830251643696336 276.9)",
+          "oklch(45% 0.15830251643696336 276.9)",
+          "oklch(55% 0.15830251643696336 276.9)",
+          "oklch(68% 0.15830251643696336 276.9)",
+          "oklch(82% 0.15830251643696336 276.9)",
+          "oklch(95% 0.08706638404032986 276.9)"
+        ]
+      },
+      "dark-accent-soft": {
+        "role": "primary",
+        "displayName": "Soft Violet on Ink",
+        "canonical": "#a5b4fc",
+        "tonalRamp": [
+          "oklch(15% 0.057274237574516516 274.7)",
+          "oklch(25% 0.10413497740821184 274.7)",
+          "oklch(35% 0.10413497740821184 274.7)",
+          "oklch(45% 0.10413497740821184 274.7)",
+          "oklch(55% 0.10413497740821184 274.7)",
+          "oklch(68% 0.10413497740821184 274.7)",
+          "oklch(82% 0.10413497740821184 274.7)",
+          "oklch(95% 0.057274237574516516 274.7)"
+        ]
+      },
+      "dark-nav": {
+        "role": "neutral",
+        "displayName": "Translucent Charcoal",
+        "canonical": "rgba(20, 23, 28, 0.88)",
+        "tonalRamp": [
+          "oklch(15% 0.006065696548344002 260.7)",
+          "oklch(25% 0.011028539178807275 260.7)",
+          "oklch(35% 0.011028539178807275 260.7)",
+          "oklch(45% 0.011028539178807275 260.7)",
+          "oklch(55% 0.011028539178807275 260.7)",
+          "oklch(68% 0.011028539178807275 260.7)",
+          "oklch(82% 0.011028539178807275 260.7)",
+          "oklch(95% 0.006065696548344002 260.7)"
+        ]
+      },
+      "light-background": {
+        "role": "neutral",
+        "displayName": "Cool Paper",
+        "canonical": "#f7f8fa",
+        "tonalRamp": [
+          "oklch(15% 0.0015758266811316775 264.5)",
+          "oklch(25% 0.0028651394202394136 264.5)",
+          "oklch(35% 0.0028651394202394136 264.5)",
+          "oklch(45% 0.0028651394202394136 264.5)",
+          "oklch(55% 0.0028651394202394136 264.5)",
+          "oklch(68% 0.0028651394202394136 264.5)",
+          "oklch(82% 0.0028651394202394136 264.5)",
+          "oklch(95% 0.0015758266811316775 264.5)"
+        ]
+      },
+      "light-foreground": {
+        "role": "neutral",
+        "displayName": "Ink Text",
+        "canonical": "#0f172a",
+        "tonalRamp": [
+          "oklch(15% 0.02190337542605354 265.8)",
+          "oklch(25% 0.03982431895646098 265.8)",
+          "oklch(35% 0.03982431895646098 265.8)",
+          "oklch(45% 0.03982431895646098 265.8)",
+          "oklch(55% 0.03982431895646098 265.8)",
+          "oklch(68% 0.03982431895646098 265.8)",
+          "oklch(82% 0.03982431895646098 265.8)",
+          "oklch(95% 0.02190337542605354 265.8)"
+        ]
+      },
+      "light-surface": {
+        "role": "neutral",
+        "displayName": "White Surface",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 2.0500697544356072e-8 89.9)",
+          "oklch(25% 3.727399553519285e-8 89.9)",
+          "oklch(35% 3.727399553519285e-8 89.9)",
+          "oklch(45% 3.727399553519285e-8 89.9)",
+          "oklch(55% 3.727399553519285e-8 89.9)",
+          "oklch(68% 3.727399553519285e-8 89.9)",
+          "oklch(82% 3.727399553519285e-8 89.9)",
+          "oklch(95% 2.0500697544356072e-8 89.9)"
+        ]
+      },
+      "light-border": {
+        "role": "neutral",
+        "displayName": "Light Hairline",
+        "canonical": "rgba(15, 23, 42, 0.12)",
+        "tonalRamp": [
+          "oklch(15% 0.02190337542605354 265.8)",
+          "oklch(25% 0.03982431895646098 265.8)",
+          "oklch(35% 0.03982431895646098 265.8)",
+          "oklch(45% 0.03982431895646098 265.8)",
+          "oklch(55% 0.03982431895646098 265.8)",
+          "oklch(68% 0.03982431895646098 265.8)",
+          "oklch(82% 0.03982431895646098 265.8)",
+          "oklch(95% 0.02190337542605354 265.8)"
+        ]
+      },
+      "light-muted": {
+        "role": "neutral",
+        "displayName": "Slate Gray",
+        "canonical": "#475569",
+        "tonalRamp": [
+          "oklch(15% 0.02059566279115898 257.3)",
+          "oklch(25% 0.03744665962028905 257.3)",
+          "oklch(35% 0.03744665962028905 257.3)",
+          "oklch(45% 0.03744665962028905 257.3)",
+          "oklch(55% 0.03744665962028905 257.3)",
+          "oklch(68% 0.03744665962028905 257.3)",
+          "oklch(82% 0.03744665962028905 257.3)",
+          "oklch(95% 0.02059566279115898 257.3)"
+        ]
+      },
+      "light-accent": {
+        "role": "primary",
+        "displayName": "Quiet Violet on Paper",
+        "canonical": "#4f46e5",
+        "tonalRamp": [
+          "oklch(15% 0.11000000000000001 277.0)",
+          "oklch(25% 0.2 277.0)",
+          "oklch(35% 0.2 277.0)",
+          "oklch(45% 0.2 277.0)",
+          "oklch(55% 0.2 277.0)",
+          "oklch(68% 0.2 277.0)",
+          "oklch(82% 0.2 277.0)",
+          "oklch(95% 0.11000000000000001 277.0)"
+        ]
+      },
+      "light-accent-soft": {
+        "role": "primary",
+        "displayName": "Deep Violet on Paper",
+        "canonical": "#4338ca",
+        "tonalRamp": [
+          "oklch(15% 0.11000000000000001 277.0)",
+          "oklch(25% 0.2 277.0)",
+          "oklch(35% 0.2 277.0)",
+          "oklch(45% 0.2 277.0)",
+          "oklch(55% 0.2 277.0)",
+          "oklch(68% 0.2 277.0)",
+          "oklch(82% 0.2 277.0)",
+          "oklch(95% 0.11000000000000001 277.0)"
+        ]
+      },
+      "light-nav": {
+        "role": "neutral",
+        "displayName": "Translucent White",
+        "canonical": "rgba(255, 255, 255, 0.72)",
+        "tonalRamp": [
+          "oklch(15% 2.0500697544356072e-8 89.9)",
+          "oklch(25% 3.727399553519285e-8 89.9)",
+          "oklch(35% 3.727399553519285e-8 89.9)",
+          "oklch(45% 3.727399553519285e-8 89.9)",
+          "oklch(55% 3.727399553519285e-8 89.9)",
+          "oklch(68% 3.727399553519285e-8 89.9)",
+          "oklch(82% 3.727399553519285e-8 89.9)",
+          "oklch(95% 2.0500697544356072e-8 89.9)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero name; fluid scale in CSS."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings; fluid scale in CSS."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Project and card titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions and supporting prose."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Navigation and control text."
+      },
+      "clock-control": {
+        "displayName": "Clock Control",
+        "purpose": "UI monospace, limited to flip-disk mode and custom-color controls."
+      }
+    },
+    "shadows": [
+      {
+        "name": "navigation",
+        "value": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+        "purpose": "Soft separation for the fixed navigation only."
+      },
+      {
+        "name": "viewer",
+        "value": "0 25px 50px -12px rgb(0 0 0 / 0.25)",
+        "purpose": "Depth for the focused photography viewer."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Hover and focus state changes."
+      },
+      {
+        "name": "flip-settle",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "480ms flip-disk face settling."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary-dark",
+      "description": "Filled high-contrast action that reverses with the site theme.",
+      "html": "<button class=\"ds-btn-primary\">View selected work</button>",
+      "css": ".ds-btn-primary{background:var(--page-foreground,#fff);color:var(--page-background,#0e1014);border:0;border-radius:var(--radius-control,.75rem);padding:14px 28px;font:600 16px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;cursor:pointer;transition:background-color .2s,transform .2s}.ds-btn-primary:hover{transform:translateY(-2px);filter:brightness(.94)}.ds-btn-primary:active{transform:translateY(0)}.ds-btn-primary:focus-visible{outline:2px solid var(--focus-ring,#a5b4fc);outline-offset:2px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "description": "Tonal outlined action used beside the primary action.",
+      "html": "<button class=\"ds-btn-secondary\">Download résumé</button>",
+      "css": ".ds-btn-secondary{background:rgba(255,255,255,.05);color:var(--page-foreground,#fff);border:1px solid var(--surface-border,rgba(255,255,255,.11));border-radius:var(--radius-control,.75rem);padding:14px 28px;font:600 16px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;cursor:pointer;transition:background-color .2s,border-color .2s}.ds-btn-secondary:hover{background:rgba(255,255,255,.1)}.ds-btn-secondary:focus-visible{outline:2px solid var(--focus-ring,#a5b4fc);outline-offset:2px}"
+    },
+    {
+      "name": "Contact Field",
+      "kind": "input",
+      "description": "Labeled field with tonal fill, border, and theme-aware focus.",
+      "html": "<label class=\"ds-field\"><span>Email address</span><input type=\"email\" placeholder=\"alex@company.com\"></label>",
+      "css": ".ds-field{display:grid;gap:6px;color:var(--page-foreground,#fff);font:600 12px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}.ds-field input{background:rgba(255,255,255,.04);color:var(--page-foreground,#fff);border:1px solid var(--surface-border,rgba(255,255,255,.11));border-radius:var(--radius-control,.75rem);padding:14px 16px;font:400 14px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;transition:background-color .2s,border-color .2s}.ds-field input::placeholder{color:var(--text-muted,#aeb5c1)}.ds-field input:hover{border-color:var(--accent,#818cf8)}.ds-field input:focus-visible{outline:2px solid var(--focus-ring,#a5b4fc);outline-offset:1px}"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "filter-selected-dark",
+      "description": "Shareable technology filter with an explicit pressed state.",
+      "html": "<button class=\"ds-filter\" aria-pressed=\"true\">TypeScript</button>",
+      "css": ".ds-filter{min-height:44px;background:var(--accent,#818cf8);color:#fff;border:1px solid transparent;border-radius:9999px;padding:6px 14px;font:600 14px/1.4 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;cursor:pointer;transition:background-color .2s,border-color .2s}.ds-filter:hover{filter:brightness(.92)}.ds-filter:focus-visible{outline:2px solid var(--focus-ring,#a5b4fc);outline-offset:2px}"
+    },
+    {
+      "name": "Surface Card",
+      "kind": "card",
+      "refersTo": "card-dark",
+      "description": "Flat content surface with a hairline border.",
+      "html": "<article class=\"ds-card\"><h3>TripSplit</h3><p>A cross-platform mobile application for shared travel finances.</p></article>",
+      "css": ".ds-card{background:var(--surface,#171a20);color:var(--page-foreground,#fff);border:1px solid var(--surface-border,rgba(255,255,255,.11));border-radius:var(--radius-card,1rem);padding:24px;font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}.ds-card h3{margin:0;font-size:24px;line-height:1.25}.ds-card p{margin:12px 0 0;color:var(--text-muted,#aeb5c1);font-size:14px;line-height:1.6}"
+    },
+    {
+      "name": "Floating Navigation",
+      "kind": "nav",
+      "description": "Translucent section links with one clear active destination.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Primary navigation\"><a href=\"#home\">Home</a><a class=\"ds-active\" href=\"#projects\" aria-current=\"page\">Projects</a><a href=\"#about\">About</a></nav>",
+      "css": ".ds-nav{display:flex;gap:4px;width:max-content;background:var(--nav-background,rgba(20,23,28,.88));border:1px solid var(--nav-border,rgba(255,255,255,.11));border-radius:9999px;padding:4px;box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1);backdrop-filter:blur(18px) saturate(150%)}.ds-nav a{color:var(--nav-text,rgba(255,255,255,.62));border-radius:9999px;padding:9px 18px;text-decoration:none;font:600 14px/1.2 -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;transition:background-color .14s,color .14s}.ds-nav a:hover,.ds-nav a.ds-active{color:var(--page-foreground,#fff);background:var(--nav-active-background,rgba(255,255,255,.1))}.ds-nav a:focus-visible{outline:2px solid var(--focus-ring,#a5b4fc);outline-offset:2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Editorial Folio",
+    "overview": "The site presents software projects and photography as the work of one person. The interface is quiet, warm, and approachable: large editorial headings establish a point of view, while restrained controls and surfaces let the artifacts carry the visual weight. It uses the same structure in dark and light themes rather than treating light mode as a separate design. Glass and luminosity are concentrated in the floating navigation, viewer, and violet interaction states; content surfaces stay calm.\n\nThis is an experience-oriented portfolio. Visitors should reach selected work, a résumé, or contact details quickly. Navigation is linkable and familiar; motion is limited to the clock, gallery, and small state changes.",
+    "keyCharacteristics": [
+      "Self-hosted expressive display type over a plain system body face.",
+      "Dark ink and cool paper themes with one quiet violet interaction accent.",
+      "Flat, bordered content surfaces, translucent navigation, and generous section spacing.",
+      "Project images and photography are the strongest color on most screens."
+    ],
+    "rules": [
+      {
+        "name": "The One Accent Rule",
+        "body": "Keep quiet violet for interaction and sparse project metadata; allow images to supply the remaining color.",
+        "section": "colors"
+      },
+      {
+        "name": "The Display Restraint Rule",
+        "body": "Use CDA Independence for `h1` and `h2`; use system sans for cards, most controls, and prose. Reserve UI monospace for the clock controls.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Surface Rule",
+        "body": "Prefer spacing, contrast, and borders to decorative shadows; reserve the stronger shadow for the floating navigation and modal viewer.",
+        "section": "elevation & depth"
+      }
+    ],
+    "dos": [
+      "**Do** lead with actual project and photography assets; let their colors distinguish the work.",
+      "**Do** pair display headings with restrained system-sans details.",
+      "**Do** keep dark and light states equally readable, including placeholders, focus rings, and text placed on dark media.",
+      "**Do** preserve the linkable section navigation and the mobile safe-area clearance."
+    ],
+    "donts": [
+      "**Don't** add decorative grids, extra eyebrow labels, nested cards, or duplicate repository actions around projects.",
+      "**Don't** introduce a second accent palette for generic UI chrome.",
+      "**Don't** use a default-only component state where hover, focus, selected, disabled, or error feedback is relevant.",
+      "**Don't** replace project imagery with generic illustrations or invented product claims."
+    ]
+  }
+}

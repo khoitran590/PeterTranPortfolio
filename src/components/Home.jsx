@@ -26,8 +26,7 @@ const Home = () => {
               className="mb-8 h-24 w-24 rounded-full object-cover shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] ring-1 ring-white/15 sm:h-28 sm:w-28"
             />
 
-            <p className="section-kicker mb-3">Software engineering portfolio</p>
-            <h1 className="mb-4 text-5xl font-extrabold tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl">
+            <h1 className="hero-heading mb-4 font-extrabold tracking-tight text-white">
               Peter Tran
             </h1>
             <p className="mb-5 text-base font-semibold text-white/75 md:text-xl">
@@ -42,23 +41,23 @@ const Home = () => {
             <div className="flex flex-wrap justify-center gap-4">
               <a
                 href="#projects"
-                className="rounded-xl px-7 py-3.5 inline-flex items-center justify-center gap-2 font-semibold text-black bg-neutral-100 hover:bg-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                className="hero-primary rounded-xl px-7 py-3.5 inline-flex items-center justify-center gap-2 font-semibold text-black bg-neutral-100 hover:bg-white transition-[background-color,transform] duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--page-background)]"
               >
                 View selected work
-                <ArrowDown size={18} />
+                <ArrowDown size={18} aria-hidden="true" />
               </a>
               <a
                 href="/assets/Peter_Tran_Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-7 py-3.5 font-semibold text-white transition-all duration-300 hover:scale-[1.02] hover:bg-white/10 active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-7 py-3.5 font-semibold text-white transition-[background-color,transform] duration-300 hover:scale-[1.02] hover:bg-white/10 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--page-background)]"
               >
-                <FileText size={18} />
+                <FileText size={18} aria-hidden="true" />
                 Download résumé
               </a>
             </div>
 
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-2" aria-label="Peter's profiles">
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-white/10 pt-5" aria-label="Peter's profiles">
               {socialLinks.map(({ href, label, Icon }) => {
                 const external = href.startsWith('http');
                 return (
@@ -68,7 +67,7 @@ const Home = () => {
                   target={external ? '_blank' : undefined}
                   rel={external ? 'noopener noreferrer' : undefined}
                   aria-label={label}
-                  className="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-2.5 text-sm font-semibold text-white/80 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)]"
+                  className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)]"
                 >
                   <Icon size={17} aria-hidden="true" />
                   {label}
@@ -81,8 +80,7 @@ const Home = () => {
 
       <div className="relative z-10 mx-auto w-full max-w-5xl px-4 pb-24 sm:px-6 lg:px-8">
         <div className="mb-8 text-center">
-          <p className="section-kicker">Responsive matrix</p>
-          <h2 className="mt-3 text-3xl font-light tracking-tight text-white sm:text-4xl">
+          <h2 className="text-3xl font-light tracking-tight text-white sm:text-4xl">
             Electromechanical clock
           </h2>
         </div>

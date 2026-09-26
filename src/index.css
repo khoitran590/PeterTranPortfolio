@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom variable font for the whole portfolio */
+/* Keep the existing variable face for display headings. */
 @font-face {
   font-family: 'CDA Independence';
   src: url('./fonts/CDAIndependenceVAR.ttf') format('truetype');
@@ -11,24 +11,36 @@
   font-display: swap;
 }
 
+:root {
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'CDA Independence', Georgia, serif;
+  --radius-card: 1rem;
+  --radius-control: 0.75rem;
+}
+
 body {
   margin: 0;
-  font-family: 'CDA Independence', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-    'Helvetica Neue', sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+h1, h2 { font-family: var(--font-display); }
+.hero-heading { font-size: clamp(3.25rem, 8vw, 5rem); line-height: 1.02; }
+.page-heading { font-size: clamp(2.125rem, 5vw, 3.25rem); line-height: 1.08; }
+.page-intro { max-width: 65ch; color: var(--text-muted); font-size: clamp(1rem, 1.5vw, 1.125rem); line-height: 1.6; }
 
 /* Dark is the base palette. Every accent lives here as a variable so it can be
    re-tuned per theme -- hardcoding indigo-300/400 previously dropped the light
    theme to 1.91:1 and 2.85:1, both well under WCAG AA. */
 :root {
-  --page-background: #0a0a0a;
+  --page-background: #0e1014;
   --page-foreground: #ffffff;
-  --grid-line: rgba(255, 255, 255, 0.075);
-  --nav-background: rgba(10, 10, 10, 0.72);
-  --nav-border: rgba(255, 255, 255, 0.13);
+  --surface: #171a20;
+  --surface-border: rgba(255, 255, 255, 0.11);
+  --text-muted: #aeb5c1;
+  --nav-background: rgba(20, 23, 28, 0.88);
+  --nav-border: var(--surface-border);
   --nav-text: rgba(255, 255, 255, 0.62);
   --nav-active-background: rgba(255, 255, 255, 0.1);
   /* indigo-400 on #0a0a0a = 6.64:1 */
@@ -39,9 +51,11 @@ body {
 }
 
 :root.theme-light {
-  --page-background: #f8fafc;
+  --page-background: #f7f8fa;
   --page-foreground: #0f172a;
-  --grid-line: rgba(15, 23, 42, 0.1);
+  --surface: #ffffff;
+  --surface-border: rgba(15, 23, 42, 0.12);
+  --text-muted: #475569;
   --nav-background: rgba(255, 255, 255, 0.72);
   --nav-border: rgba(15, 23, 42, 0.12);
   --nav-text: rgba(15, 23, 42, 0.68);
@@ -59,10 +73,26 @@ body {
   transition: background-color 220ms ease, color 220ms ease;
 }
 
-.site-grid {
-  background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.75) 70%, transparent);
+.surface-card {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+}
+
+::selection { background: var(--accent); color: #0e1014; }
+:root.theme-light ::selection { color: #fff; }
+input, textarea { caret-color: var(--accent); }
+
+.app-shell input:not([type='color']):not([type='checkbox']),
+.app-shell textarea { border-radius: var(--radius-control); }
+
+.floating-nav { bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px)); }
+.back-to-top { bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px)); }
+.site-footer { padding-bottom: calc(7rem + env(safe-area-inset-bottom, 0px)); }
+@media (min-width: 640px) {
+  .floating-nav { top: 1.25rem; bottom: auto; }
+  .back-to-top { bottom: 1.5rem; }
+  .site-footer { padding-bottom: 3rem; }
 }
 
 .site-nav {
@@ -78,6 +108,8 @@ body {
 }
 .nav-link:hover, .theme-toggle:hover { color: var(--page-foreground); background: var(--nav-active-background); }
 .nav-link-active { color: var(--page-foreground); }
+:root.theme-light .hero-primary { background: #0f172a; color: #ffffff; }
+:root.theme-light .hero-primary:hover { background: #1e293b; }
 /* The active pill is its own element so it can slide between tabs. It sits
    behind the label, which is why every label inside a nav link is positioned. */
 .nav-indicator {
@@ -91,14 +123,6 @@ body {
 .accent-text { color: var(--accent); }
 .accent-text-soft { color: var(--accent-soft); }
 .accent-bullet { background: var(--accent); }
-.section-kicker {
-  margin: 0 0 0.5rem;
-  color: var(--accent);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
 
 /* Light mode keeps the existing glass components readable without duplicating their markup. */
 :root.theme-light .text-white { color: #0f172a; }
@@ -141,11 +165,6 @@ body {
 :root.theme-light .keep-fg .bg-white\/5 { background-color: rgba(255, 255, 255, 0.05); }
 :root.theme-light .keep-fg .bg-white\/10 { background-color: rgba(255, 255, 255, 0.1); }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
 /* Flip-disk matrix.
    The flip angle rides on a custom property so the hover "knock" can be a plain
    CSS rule. Setting the transform inline (as the upstream component does) makes
@@ -153,7 +172,7 @@ code {
 .flip-disk-faces {
   transform-style: preserve-3d;
   transform: rotateX(var(--flip-angle, 0deg));
-  transition: transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 @media (hover: hover) {
   .flip-disk:hover .flip-disk-faces {
@@ -216,7 +235,7 @@ html {
 }
 
 /* Enhanced transitions (avoid applying globally to all elements to reduce jank) */
-.transition-colors, .transition, .transition-all, .transition-opacity, .transition-transform {
+.transition-colors, .transition, .transition-opacity, .transition-transform {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 

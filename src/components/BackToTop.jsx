@@ -28,7 +28,6 @@ const BackToTop = () => {
   const scrollToTop = () => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-    window.history.pushState(null, '', ' ');
     document.getElementById('main-content')?.focus({ preventScroll: true });
   };
 
@@ -37,7 +36,7 @@ const BackToTop = () => {
       type="button"
       onClick={scrollToTop}
       // Sits above the mobile nav bar, and out of its way on desktop.
-      className={`site-nav theme-toggle fixed bottom-[5.25rem] right-4 z-50 inline-flex h-11 w-11 items-center justify-center rounded-full shadow-lg transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] sm:bottom-6 sm:right-6 ${
+      className={`back-to-top site-nav theme-toggle fixed right-4 z-50 inline-flex h-11 w-11 items-center justify-center rounded-full shadow-lg transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] sm:right-6 ${
         visible ? 'opacity-100' : 'pointer-events-none opacity-0'
       }`}
       aria-label="Back to top"

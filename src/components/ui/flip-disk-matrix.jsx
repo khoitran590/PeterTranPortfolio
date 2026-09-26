@@ -306,7 +306,7 @@ export function FlipDiskMatrix() {
             type="button"
             onClick={() => setMode(option)}
             aria-pressed={mode === option}
-            className={`min-h-[2.25rem] rounded-md px-3 py-1.5 font-mono text-xs uppercase transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] ${
+            className={`min-h-[2.25rem] rounded-md px-3 py-1.5 font-mono text-xs uppercase transition-[background-color,color,box-shadow] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] ${
               mode === option
                 ? 'bg-white font-semibold text-neutral-900 shadow-sm dark:bg-[color:var(--disk-on)] dark:text-black'
                 : 'text-neutral-700 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200'
@@ -330,7 +330,7 @@ export function FlipDiskMatrix() {
             aria-pressed={color === preset.hex}
             title={preset.name}
             style={diskFaces(preset.hex)}
-            className={`flip-swatch h-9 w-9 rounded-md border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] ${
+            className={`flip-swatch h-9 w-9 rounded-md border transition-[border-color,box-shadow,transform] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] ${
               color === preset.hex
                 ? 'border-neutral-900 ring-2 ring-neutral-900/70 ring-offset-2 ring-offset-neutral-200 dark:border-white dark:ring-white/80 dark:ring-offset-neutral-900'
                 : 'border-black/15 hover:scale-105 dark:border-white/20'

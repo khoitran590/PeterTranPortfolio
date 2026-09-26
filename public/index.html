@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#0e1014" />
     <title>Peter Tran — Software Engineer</title>
     <meta
       name="description"
@@ -60,6 +60,7 @@
           document.documentElement.classList.toggle('dark', isDark);
           document.documentElement.classList.toggle('theme-light', !isDark);
           document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', isDark ? '#0e1014' : '#f7f8fa');
         } catch (e) { /* no-op */ }
       })();
     </script>

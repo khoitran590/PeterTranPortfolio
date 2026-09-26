@@ -1,12 +1,25 @@
 // src/components/ContactForm.jsx
-import React, { useId, useRef, useState } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 import emailjs from 'emailjs-com';
 import { Send, CheckCircle2, AlertCircle } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 const DIRECT_EMAIL = 'khoitran590@gmail.com';
+const DRAFT_KEY = 'portfolio-contact-draft';
+const EMPTY_FORM = { name: '', email: '', message: '' };
 
-const hasEnv = () => (
+const readDraft = () => {
+  try {
+    const saved = JSON.parse(window.sessionStorage.getItem(DRAFT_KEY));
+    return saved && ['name', 'email', 'message'].every((field) => typeof saved[field] === 'string')
+      ? saved
+      : EMPTY_FORM;
+  } catch {
+    return EMPTY_FORM;
+  }
+};
+
+export const isEmailConfigured = () => (
   !!process.env.REACT_APP_EMAILJS_SERVICE_ID &&
   !!process.env.REACT_APP_EMAILJS_TEMPLATE_ID &&
   !!process.env.REACT_APP_EMAILJS_USER_ID
@@ -27,7 +40,7 @@ const validate = ({ name, email, message }) => {
 
 const inputBaseClasses = (hasError) =>
   cn(
-    'w-full px-4 py-3.5 rounded-xl text-sm transition-all duration-200',
+    'w-full px-4 py-3.5 rounded-xl text-sm transition-[background-color,border-color,box-shadow] duration-200',
     'bg-white/[0.04] border text-white placeholder:text-white/40',
     'focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)] focus:border-transparent',
     hasError
@@ -36,14 +49,37 @@ const inputBaseClasses = (hasError) =>
   );
 
 const ContactForm = ({ compact = false, onSent }) => {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [formData, setFormData] = useState(readDraft);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(null); // { tone: 'ok' | 'error' | 'info', text }
   const [sending, setSending] = useState(false);
-  const isConfigured = hasEnv();
+  const isConfigured = isEmailConfigured();
   const uid = useId();
   // Bots fill every field they find; humans never see this one.
   const honeypotRef = useRef(null);
+  const submittingToEmailApp = useRef(false);
+
+  const hasDraft = Object.values(formData).some((value) => value.trim());
+
+  useEffect(() => {
+    try {
+      if (hasDraft) window.sessionStorage.setItem(DRAFT_KEY, JSON.stringify(formData));
+      else window.sessionStorage.removeItem(DRAFT_KEY);
+    } catch {
+      // Storage may be unavailable; the exit warning still protects the draft.
+    }
+  }, [formData, hasDraft]);
+
+  useEffect(() => {
+    if (!hasDraft) return undefined;
+    const warnBeforeLeaving = (event) => {
+      if (submittingToEmailApp.current) return;
+      event.preventDefault();
+      event.returnValue = '';
+    };
+    window.addEventListener('beforeunload', warnBeforeLeaving);
+    return () => window.removeEventListener('beforeunload', warnBeforeLeaving);
+  }, [hasDraft]);
 
   const fieldId = (field) => `${uid}-${field}`;
   const errorId = (field) => `${uid}-${field}-error`;
@@ -86,7 +122,8 @@ const ContactForm = ({ compact = false, onSent }) => {
           process.env.REACT_APP_EMAILJS_USER_ID
         );
         setStatus({ tone: 'ok', text: 'Message sent! I’ll reply within 24–48 hours.' });
-        setFormData({ name: '', email: '', message: '' });
+        setFormData(EMPTY_FORM);
+        try { window.sessionStorage.removeItem(DRAFT_KEY); } catch { /* Storage unavailable. */ }
         onSent && onSent();
       } catch {
         setStatus({
@@ -99,7 +136,9 @@ const ContactForm = ({ compact = false, onSent }) => {
     } else {
       setStatus({ tone: 'info', text: 'Opening your email app…' });
       const mailto = `mailto:${DIRECT_EMAIL}?subject=Portfolio%20message%20from%20${encodeURIComponent(formData.name)}&body=${encodeURIComponent(formData.message + '\n\nfrom: ' + formData.email)}`;
+      submittingToEmailApp.current = true;
       window.location.href = mailto;
+      window.setTimeout(() => { submittingToEmailApp.current = false; }, 1000);
       setSending(false);
     }
   };
@@ -191,10 +230,10 @@ const ContactForm = ({ compact = false, onSent }) => {
         <button
           type="submit"
           disabled={sending}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-slate-950 shadow-md transition-all hover:bg-slate-100 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)]"
+          className="hero-primary inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition-[background-color,transform,opacity] hover:bg-slate-100 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus-ring)]"
         >
           <Send size={15} aria-hidden="true" />
-          <span>{sending ? 'Sending…' : 'Send Message'}</span>
+          <span>{sending ? 'Sending…' : isConfigured ? 'Send message' : 'Open email draft'}</span>
         </button>
 
         {/* Stays mounted even while empty: a live region inserted into the DOM
@@ -219,17 +258,9 @@ const ContactForm = ({ compact = false, onSent }) => {
         </p>
       </div>
 
-      <p id={`${uid}-note`} className="text-[11px] leading-relaxed text-white/50 pt-1">
+      <p id={`${uid}-note`} className="pt-1 text-xs leading-relaxed text-white/65">
         {!isConfigured ? (
-          <>
-            Submitting opens your email app. Prefer direct email?{' '}
-            <a
-              href={`mailto:${DIRECT_EMAIL}`}
-              className="font-semibold text-white/80 underline underline-offset-2 hover:text-white"
-            >
-              {DIRECT_EMAIL}
-            </a>
-          </>
+          'Submitting opens your email app. Your draft stays here until you send it.'
         ) : (
           'Protected with honeypot spam filtering. Responses are sent within 24–48 hours.'
         )}
